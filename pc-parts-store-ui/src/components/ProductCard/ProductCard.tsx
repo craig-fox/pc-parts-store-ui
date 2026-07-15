@@ -4,6 +4,7 @@ import ProductImage from "./ProductImage";
 import ProductInfo from "./ProductInfo";
 import ProductPrice from "./ProductPrice";
 import AddToCartButton from "./AddToCartButton";
+import { Link } from "react-router-dom";
 
 type ProductCardProps = {
     product: Product;
@@ -11,11 +12,10 @@ type ProductCardProps = {
 
 function ProductCard({ product }: ProductCardProps) {
     return (
-        <div className="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm transition-shadow hover:shadow-lg">
-
+        <Link to={`/products/${product.id}`} className="block">
             <ProductImage
-                imageUrl={product.imageUrl}
-                name={product.name}
+                            imageUrl={product.imageUrl}
+                            name={product.name}
             />
 
             <div className="p-5">
@@ -27,8 +27,7 @@ function ProductCard({ product }: ProductCardProps) {
 
                 <AddToCartButton />
             </div>
-
-        </div>
+        </Link>
     );
 }
 

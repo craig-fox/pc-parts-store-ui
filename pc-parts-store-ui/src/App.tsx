@@ -7,6 +7,7 @@ import ProductsPage from "./pages/ProductsPage";
 import CartPage from "./pages/CartPage";
 import OrdersPage from "./pages/OrdersPage";
 import LoginPage from "./pages/LoginPage";
+import ProductDetailsPage from "./pages/ProductDetailsPage";
 
 function App() {
     return (
@@ -35,6 +36,11 @@ function App() {
                     <Route
                         path="/login"
                         element={<LoginPage />}
+                    />
+                    
+                    <Route
+                        path="/products/:id"
+                        element={<ProductDetailsPage />}
                     />
 
                 </Route>
