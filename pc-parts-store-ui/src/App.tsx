@@ -1,21 +1,47 @@
-import Navbar from "./components/Navbar";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+import MainLayout from "./layouts/MainLayout";
+
+import HomePage from "./pages/HomePage";
+import ProductsPage from "./pages/ProductsPage";
+import CartPage from "./pages/CartPage";
+import OrdersPage from "./pages/OrdersPage";
+import LoginPage from "./pages/LoginPage";
 
 function App() {
-  return (
-    <div className="min-h-screen bg-slate-100">
-      <Navbar />
+    return (
+        <BrowserRouter>
+            <Routes>
 
-      <main className="mx-auto max-w-7xl p-8">
-        <h1 className="text-4xl font-bold">
-          Welcome to the PC Parts Store
-        </h1>
+                <Route element={<MainLayout />}>
 
-        <p className="mt-4 text-lg text-slate-600">
-          Build your dream PC from our range of quality components.
-        </p>
-      </main>
-    </div>
-  );
+                    <Route path="/" element={<HomePage />} />
+
+                    <Route
+                        path="/products"
+                        element={<ProductsPage />}
+                    />
+
+                    <Route
+                        path="/cart"
+                        element={<CartPage />}
+                    />
+
+                    <Route
+                        path="/orders"
+                        element={<OrdersPage />}
+                    />
+
+                    <Route
+                        path="/login"
+                        element={<LoginPage />}
+                    />
+
+                </Route>
+
+            </Routes>
+        </BrowserRouter>
+    );
 }
 
 export default App;
