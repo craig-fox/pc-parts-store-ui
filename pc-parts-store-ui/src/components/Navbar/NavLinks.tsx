@@ -1,37 +1,18 @@
-import { Link } from "react-router-dom";
+import NavLinkItem from "./NavLinkItem";
+
+const navLinks = [
+    { to: "/", label: "Home" },
+    { to: "/products", label: "Products" },
+    { to: "/cart", label: "Cart" },
+    { to: "/orders", label: "Orders" },
+];
 
 function NavLinks() {
     return (
         <div className="flex items-center gap-8">
-
-            <Link
-                to="/"
-                className="hover:text-sky-400 transition-colors"
-            >
-                Home
-            </Link>
-
-            <Link
-                to="/products"
-                className="hover:text-sky-400 transition-colors"
-            >
-                Products
-            </Link>
-
-            <Link
-                to="/cart"
-                className="hover:text-sky-400 transition-colors"
-            >
-                Cart
-            </Link>
-
-            <Link
-                to="/orders"
-                className="hover:text-sky-400 transition-colors"
-            >
-                Orders
-            </Link>
-
+            {navLinks.map((link) => (
+                <NavLinkItem key={link.to} to={link.to} label={link.label} />
+            ))}
         </div>
     );
 }
