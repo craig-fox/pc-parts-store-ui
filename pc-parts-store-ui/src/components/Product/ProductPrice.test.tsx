@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
-import ProductPrice from "./ProductPrice";
+import ProductPrice from "../Product/ProductPrice";
 
 describe("ProductPrice", () => {
     it("displays whole number prices in a $###.00 format", () => {

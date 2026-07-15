@@ -4,14 +4,13 @@ import ProductGrid from "../components/ProductGrid";
 import ProductFilters from "../components/ProductFilters/ProductFilters";
 
 
-import { products } from "../data/products";
+import { displayProducts } from "../data/displayProducts";
 import {
     filterProducts,
     sortProducts,
 } from "../utils/productFilters";
 import type { ProductSortOption } from "../types/ProductSortOption";
 import type { ProductCategory } from "../types/ProductCategory";
-import ProductCount from "../components/ProductFilters/ProductCount";
 
 function ProductsPage() {
 
@@ -21,7 +20,7 @@ function ProductsPage() {
 
     const filteredProducts = sortProducts(
         filterProducts(
-            products,
+            displayProducts,
             searchTerm,
             category
         ),

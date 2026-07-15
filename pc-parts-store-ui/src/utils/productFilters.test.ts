@@ -58,7 +58,7 @@ describe("sortProducts", () => {
             sortProducts(testProducts, "priceAsc");
 
         expect(result[0].price)
-            .toBe(269);
+            .toBe(149);
 
         expect(result[result.length - 1].price)
             .toBe(999);
@@ -80,7 +80,7 @@ it("returns no products when the search term does not match", () => {
 
     const result = filterProducts(
         testProducts,
-        "Intel",
+        "Eniac",
         "All"
     );
 

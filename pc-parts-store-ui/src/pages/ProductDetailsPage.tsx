@@ -1,43 +1,87 @@
-import { useParams } from "react-router-dom";
-import { products } from "../data/products";
+import { Link, useParams } from "react-router-dom";
+import { displayProducts } from "../data/displayProducts";
+import EmptyState from "../components/EmptyState";
+import ProductImage from "../components/Product/ProductImage";
+import ProductPrice from "../components/Product/ProductPrice";
+import AddToCartButton from "../components/Product/AddToCartButton";
+import StockBadge from "../components/Product/StockBadge";
+
+
+
 
 function ProductDetailsPage() {
     const { id } = useParams();
     const productId = Number(id);
-    const product = products.find(
+    const product = displayProducts.find(
         product => product.id === productId
     );
     if (!product) {
         return (
-            <div>
-                <h1 className="text-3xl font-bold">
-                    Product not found
-                </h1>
-    
-                <p className="mt-4 text-slate-600">
-                    The requested product does not exist.
-                </p>
-            </div>
+            <EmptyState
+                title="Product not found"
+                message="The requested product does not exist."
+                backTo="/products"
+                backLabel="Back to Products"
+            />
         );
     }
 
 
     return (
-        <div>
+        <>
+            <Link
+                to="/products"
+                className="mb-8 inline-block text-sky-600 hover:text-sky-700"
+            >
+                ← Back to Products
+            </Link>
 
-            <h1 className="text-4xl font-bold">
-                {product.name}
-            </h1>
+            <div className="grid gap-10 lg:grid-cols-2">
+                <ProductImage
+                    imageUrl={product.imageUrl}
+                    name={product.name}
+                />
 
-            <p className="mt-4 text-slate-600">
-                {product.description}
-            </p>
+                <div>
+                    <p className="text-sky-600">
+                        {product.category}
+                    </p>
 
-            <p className="mt-6 text-3xl font-bold text-sky-700">
-                ${product.price.toFixed(2)}
-            </p>
+                    <h1 className="mt-2 text-4xl font-bold">
+                        {product.name}
+                    </h1>
 
-        </div>
+                    <p className="mt-2 text-lg text-slate-600">
+                        {product.brand}
+                    </p>
+
+                    <div className="mt-6">
+                        <StockBadge stockQuantity={product.stockQuantity} />
+                    </div>
+
+                    <div className="mt-8">
+                        <ProductPrice price={product.price} />
+                    </div>
+
+                    <div className="mt-8 max-w-xs">
+                        <AddToCartButton />
+                    </div>
+                </div>
+            </div>
+            <div className="mt-12">
+
+                <h2 className="text-2xl font-semibold">
+                    Description
+                </h2>
+
+                <p className="mt-4 leading-7 text-slate-600">
+                    {product.description}
+                </p>
+
+            </div>
+        </>
+
+        
     );
 }
 
