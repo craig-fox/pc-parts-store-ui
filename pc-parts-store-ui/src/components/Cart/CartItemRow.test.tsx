@@ -1,9 +1,22 @@
 import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import userEvent from "@testing-library/user-event";
+import { describe, expect, it, vi } from "vitest";
 
 import CartItemRow from "./CartItemRow";
 import type { Product } from "../../types/Product";
 import type { CartItem } from "../../types/CartItem";
+import { useCart } from "../../context/CartContext";
+
+vi.mock("../../context/CartContext", () => ({
+    useCart: vi.fn(),
+}));
+
+function renderCartItemRow(item: CartItem, updateQuantity = vi.fn()) {
+    vi.mocked(useCart).mockReturnValue({ updateQuantity } as ReturnType<typeof useCart>);
+    render(<CartItemRow item={item} />);
+
+    return updateQuantity;
+}
 
 const testProduct: Product = {
     id: 1,
@@ -22,7 +35,7 @@ describe("CartItemRow", () => {
     it("displays the product name", () => {
         const item: CartItem = { product: testProduct, quantity: 2 };
 
-        render(<CartItemRow item={item} />);
+        renderCartItemRow(item);
 
         expect(screen.getByText("AMD Ryzen 7 9800X3D")).toBeInTheDocument();
     });
@@ -30,7 +43,7 @@ describe("CartItemRow", () => {
     it("displays the quantity", () => {
         const item: CartItem = { product: testProduct, quantity: 3 };
 
-        render(<CartItemRow item={item} />);
+        renderCartItemRow(item);
 
         expect(screen.getByText("Quantity: 3")).toBeInTheDocument();
     });
@@ -38,10 +51,22 @@ describe("CartItemRow", () => {
     it("displays the line total as price times quantity", () => {
         const item: CartItem = { product: testProduct, quantity: 2 };
 
-        render(<CartItemRow item={item} />);
+        renderCartItemRow(item);
 
         // 799 * 2 = 1598
         expect(screen.getByText(/1598/)).toBeInTheDocument();
+    });
+
+    it("updates the quantity when its controls are used", async () => {
+        const user = userEvent.setup();
+        const item: CartItem = { product: testProduct, quantity: 2 };
+        const updateQuantity = renderCartItemRow(item);
+
+        await user.click(screen.getByRole("button", { name: "Increase quantity" }));
+        await user.click(screen.getByRole("button", { name: "Decrease quantity" }));
+
+        expect(updateQuantity).toHaveBeenNthCalledWith(1, 1, 3);
+        expect(updateQuantity).toHaveBeenNthCalledWith(2, 1, 1);
     });
 
     it.each`
@@ -57,7 +82,7 @@ describe("CartItemRow", () => {
                 quantity,
             };
 
-            render(<CartItemRow item={item} />);
+            renderCartItemRow(item);
 
             expect(screen.getByText(new RegExp(String(expectedTotal)))).toBeInTheDocument();
         }
