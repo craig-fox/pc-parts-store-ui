@@ -1,16 +1,12 @@
 import { Link } from "react-router-dom";
 import CartItemRow from "../components/Cart/CartItemRow";
+import CartSummary from "../components/Cart/CartSummary";
 import EmptyState from "../components/EmptyState";
 import { useCart } from "../context/CartContext";
-import CartSummary from "../components/Cart/CartSummary";
 
 function CartPage() {
 
-    const {
-        items,
-        totalItems,
-        totalPrice,
-    } = useCart();
+    const { items } = useCart();
 
     return (
 
@@ -37,21 +33,23 @@ function CartPage() {
                     />
 
                 ) : (
+                    <div className="grid gap-8 lg:grid-cols-[2fr_1fr]">
+                        <section>
+                            <h2 className="mb-4 text-2xl font-semibold">
+                                Items
+                            </h2>
 
-                    <ul className="space-y-4">
+                            <ul className="space-y-4">
+                                {items.map(item => (
+                                    <li key={item.product.id}>
+                                        <CartItemRow item={item} />
+                                    </li>
+                                ))}
+                            </ul>
+                        </section>
 
-                        {
-                            items.map(item => (
-                                <CartItemRow
-                                    key={item.product.id}
-                                    item={item}
-                                />
-                            ))
-                        }
                         <CartSummary />
-
-                    </ul>
-
+                    </div>
                 )
             }
 
