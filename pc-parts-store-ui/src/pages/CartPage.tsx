@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import CartItemRow from "../components/Cart/CartItemRow";
 import EmptyState from "../components/EmptyState";
 import { useCart } from "../context/CartContext";
+import CartSummary from "../components/Cart/CartSummary";
 
 function CartPage() {
 
@@ -47,6 +48,7 @@ function CartPage() {
                                 />
                             ))
                         }
+                        <CartSummary />
 
                     </ul>
 
