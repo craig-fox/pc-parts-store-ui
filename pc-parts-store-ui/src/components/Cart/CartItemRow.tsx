@@ -1,7 +1,9 @@
+import { useCart } from "../../context/CartContext";
 import type { CartItem } from "../../types/CartItem";
 
 import ProductImage from "../Product/ProductImage";
 import ProductPrice from "../Product/ProductPrice";
+import QuantitySelector from "./QuantitySelector";
 
 type CartItemRowProps = {
     item: CartItem;
@@ -10,6 +12,8 @@ type CartItemRowProps = {
 function CartItemRow({ item }: CartItemRowProps) {
 
     const lineTotal = item.product.price * item.quantity;
+
+    const { updateQuantity } = useCart();
 
     return (
         <div className="flex items-center gap-6 rounded-lg border border-slate-200 p-4">
@@ -32,6 +36,22 @@ function CartItemRow({ item }: CartItemRowProps) {
                 </p>
 
             </div>
+
+            <QuantitySelector
+                quantity={item.quantity}
+                onDecrease={() =>
+                    updateQuantity(
+                        item.product.id,
+                        item.quantity - 1
+                    )
+                }
+                onIncrease={() =>
+                    updateQuantity(
+                        item.product.id,
+                        item.quantity + 1
+                    )
+                }
+            />
 
             <div className="text-right">
 
