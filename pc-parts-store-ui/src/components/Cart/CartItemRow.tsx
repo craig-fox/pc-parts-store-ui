@@ -13,7 +13,7 @@ function CartItemRow({ item }: CartItemRowProps) {
 
     const lineTotal = item.product.price * item.quantity;
 
-    const { updateQuantity } = useCart();
+    const { removeItem, updateQuantity } = useCart();
 
     return (
         <div className="flex items-center gap-6 rounded-lg border border-slate-200 p-4">
@@ -52,6 +52,14 @@ function CartItemRow({ item }: CartItemRowProps) {
                     )
                 }
             />
+
+            <button
+                type="button"
+                onClick={() => removeItem(item.product.id)}
+                className="rounded-md px-3 py-2 text-sm font-medium text-red-600 hover:bg-red-50"
+            >
+                Remove
+            </button>
 
             <div className="text-right">
 

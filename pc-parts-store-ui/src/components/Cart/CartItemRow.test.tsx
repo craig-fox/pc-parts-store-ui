@@ -11,11 +11,23 @@ vi.mock("../../context/CartContext", () => ({
     useCart: vi.fn(),
 }));
 
-function renderCartItemRow(item: CartItem, updateQuantity = vi.fn()) {
-    vi.mocked(useCart).mockReturnValue({ updateQuantity } as ReturnType<typeof useCart>);
+function renderCartItemRow(
+    item: CartItem,
+    updateQuantity = vi.fn(),
+    removeItem = vi.fn()
+) {
+    vi.mocked(useCart).mockReturnValue({
+        items: [],
+        totalItems: 0,
+        totalPrice: 0,
+        addItem: vi.fn(),
+        updateQuantity,
+        removeItem,
+        clearCart: vi.fn(),
+    });
     render(<CartItemRow item={item} />);
 
-    return updateQuantity;
+    return { updateQuantity, removeItem };
 }
 
 const testProduct: Product = {
@@ -60,13 +72,23 @@ describe("CartItemRow", () => {
     it("updates the quantity when its controls are used", async () => {
         const user = userEvent.setup();
         const item: CartItem = { product: testProduct, quantity: 2 };
-        const updateQuantity = renderCartItemRow(item);
+        const { updateQuantity } = renderCartItemRow(item);
 
         await user.click(screen.getByRole("button", { name: "Increase quantity" }));
         await user.click(screen.getByRole("button", { name: "Decrease quantity" }));
 
         expect(updateQuantity).toHaveBeenNthCalledWith(1, 1, 3);
         expect(updateQuantity).toHaveBeenNthCalledWith(2, 1, 1);
+    });
+
+    it("removes the item when the remove button is clicked", async () => {
+        const user = userEvent.setup();
+        const item: CartItem = { product: testProduct, quantity: 2 };
+        const { removeItem } = renderCartItemRow(item);
+
+        await user.click(screen.getByRole("button", { name: "Remove" }));
+
+        expect(removeItem).toHaveBeenCalledWith(testProduct.id);
     });
 
     it.each`
