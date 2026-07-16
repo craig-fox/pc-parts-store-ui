@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
+import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 
 import CartPage from "./CartPage";
@@ -11,7 +12,10 @@ vi.mock("../context/CartContext", () => ({
 }));
 
 describe("CartPage", () => {
-    it("renders cart items and the order summary in the populated cart layout", () => {
+    it("renders cart items and the order summary in the populated cart layout", async () => {
+        const user = userEvent.setup();
+        const clearCart = vi.fn();
+
         vi.mocked(useCart).mockReturnValue({
             items: [
                 { product: testProducts[0], quantity: 2 },
@@ -22,7 +26,7 @@ describe("CartPage", () => {
             addItem: vi.fn(),
             removeItem: vi.fn(),
             updateQuantity: vi.fn(),
-            clearCart: vi.fn(),
+            clearCart,
         });
 
         render(
@@ -38,5 +42,7 @@ describe("CartPage", () => {
         expect(screen.getByRole("heading", { name: "Order Summary" })).toBeInTheDocument();
         expect(screen.getByText("$2,597.00")).toBeInTheDocument();
         expect(screen.getByRole("button", { name: "Checkout" })).toBeInTheDocument();
+        await user.click(screen.getByRole("button", { name: "Clear Cart" }));
+        expect(clearCart).toHaveBeenCalledOnce();
     });
 });

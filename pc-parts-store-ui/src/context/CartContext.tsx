@@ -34,6 +34,8 @@ type CartProviderProps = {
     children: ReactNode;
 };
 
+
+
 export function CartProvider({
     children,
 }: CartProviderProps) {

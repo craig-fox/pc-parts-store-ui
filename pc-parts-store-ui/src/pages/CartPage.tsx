@@ -6,7 +6,12 @@ import { useCart } from "../context/CartContext";
 
 function CartPage() {
 
-    const { items } = useCart();
+    const { clearCart, items } = useCart();
+    const handleClearCart = () => {
+        if (window.confirm("Are you sure you want to remove all items from your cart?")) {
+            clearCart();
+        }
+    };
 
     return (
 
@@ -46,6 +51,24 @@ function CartPage() {
                                     </li>
                                 ))}
                             </ul>
+
+                            <button
+                                type="button"
+                                onClick={handleClearCart}
+                                className="
+                                    mt-6
+                                    rounded-md
+                                    border border-red-300
+                                    px-4 py-2
+                                    font-medium
+                                    text-red-600
+                                    transition-colors
+                                    hover:bg-red-50
+                                    hover:border-red-400
+                                "
+                            >
+                                Clear Cart
+                            </button>
                         </section>
 
                         <CartSummary />
