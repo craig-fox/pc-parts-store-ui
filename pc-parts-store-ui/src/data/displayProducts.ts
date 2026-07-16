@@ -1,4 +1,8 @@
 import type { Product } from "../types/Product";
+import cpuImage from "../assets/products/cpu.jpg";
+import gpuImage from "../assets/products/gpu.jpg";
+import memoryImage from "../assets/products/memory.jpg";
+import storageImage from "../assets/products/storage.jpg";
 
 export const displayProducts: Product[] = [
     {
@@ -7,7 +11,7 @@ export const displayProducts: Product[] = [
         description: "8-Core Gaming Processor",
         category: "CPU",
         price: 799,
-        imageUrl: "",
+        imageUrl: cpuImage,
         brand: "AMD",
         stockQuantity: 42,
         sku: "CPU-AMD-9800X3D",
@@ -18,7 +22,7 @@ export const displayProducts: Product[] = [
         description: "24-Core Desktop Processor",
         category: "CPU",
         price: 649,
-        imageUrl: "",
+        imageUrl: cpuImage,
         brand: "Intel",
         stockQuantity: 27,
         sku: "CPU-INT-285K",
@@ -29,7 +33,7 @@ export const displayProducts: Product[] = [
         description: "16GB Graphics Card",
         category: "GPU",
         price: 999,
-        imageUrl: "",
+        imageUrl: gpuImage,
         brand: "NVIDIA",
         stockQuantity: 15,
         sku: "GPU-NV-5070",
@@ -40,7 +44,7 @@ export const displayProducts: Product[] = [
         description: "DDR5 6000MHz Memory Kit",
         category: "Memory",
         price: 329,
-        imageUrl: "",
+        imageUrl: memoryImage,
         brand: "Corsair",
         stockQuantity: 60,
         sku: "MEM-CRS-64GB6000",
@@ -51,7 +55,7 @@ export const displayProducts: Product[] = [
         description: "NVMe PCIe 4.0 SSD",
         category: "Storage",
         price: 269,
-        imageUrl: "",
+        imageUrl: storageImage,
         brand: "Samsung",
         stockQuantity: 33,
         sku: "STO-SAM-990PRO2TB",
@@ -62,7 +66,7 @@ export const displayProducts: Product[] = [
         description: "1TB NVMe Gaming SSD",
         category: "Storage",
         price: 149,
-        imageUrl: "",
+        imageUrl: storageImage,
         brand: "Western Digital",
         stockQuantity: 48,
         sku: "STO-WD-SN850X1TB",
