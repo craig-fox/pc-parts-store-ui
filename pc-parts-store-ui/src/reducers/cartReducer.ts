@@ -31,7 +31,7 @@ export function cartReducer(
     state: CartState,
     action: CartAction
 ): CartState {
-
+    console.log(action);
     switch (action.type) {
 
         case "ADD_ITEM": {

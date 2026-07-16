@@ -1,32 +1,28 @@
-import { Link } from "react-router";
+import type { ReactNode } from "react";
 
 type EmptyStateProps = {
     title: string;
     message: string;
-    backTo?: string;
-    backLabel?: string;
+    action?: ReactNode;
 };
 
-function EmptyState({ title, message, backTo, backLabel }: EmptyStateProps) {
+function EmptyState({ title, message, action }: EmptyStateProps) {
     return (
-        <div>
-            {backTo && (
-                <Link
-                    to={backTo}
-                    className="mb-8 inline-block text-sky-600 hover:text-sky-700"
-                >
-                    ← {backLabel ?? "Back"}
-                </Link>
-            )}
+        <div className="mx-auto max-w-xl py-16 text-center">
+    <h1 className="text-3xl font-bold">
+        {title}
+    </h1>
 
-            <h1 className="text-3xl font-bold">
-                {title}
-            </h1>
+    <p className="mt-4 text-slate-600">
+        {message}
+    </p>
 
-            <p className="mt-4 text-slate-600">
-                {message}
-            </p>
+    {action && (
+        <div className="mt-8">
+            {action}
         </div>
+    )}
+</div>
     );
 }
 

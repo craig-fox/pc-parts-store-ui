@@ -1,6 +1,7 @@
 import Logo from "./Logo";
 import NavLinks from "./NavLinks";
 import LoginButton from "./LoginButton";
+import CartBadge from "../Cart/CartBadge";
 
 function Navbar() {
     return (
@@ -8,7 +9,7 @@ function Navbar() {
             <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
 
                 <Logo />
-
+                <CartBadge />
                 <div className="flex items-center gap-8">
                     <NavLinks />
                     <LoginButton />

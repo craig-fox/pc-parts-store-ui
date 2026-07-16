@@ -28,7 +28,9 @@ function ProductCard({ product }: ProductCardProps) {
     
                 <div className="mt-auto">
                     <ProductPrice price={product.price} />
-                    <AddToCartButton />
+                    <AddToCartButton
+                        product={product}
+                    />
                 </div>
             </div>
     

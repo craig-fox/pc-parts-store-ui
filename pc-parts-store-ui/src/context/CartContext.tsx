@@ -12,6 +12,10 @@ import { cartReducer } from "../reducers/cartReducer";
 type CartContextValue = {
     items: CartItem[];
 
+    totalItems: number;
+
+    totalPrice: number;
+
     addItem: (product: Product) => void;
 
     removeItem: (productId: number) => void;
@@ -41,9 +45,23 @@ export function CartProvider({
         }
     );
 
+    const totalItems = state.items.reduce(
+        (total, item) => total + item.quantity,
+        0
+    );
+
+    const totalPrice = state.items.reduce(
+        (total, item) => total + item.product.price * item.quantity,
+        0
+    );
+
     const value: CartContextValue = {
 
         items: state.items,
+
+        totalItems,
+
+        totalPrice,
 
         addItem(product) {
             dispatch({
@@ -75,6 +93,8 @@ export function CartProvider({
             });
         },
     };
+
+    console.log(state.items);
 
     return (
         <CartContext.Provider value={value}>

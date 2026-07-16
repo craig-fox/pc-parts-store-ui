@@ -4,12 +4,16 @@ import { describe, expect, it } from "vitest";
 
 import ProductGrid from "./ProductGrid";
 import { testProducts } from "../test/fixtures/products";
+import { CartProvider } from "../context/CartContext";
 
 describe("ProductGrid", () => {
     it("displays a card for every product", () => {
         render(
             <MemoryRouter>
-                <ProductGrid products={testProducts} />
+                <CartProvider>
+                    <ProductGrid products={testProducts} />
+                </CartProvider>
+                
             </MemoryRouter>
         );
 
