@@ -7,6 +7,7 @@ import {
 
 import type { Product } from "../types/Product";
 import type { CartItem } from "../types/CartItem";
+import { displayProducts } from "../data/displayProducts";
 import { cartReducer } from "../reducers/cartReducer";
 
 type CartContextValue = {
@@ -47,19 +48,30 @@ export function CartProvider({
         }
     );
 
-    const totalItems = state.items.reduce(
+    const items = state.items.map((item) => {
+        const currentProduct = displayProducts.find(
+            (product) => product.id === item.product.id
+        );
+
+        return {
+            ...item,
+            product: currentProduct ?? item.product,
+        };
+    });
+
+    const totalItems = items.reduce(
         (total, item) => total + item.quantity,
         0
     );
 
-    const totalPrice = state.items.reduce(
+    const totalPrice = items.reduce(
         (total, item) => total + item.product.price * item.quantity,
         0
     );
 
     const value: CartContextValue = {
 
-        items: state.items,
+        items,
 
         totalItems,
 
@@ -119,4 +131,3 @@ export function useCart() {
     return context;
 
 }
-

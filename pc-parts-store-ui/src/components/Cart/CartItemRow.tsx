@@ -18,7 +18,7 @@ function CartItemRow({ item }: CartItemRowProps) {
     return (
         <div className="flex items-center gap-6 rounded-lg border border-slate-200 p-4">
 
-            <div className="w-28 flex-shrink-0">
+            <div className="w-24 flex-shrink-0">
                 <ProductImage
                     imageUrl={item.product.imageUrl}
                     name={item.product.name}
