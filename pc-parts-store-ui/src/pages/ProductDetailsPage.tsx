@@ -5,6 +5,7 @@ import ProductImage from "../components/Product/ProductImage";
 import ProductPrice from "../components/Product/ProductPrice";
 import AddToCartButton from "../components/Product/AddToCartButton";
 import StockBadge from "../components/Product/StockBadge";
+import Breadcrumbs from "../components/Breadcrumbs/Breadcrumbs";
 
 
 
@@ -26,15 +27,31 @@ function ProductDetailsPage() {
         );
     }
 
+    const breadcrumbs = [
+        {
+            label: "Home",
+            href: "/",
+        },
+        {
+            label: "Products",
+            href: "/products",
+        },
+        {
+            label: product.name,
+        },
+    ];
+
 
     return (
         <>
+            <Breadcrumbs items={breadcrumbs} />
             <Link
                 to="/products"
                 className="mb-8 inline-block text-sky-600 hover:text-sky-700"
             >
                 ← Back to Products
             </Link>
+            
 
             <div className="grid gap-10 lg:grid-cols-2">
                 <ProductImage
