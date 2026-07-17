@@ -3,6 +3,7 @@ import CartItemRow from "../components/Cart/CartItemRow";
 import CartSummary from "../components/Cart/CartSummary";
 import EmptyState from "../components/EmptyState";
 import { useCart } from "../context/CartContext";
+import Button from "../components/common/Button";
 
 function CartPage() {
 
@@ -52,23 +53,14 @@ function CartPage() {
                                 ))}
                             </ul>
 
-                            <button
-                                type="button"
+                            <Button
+                                variant="danger"
                                 onClick={handleClearCart}
-                                className="
-                                    mt-6
-                                    rounded-md
-                                    border border-red-300
-                                    px-4 py-2
-                                    font-medium
-                                    text-red-600
-                                    transition-colors
-                                    hover:bg-red-50
-                                    hover:border-red-400
-                                "
+                                className="mt-6"
                             >
                                 Clear Cart
-                            </button>
+                            </Button>
+
                         </section>
 
                         <CartSummary />

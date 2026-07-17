@@ -1,5 +1,5 @@
 import { useCart } from "../../context/CartContext";
-import { calculateShipping } from "../../utils/Shipping";
+import { calculateShipping } from "../../utils/shipping";
 import { formatCurrency } from "../../utils/currency";
 
 function OrderSummary() {
