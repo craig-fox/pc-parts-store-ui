@@ -7,16 +7,6 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     variant?: ButtonVariant;
 }
 
-// type ButtonVariant = "primary" | "secondary" | "danger";
-
-// interface ButtonProps {
-//     children: React.ReactNode;
-//     variant?: ButtonVariant;
-//     type?: "button" | "submit" | "reset";
-//     disabled?: boolean;
-//     className?: string;
-//     onClick?: React.MouseEventHandler<HTMLButtonElement>;
-// }
 
 const variantClasses = {
     primary:
