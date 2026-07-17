@@ -15,6 +15,7 @@ describe("CartPage", () => {
     it("renders cart items and the order summary in the populated cart layout", async () => {
         const user = userEvent.setup();
         const clearCart = vi.fn();
+        vi.spyOn(window, "confirm").mockReturnValue(true);
 
         vi.mocked(useCart).mockReturnValue({
             items: [
@@ -41,7 +42,10 @@ describe("CartPage", () => {
         expect(screen.getByText(testProducts[2].name)).toBeInTheDocument();
         expect(screen.getByRole("heading", { name: "Order Summary" })).toBeInTheDocument();
         expect(screen.getByText("$2,597.00")).toBeInTheDocument();
-        expect(screen.getByRole("button", { name: "Checkout" })).toBeInTheDocument();
+        expect(screen.getByRole("link", { name: "Checkout" })).toHaveAttribute(
+            "href",
+            "/checkout"
+        );
         await user.click(screen.getByRole("button", { name: "Clear Cart" }));
         expect(clearCart).toHaveBeenCalledOnce();
     });
