@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import { MemoryRouter } from "react-router-dom";
 import { describe, expect, it, vi } from "vitest";
 
 import CartSummary from "./CartSummary";
@@ -19,7 +20,11 @@ function renderCartSummary(totalItems: number, totalPrice: number) {
         clearCart: vi.fn(),
     });
 
-    render(<CartSummary />);
+    render(
+        <MemoryRouter>
+            <CartSummary />
+        </MemoryRouter>
+    );
 }
 
 describe("CartSummary", () => {
@@ -35,6 +40,9 @@ describe("CartSummary", () => {
         renderCartSummary(0, 0);
 
         expect(screen.getByText("Calculated at checkout")).toBeInTheDocument();
-        expect(screen.getByRole("button", { name: "Checkout" })).toBeInTheDocument();
+        expect(screen.getByRole("link", { name: "Checkout" })).toHaveAttribute(
+            "href",
+            "/checkout"
+        );
     });
 });

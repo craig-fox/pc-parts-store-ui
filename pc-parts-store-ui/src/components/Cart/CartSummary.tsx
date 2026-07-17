@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useCart } from "../../context/CartContext";
 
 function CartSummary() {
@@ -31,12 +32,12 @@ function CartSummary() {
 
             <hr className="my-6 border-slate-200" />
 
-            <button
-                type="button"
+            <Link
+                to="/checkout"
                 className="w-full rounded-md bg-sky-600 py-2 font-medium text-white hover:bg-sky-700"
             >
                 Checkout
-            </button>
+            </Link>
         </section>
     );
 }
