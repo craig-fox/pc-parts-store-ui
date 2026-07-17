@@ -50,7 +50,7 @@ describe("Button", () => {
 
         expect(
             screen.getByRole("button")
-        ).toHaveClass("bg-blue-600");
+        ).toHaveClass("bg-sky-600");
     });
 
     it("renders the secondary variant", () => {
@@ -62,7 +62,7 @@ describe("Button", () => {
 
         expect(
             screen.getByRole("button")
-        ).toHaveClass("bg-gray-200");
+        ).toHaveClass("border-gray-300");
     });
 
     it("renders the danger variant", () => {
@@ -74,7 +74,7 @@ describe("Button", () => {
 
         expect(
             screen.getByRole("button")
-        ).toHaveClass("bg-red-600");
+        ).toHaveClass("border-red-300");
     });
 
     it("renders as a submit button when specified", () => {
