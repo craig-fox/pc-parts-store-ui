@@ -1,5 +1,6 @@
 import type { Product } from "../../types/Product";
 import { useCart } from "../../context/CartContext";
+import Button from "../common/Button";
 
 type AddToCartButtonProps = {
     product: Product;
@@ -10,8 +11,8 @@ function AddToCartButton({ product }: AddToCartButtonProps) {
     const { addItem } = useCart();
 
     return (
-        <button
-            className="mt-6 w-full rounded-md bg-sky-600 py-2 font-medium text-white transition-colors hover:bg-sky-700"
+        <Button
+            className="mt-6 w-full"
             onClick={(event) => {
                 event.preventDefault();
                 event.stopPropagation();
@@ -19,7 +20,7 @@ function AddToCartButton({ product }: AddToCartButtonProps) {
             }}
         >
             Add to Cart
-        </button>
+        </Button>
         
     );
 }
