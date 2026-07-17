@@ -39,7 +39,9 @@ describe("CartSummary", () => {
     it("displays checkout shipping information and action", () => {
         renderCartSummary(0, 0);
 
-        expect(screen.getByText("Calculated at checkout")).toBeInTheDocument();
+        expect(
+            screen.getAllByText("Calculated at checkout")
+        ).toHaveLength(2);
         expect(screen.getByRole("link", { name: "Checkout" })).toHaveAttribute(
             "href",
             "/checkout"

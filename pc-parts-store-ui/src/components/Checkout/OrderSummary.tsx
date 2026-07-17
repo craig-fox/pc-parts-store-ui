@@ -2,6 +2,7 @@ import { useCart } from "../../context/CartContext";
 
 function OrderSummary() {
     const { items, totalItems, totalPrice } = useCart();
+    
 
     return (
         <aside className="rounded-lg border border-slate-200 bg-white p-6">

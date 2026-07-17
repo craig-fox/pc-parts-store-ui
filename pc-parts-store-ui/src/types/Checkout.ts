@@ -1,14 +1,7 @@
-export type Checkout = {
-    customer: {
-        firstName: string;
-        lastName: string;
-        email: string;
-    };
+import type { Address } from "./Address";
+import type { Customer } from "./Customer";
 
-    shippingAddress: {
-        addressLine1: string;
-        city: string;
-        postcode: string;
-        country: string;
-    };
+export type Checkout = {
+    customer: Customer;
+    shippingAddress: Address;
 };
