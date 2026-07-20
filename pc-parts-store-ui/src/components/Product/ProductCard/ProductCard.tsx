@@ -12,20 +12,36 @@ type ProductCardProps = {
 
 function ProductCard({ product }: ProductCardProps) {
     return (
-        <Link to={`/products/${product.id}`} className="block h-full">
-            <div className="flex h-full flex-col overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm transition-shadow hover:-translate-y-1 hover:shadow-lg">
+        <div data-testid={`product-card-${product.id}`} 
+            className="flex h-full flex-col overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm transition-shadow hover:-translate-y-1 hover:shadow-lg">
+
+            <Link
+                to={`/products/${product.id}`}
+                className="block"
+            >
                 <ProductImage imageUrl={product.imageUrl} name={product.name} />
-
-                <div className="flex flex-1 flex-col p-5">
-                    <ProductInfo product={product} />
-
-                    <div className="mt-auto">
-                        <ProductPrice price={product.price} />
-                        <AddToCartButton product={product} />
-                    </div>
-                </div>
+                <ProductInfo product={product} />
+            </Link>
+            <div className="mt-auto">
+                <ProductPrice price={product.price} />
+                <AddToCartButton product={product} />
             </div>
-        </Link>
+
+        </div>
+        // <Link to={`/products/${product.id}`} className="block h-full">
+        //     <div className="flex h-full flex-col overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm transition-shadow hover:-translate-y-1 hover:shadow-lg">
+        //         <ProductImage imageUrl={product.imageUrl} name={product.name} />
+
+        //         <div className="flex flex-1 flex-col p-5">
+        //             <ProductInfo product={product} />
+
+        //             <div className="mt-auto">
+        //                 <ProductPrice price={product.price} />
+        //                 <AddToCartButton product={product} />
+        //             </div>
+        //         </div>
+        //     </div>
+        // </Link>
     );
 }
 
