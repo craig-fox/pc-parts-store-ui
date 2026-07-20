@@ -28,11 +28,13 @@ export function calculateOrderTotals(items: CartItem[]): OrderTotals {
 }
 
 
-const calculateShipping = (subtotal:number, totalWeight: number) : number => {
+function calculateShipping(
+    subtotal: number,
+    totalWeight: number
+): number {
     if (subtotal === 0) {
         return 0;
     }
 
     return calculateShippingCost(subtotal, totalWeight);
 }
-
