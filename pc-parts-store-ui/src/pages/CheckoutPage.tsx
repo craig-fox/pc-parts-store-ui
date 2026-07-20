@@ -11,7 +11,7 @@ import type { CheckoutErrors } from "../types/CheckoutErrors";
 import type { OrderTotals } from "../utils/orderCalculations";
 
 import { calculateOrderTotals } from "../utils/orderCalculations";
-import { useOrders } from "../context/OrdersContext";
+import { useOrders } from "../context/useOrders";
 
 
 function CheckoutPage() {
