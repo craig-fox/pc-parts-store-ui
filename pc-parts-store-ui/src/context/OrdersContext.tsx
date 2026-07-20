@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, type PropsWithChildren, type JSX } from "react";
+import { createContext, useState, type PropsWithChildren, type JSX } from "react";
 import type { Order } from "../types/Order";
 
 interface OrdersContextType {
@@ -9,7 +9,7 @@ interface OrdersContextType {
     clearOrders: () => void;
 }
 
-const OrdersContext = createContext<OrdersContextType | undefined>(
+export const OrdersContext = createContext<OrdersContextType | undefined>(
     undefined
 );
 
@@ -56,17 +56,7 @@ export function OrdersProvider({
     );
 }
 
-export function useOrders() {
-    const context = useContext(OrdersContext);
 
-    if (!context) {
-        throw new Error(
-            "useOrders must be used within an OrdersProvider."
-        );
-    }
-
-    return context;
-}
 
 
 

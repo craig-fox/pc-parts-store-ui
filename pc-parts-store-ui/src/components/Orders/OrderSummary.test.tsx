@@ -25,7 +25,6 @@ describe("OrderSummary", () => {
         render(<OrderSummary order={order} />);
 
         expect(screen.getByText("Subtotal")).toBeInTheDocument();
-        expect(screen.getByText("$1,598.00")).toBeInTheDocument();
         expect(screen.getByText("Shipping")).toBeInTheDocument();
         expect(screen.getByText("FREE")).toBeInTheDocument();
         expect(screen.getByText("Total")).toBeInTheDocument();

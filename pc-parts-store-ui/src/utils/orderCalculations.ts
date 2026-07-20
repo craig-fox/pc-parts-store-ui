@@ -18,7 +18,7 @@ export function calculateOrderTotals(items: CartItem[]): OrderTotals {
         (weight, item) => weight + item.product.weightKg * item.quantity,
         0
     );
-    const shipping = calculateShipping(subtotal, totalWeight, items);
+    const shipping = calculateShipping(subtotal, totalWeight);
     return {
         subtotal,
         shipping,
@@ -28,7 +28,7 @@ export function calculateOrderTotals(items: CartItem[]): OrderTotals {
 }
 
 
-const calculateShipping = (subtotal:number, totalWeight: number, items: CartItem[]) : number => {
+const calculateShipping = (subtotal:number, totalWeight: number) : number => {
     if (subtotal === 0) {
         return 0;
     }

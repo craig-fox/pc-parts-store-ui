@@ -10,7 +10,10 @@
     "preview": "vite preview",
     "test": "vitest",
     "test:watch": "vitest --watch",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "check": "npm run lint && npm run test && npm run format:check"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.2",
@@ -31,6 +34,7 @@
     "jsdom": "^29.1.1",
     "oxlint": "^1.71.0",
     "prettier": "^3.9.5",
+    "prettier-plugin-tailwindcss": "^0.8.1",
     "typescript": "~6.0.2",
     "vite": "^8.1.1",
     "vitest": "^4.1.10"
