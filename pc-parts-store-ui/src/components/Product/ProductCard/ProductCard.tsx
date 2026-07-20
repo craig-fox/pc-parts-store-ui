@@ -20,28 +20,18 @@ function ProductCard({ product }: ProductCardProps) {
                 className="block"
             >
                 <ProductImage imageUrl={product.imageUrl} name={product.name} />
-                <ProductInfo product={product} />
+
+                <div className="p-4">
+                    <ProductInfo product={product} />
+                </div>
             </Link>
-            <div className="mt-auto">
+
+            <div className="mt-auto p-4 pt-0">
                 <ProductPrice price={product.price} />
                 <AddToCartButton product={product} />
             </div>
 
         </div>
-        // <Link to={`/products/${product.id}`} className="block h-full">
-        //     <div className="flex h-full flex-col overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm transition-shadow hover:-translate-y-1 hover:shadow-lg">
-        //         <ProductImage imageUrl={product.imageUrl} name={product.name} />
-
-        //         <div className="flex flex-1 flex-col p-5">
-        //             <ProductInfo product={product} />
-
-        //             <div className="mt-auto">
-        //                 <ProductPrice price={product.price} />
-        //                 <AddToCartButton product={product} />
-        //             </div>
-        //         </div>
-        //     </div>
-        // </Link>
     );
 }
 

@@ -8,12 +8,13 @@
         "build": "tsc -b && vite build",
         "lint": "oxlint",
         "preview": "vite preview",
-        "test": "vitest",
-        "test:watch": "vitest --watch",
+        "test": "vitest run",
+        "test:watch": "vitest",
         "test:coverage": "vitest run --coverage",
         "format": "prettier --write .",
         "format:check": "prettier --check .",
         "check": "npm run lint && npm run test && npm run format:check"
+
     },
     "dependencies": {
         "@tailwindcss/vite": "^4.3.2",

@@ -1,6 +1,5 @@
-import { test, expect, Page } from "@playwright/test";
-import { addProductToCart, completeCheckoutForm, goToCheckout } from "./testHelpers";
-
+import { test, expect } from "@playwright/test";
+import { completeCheckoutForm, goToCheckout } from "./testHelpers";
 
 
 test.describe("Checkout", () => {
