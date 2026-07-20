@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 import Button from "../components/common/Button";
 
-import { useOrders } from "../context/OrdersContext";
+import { useOrders } from "../context/useOrders";
 
 function OrderConfirmationPage() {
     const { latestOrder } = useOrders();
