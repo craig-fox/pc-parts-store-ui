@@ -3,8 +3,7 @@ import Navbar from "../components/Navbar/Navbar";
 
 function MainLayout() {
     return (
-        <div className="min-h-screen bg-slate-100 flex flex-col">
-
+        <div className="flex min-h-screen flex-col bg-slate-100">
             <Navbar />
 
             <main className="mx-auto w-full max-w-7xl flex-grow p-8">
@@ -16,7 +15,6 @@ function MainLayout() {
                     © 2026 PC Parts Store
                 </div>
             </footer>
-
         </div>
     );
 }

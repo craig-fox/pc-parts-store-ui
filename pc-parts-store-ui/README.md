@@ -10,36 +10,36 @@ This project forms the frontend of a larger full-stack portfolio application tha
 
 ### Product Catalogue
 
-* Browse a range of PC components
-* Product detail pages
-* Product categories
-* Search products
-* Sort products
-* Stock availability indicators
+- Browse a range of PC components
+- Product detail pages
+- Product categories
+- Search products
+- Sort products
+- Stock availability indicators
 
 ### Shopping Cart
 
-* Add products to the cart
-* Update item quantities
-* Remove items
-* Clear the cart
-* Automatic subtotal calculation
-* Shipping calculation based on order value and parcel weight
-* Order total calculation
+- Add products to the cart
+- Update item quantities
+- Remove items
+- Clear the cart
+- Automatic subtotal calculation
+- Shipping calculation based on order value and parcel weight
+- Order total calculation
 
 ### Checkout
 
-* Customer information form
-* Shipping address entry
-* Order summary
-* Shipping cost calculation
-* Order total calculation
+- Customer information form
+- Shipping address entry
+- Order summary
+- Shipping cost calculation
+- Order total calculation
 
 ### Testing
 
-* Unit tests using Vitest
-* Component tests using React Testing Library
-* Utility function tests for business logic
+- Unit tests using Vitest
+- Component tests using React Testing Library
+- Utility function tests for business logic
 
 ---
 
@@ -76,30 +76,30 @@ src
 
 ## Current Functionality
 
-* Home page
-* Product catalogue
-* Product details
-* Shopping cart
-* Checkout
-* Shipping calculation
-* Responsive navigation
-* Reusable UI components
+- Home page
+- Product catalogue
+- Product details
+- Shopping cart
+- Checkout
+- Shipping calculation
+- Responsive navigation
+- Reusable UI components
 
 ---
 
 ## Planned Enhancements
 
-* Order confirmation workflow
-* Orders page
-* Local storage persistence
-* User authentication
-* Backend integration with Spring Boot
-* REST API integration
-* Inventory management
-* Order history
-* Product images from backend
-* Responsive improvements
-* Accessibility enhancements
+- Order confirmation workflow
+- Orders page
+- Local storage persistence
+- User authentication
+- Backend integration with Spring Boot
+- REST API integration
+- Inventory management
+- Order history
+- Product images from backend
+- Responsive improvements
+- Accessibility enhancements
 
 ---
 
@@ -147,12 +147,12 @@ npm run test:watch
 
 This project demonstrates modern frontend development practices, including:
 
-* Component-based architecture
-* Strong typing with TypeScript
-* Reusable UI components
-* Context-based state management
-* Business logic separated into utility modules
-* Responsive design with Tailwind CSS
-* Comprehensive automated testing
+- Component-based architecture
+- Strong typing with TypeScript
+- Reusable UI components
+- Context-based state management
+- Business logic separated into utility modules
+- Responsive design with Tailwind CSS
+- Comprehensive automated testing
 
 It is intended to evolve into a full-stack e-commerce application backed by Spring Boot microservices and cloud-native infrastructure.

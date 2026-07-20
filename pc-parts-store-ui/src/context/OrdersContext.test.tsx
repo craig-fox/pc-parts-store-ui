@@ -10,8 +10,17 @@ import type { Order } from "../types/Order";
 const firstOrder: Order = {
     id: "order-1",
     checkout: {
-        customer: { firstName: "Craig", lastName: "Fox", email: "craig@example.com" },
-        shippingAddress: { addressLine1: "1 Main St", city: "Auckland", postcode: "1010", country: "NZ" },
+        customer: {
+            firstName: "Craig",
+            lastName: "Fox",
+            email: "craig@example.com",
+        },
+        shippingAddress: {
+            addressLine1: "1 Main St",
+            city: "Auckland",
+            postcode: "1010",
+            country: "NZ",
+        },
     },
     items: [{ product: testProducts[0], quantity: 1 }],
     subtotal: 799,
@@ -23,16 +32,25 @@ const firstOrder: Order = {
 };
 
 function OrdersControls() {
-    const { addOrder, clearOrders, getOrder, latestOrder, orders } = useOrders();
+    const { addOrder, clearOrders, getOrder, latestOrder, orders } =
+        useOrders();
     const secondOrder = { ...firstOrder, id: "order-2" };
 
     return (
         <>
             <output aria-label="Order state">{`${orders.length}:${latestOrder?.id ?? "none"}`}</output>
-            <output aria-label="Found order">{getOrder("order-1")?.id ?? "none"}</output>
-            <button type="button" onClick={() => addOrder(firstOrder)}>Add first</button>
-            <button type="button" onClick={() => addOrder(secondOrder)}>Add second</button>
-            <button type="button" onClick={clearOrders}>Clear</button>
+            <output aria-label="Found order">
+                {getOrder("order-1")?.id ?? "none"}
+            </output>
+            <button type="button" onClick={() => addOrder(firstOrder)}>
+                Add first
+            </button>
+            <button type="button" onClick={() => addOrder(secondOrder)}>
+                Add second
+            </button>
+            <button type="button" onClick={clearOrders}>
+                Clear
+            </button>
         </>
     );
 }
@@ -48,14 +66,22 @@ describe("OrdersProvider and useOrders", () => {
         );
 
         await user.click(screen.getByRole("button", { name: "Add first" }));
-        expect(screen.getByRole("status", { name: "Order state" })).toHaveTextContent("1:order-1");
-        expect(screen.getByRole("status", { name: "Found order" })).toHaveTextContent("order-1");
+        expect(
+            screen.getByRole("status", { name: "Order state" })
+        ).toHaveTextContent("1:order-1");
+        expect(
+            screen.getByRole("status", { name: "Found order" })
+        ).toHaveTextContent("order-1");
 
         await user.click(screen.getByRole("button", { name: "Add second" }));
-        expect(screen.getByRole("status", { name: "Order state" })).toHaveTextContent("2:order-2");
+        expect(
+            screen.getByRole("status", { name: "Order state" })
+        ).toHaveTextContent("2:order-2");
 
         await user.click(screen.getByRole("button", { name: "Clear" }));
-        expect(screen.getByRole("status", { name: "Order state" })).toHaveTextContent("0:none");
+        expect(
+            screen.getByRole("status", { name: "Order state" })
+        ).toHaveTextContent("0:none");
     });
 
     it("requires useOrders consumers to be inside OrdersProvider", () => {
@@ -64,6 +90,8 @@ describe("OrdersProvider and useOrders", () => {
             return null;
         }
 
-        expect(() => render(<Consumer />)).toThrow("useOrders must be used within an OrdersProvider.");
+        expect(() => render(<Consumer />)).toThrow(
+            "useOrders must be used within an OrdersProvider."
+        );
     });
 });

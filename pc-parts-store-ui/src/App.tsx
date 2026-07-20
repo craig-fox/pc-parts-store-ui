@@ -15,36 +15,19 @@ function App() {
     return (
         <BrowserRouter>
             <Routes>
-
                 <Route element={<MainLayout />}>
-
                     <Route path="/" element={<HomePage />} />
 
-                    <Route
-                        path="/products"
-                        element={<ProductsPage />}
-                    />
+                    <Route path="/products" element={<ProductsPage />} />
 
-                    <Route
-                        path="/cart"
-                        element={<CartPage />}
-                    />
+                    <Route path="/cart" element={<CartPage />} />
 
-                    <Route
-                        path="/checkout"
-                        element={<CheckoutPage />}
-                    />
+                    <Route path="/checkout" element={<CheckoutPage />} />
 
-                    <Route
-                        path="/orders"
-                        element={<OrdersPage />}
-                    />
+                    <Route path="/orders" element={<OrdersPage />} />
 
-                    <Route
-                        path="/login"
-                        element={<LoginPage />}
-                    />
-                    
+                    <Route path="/login" element={<LoginPage />} />
+
                     <Route
                         path="/products/:id"
                         element={<ProductDetailsPage />}
@@ -54,9 +37,7 @@ function App() {
                         path="/order-confirmation"
                         element={<OrderConfirmationPage />}
                     />
-
                 </Route>
-
             </Routes>
         </BrowserRouter>
     );

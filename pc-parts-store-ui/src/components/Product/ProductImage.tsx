@@ -13,9 +13,7 @@ function ProductImage({ imageUrl, name }: ProductImageProps) {
                     className="h-full w-full object-cover"
                 />
             ) : (
-                <span className="text-slate-500">
-                    Product Image
-                </span>
+                <span className="text-slate-500">Product Image</span>
             )}
         </div>
     );

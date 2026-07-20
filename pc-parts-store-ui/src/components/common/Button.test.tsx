@@ -4,7 +4,6 @@ import { describe, expect, it, vi } from "vitest";
 import Button from "./Button";
 
 describe("Button", () => {
-
     it("renders its label", () => {
         render(<Button>Confirm Order</Button>);
 
@@ -16,15 +15,9 @@ describe("Button", () => {
     it("calls onClick when clicked", () => {
         const handleClick = vi.fn();
 
-        render(
-            <Button onClick={handleClick}>
-                Confirm Order
-            </Button>
-        );
+        render(<Button onClick={handleClick}>Confirm Order</Button>);
 
-        fireEvent.click(
-            screen.getByRole("button", { name: "Confirm Order" })
-        );
+        fireEvent.click(screen.getByRole("button", { name: "Confirm Order" }));
 
         expect(handleClick).toHaveBeenCalledTimes(1);
     });
@@ -38,9 +31,7 @@ describe("Button", () => {
             </Button>
         );
 
-        fireEvent.click(
-            screen.getByRole("button", { name: "Confirm Order" })
-        );
+        fireEvent.click(screen.getByRole("button", { name: "Confirm Order" }));
 
         expect(handleClick).not.toHaveBeenCalled();
     });
@@ -48,56 +39,30 @@ describe("Button", () => {
     it("renders the primary variant by default", () => {
         render(<Button>Confirm Order</Button>);
 
-        expect(
-            screen.getByRole("button")
-        ).toHaveClass("bg-sky-600");
+        expect(screen.getByRole("button")).toHaveClass("bg-sky-600");
     });
 
     it("renders the secondary variant", () => {
-        render(
-            <Button variant="secondary">
-                Cancel
-            </Button>
-        );
+        render(<Button variant="secondary">Cancel</Button>);
 
-        expect(
-            screen.getByRole("button")
-        ).toHaveClass("border-gray-300");
+        expect(screen.getByRole("button")).toHaveClass("border-gray-300");
     });
 
     it("renders the danger variant", () => {
-        render(
-            <Button variant="danger">
-                Delete
-            </Button>
-        );
+        render(<Button variant="danger">Delete</Button>);
 
-        expect(
-            screen.getByRole("button")
-        ).toHaveClass("border-red-300");
+        expect(screen.getByRole("button")).toHaveClass("border-red-300");
     });
 
     it("renders as a submit button when specified", () => {
-        render(
-            <Button type="submit">
-                Confirm Order
-            </Button>
-        );
+        render(<Button type="submit">Confirm Order</Button>);
 
-        expect(
-            screen.getByRole("button")
-        ).toHaveAttribute("type", "submit");
+        expect(screen.getByRole("button")).toHaveAttribute("type", "submit");
     });
 
     it("is disabled when disabled is true", () => {
-        render(
-            <Button disabled>
-                Confirm Order
-            </Button>
-        );
+        render(<Button disabled>Confirm Order</Button>);
 
-        expect(
-            screen.getByRole("button")
-        ).toBeDisabled();
+        expect(screen.getByRole("button")).toBeDisabled();
     });
 });

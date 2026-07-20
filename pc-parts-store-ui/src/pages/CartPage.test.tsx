@@ -37,11 +37,17 @@ describe("CartPage", () => {
             </MemoryRouter>
         );
 
-        expect(screen.getByRole("heading", { name: "Shopping Cart" })).toBeInTheDocument();
-        expect(screen.getByRole("heading", { name: "Items" })).toBeInTheDocument();
+        expect(
+            screen.getByRole("heading", { name: "Shopping Cart" })
+        ).toBeInTheDocument();
+        expect(
+            screen.getByRole("heading", { name: "Items" })
+        ).toBeInTheDocument();
         expect(screen.getByText(testProducts[0].name)).toBeInTheDocument();
         expect(screen.getByText(testProducts[2].name)).toBeInTheDocument();
-        expect(screen.getByRole("heading", { name: "Order Summary" })).toBeInTheDocument();
+        expect(
+            screen.getByRole("heading", { name: "Order Summary" })
+        ).toBeInTheDocument();
         expect(screen.getByText("$2,597.00")).toBeInTheDocument();
         expect(screen.getByRole("link", { name: "Checkout" })).toHaveAttribute(
             "href",

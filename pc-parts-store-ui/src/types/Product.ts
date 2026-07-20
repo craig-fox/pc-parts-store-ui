@@ -7,8 +7,8 @@ export type Product = {
     category: ProductCategory;
     price: number;
     imageUrl: string;
-    weightKg: number; 
+    weightKg: number;
     brand: string;
     stockQuantity: number;
     sku: string;
-}
+};

@@ -8,8 +8,17 @@ import type { Order } from "../../types/Order";
 const order: Order = {
     id: "order-123",
     checkout: {
-        customer: { firstName: "Craig", lastName: "Fox", email: "craig@example.com" },
-        shippingAddress: { addressLine1: "1 Main St", city: "Auckland", postcode: "1010", country: "NZ" },
+        customer: {
+            firstName: "Craig",
+            lastName: "Fox",
+            email: "craig@example.com",
+        },
+        shippingAddress: {
+            addressLine1: "1 Main St",
+            city: "Auckland",
+            postcode: "1010",
+            country: "NZ",
+        },
     },
     items: [
         { product: testProducts[0], quantity: 2 },

@@ -11,19 +11,13 @@ type BreadcrumbsProps = {
 
 function Breadcrumbs({ items }: BreadcrumbsProps) {
     return (
-        <nav
-            aria-label="Breadcrumb"
-            className="mb-8"
-        >
+        <nav aria-label="Breadcrumb" className="mb-8">
             <ol className="flex flex-wrap items-center gap-2 text-sm text-slate-600">
                 {items.map((item, index) => {
                     const isLast = index === items.length - 1;
 
                     return (
-                        <li
-                            key={item.label}
-                            className="flex items-center"
-                        >
+                        <li key={item.label} className="flex items-center">
                             {item.href && !isLast ? (
                                 <Link
                                     to={item.href}
@@ -38,9 +32,7 @@ function Breadcrumbs({ items }: BreadcrumbsProps) {
                             )}
 
                             {!isLast && (
-                                <span className="mx-2 text-slate-400">
-                                    /
-                                </span>
+                                <span className="mx-2 text-slate-400">/</span>
                             )}
                         </li>
                     );

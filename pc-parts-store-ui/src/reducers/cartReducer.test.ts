@@ -36,7 +36,6 @@ const testCartItem: CartItem = {
 };
 
 describe("cartReducer", () => {
-
     describe("ADD_ITEM", () => {
         it("adds a new item with quantity 1 if it isn't already in the cart", () => {
             const state = { items: [] };
@@ -198,5 +197,4 @@ describe("cartReducer", () => {
             expect(result).toBe(state);
         });
     });
-
 });

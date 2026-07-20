@@ -2,7 +2,7 @@ import { useNavigate, Link } from "react-router-dom";
 import CheckoutForm from "../components/Checkout/CheckoutForm";
 import OrderSummary from "../components/Checkout/OrderSummary";
 import EmptyState from "../components/EmptyState";
-import {useCart} from "../context/CartContext"
+import { useCart } from "../context/CartContext";
 import Button from "../components/common/Button";
 import type { Order } from "../types/Order";
 import { useState } from "react";
@@ -12,7 +12,6 @@ import type { OrderTotals } from "../utils/orderCalculations";
 
 import { calculateOrderTotals } from "../utils/orderCalculations";
 import { useOrders } from "../context/useOrders";
-
 
 function CheckoutPage() {
     const { items, clearCart } = useCart();
@@ -33,8 +32,7 @@ function CheckoutPage() {
         },
     });
 
-    const [errors, setErrors] =
-    useState<CheckoutErrors>({
+    const [errors, setErrors] = useState<CheckoutErrors>({
         firstName: "",
         lastName: "",
         email: "",
@@ -46,13 +44,13 @@ function CheckoutPage() {
 
     const handleSubmit = (event: React.FormEvent) => {
         event.preventDefault();
-    
+
         if (!validate()) {
             return;
         }
 
         const totals: OrderTotals = calculateOrderTotals(items);
-        
+
         const order: Order = {
             id: crypto.randomUUID(),
             checkout,
@@ -77,88 +75,74 @@ function CheckoutPage() {
             address: "",
             city: "",
             country: "",
-            postcode: ""
+            postcode: "",
         };
-    
+
         if (!checkout.customer.firstName.trim()) {
             newErrors.firstName = "First name is required.";
         }
-    
+
         if (!checkout.customer.lastName.trim()) {
             newErrors.lastName = "Last name is required.";
         }
-    
+
         if (!checkout.customer.email.trim()) {
             newErrors.email = "Email is required.";
         } else if (!/\S+@\S+\.\S+/.test(checkout.customer.email)) {
             newErrors.email = "Please enter a valid email address.";
         }
-    
+
         if (!checkout.shippingAddress.addressLine1.trim()) {
             newErrors.address = "Address is required.";
         }
-    
+
         if (!checkout.shippingAddress.city.trim()) {
             newErrors.city = "City is required.";
         }
         if (!checkout.shippingAddress.country.trim()) {
             newErrors.country = "Country is required.";
         }
-    
+
         if (!checkout.shippingAddress.postcode.trim()) {
             newErrors.postcode = "Postcode is required.";
         }
-    
+
         setErrors(newErrors);
-    
-        return Object.values(newErrors).every(error => error === "");
+
+        return Object.values(newErrors).every((error) => error === "");
     }
     if (items.length === 0) {
         return (
             <EmptyState
                 title="Your cart is empty"
                 message="Add some products before proceeding to checkout."
-                action={
-                    <Link to="/products">Browse Products</Link>
-                }
+                action={<Link to="/products">Browse Products</Link>}
             />
         );
     }
     return (
         <div>
-
-            <h1 className="mb-8 text-4xl font-bold">
-                Checkout
-            </h1>
+            <h1 className="mb-8 text-4xl font-bold">Checkout</h1>
 
             <form onSubmit={handleSubmit}>
                 <div className="grid gap-8 lg:grid-cols-[2fr_1fr]">
-
-                <CheckoutForm
-                    checkout={checkout}
-                    setCheckout={setCheckout}
-                    errors={errors}
-                />
+                    <CheckoutForm
+                        checkout={checkout}
+                        setCheckout={setCheckout}
+                        errors={errors}
+                    />
 
                     <div>
                         <OrderSummary />
 
-                        <Button
-                            type="submit"
-                            className="mt-6 w-full"
-                        >
+                        <Button type="submit" className="mt-6 w-full">
                             Confirm Order
                         </Button>
                     </div>
-
                 </div>
             </form>
-            
-
         </div>
     );
 }
 
 export default CheckoutPage;
-
-

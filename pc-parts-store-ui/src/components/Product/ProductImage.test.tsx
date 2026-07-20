@@ -7,7 +7,10 @@ describe("ProductImage", () => {
     it("renders an image with accessible product text when a URL is provided", () => {
         render(<ProductImage imageUrl="/gpu.jpg" name="Gaming GPU" />);
 
-        expect(screen.getByRole("img", { name: "Gaming GPU" })).toHaveAttribute("src", "/gpu.jpg");
+        expect(screen.getByRole("img", { name: "Gaming GPU" })).toHaveAttribute(
+            "src",
+            "/gpu.jpg"
+        );
     });
 
     it("renders a placeholder when no image URL is provided", () => {

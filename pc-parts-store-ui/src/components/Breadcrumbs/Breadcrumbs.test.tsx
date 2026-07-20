@@ -14,7 +14,6 @@ function renderBreadcrumbs(items: Breadcrumb[]) {
 }
 
 describe("Breadcrumbs", () => {
-
     it("renders a single breadcrumb correctly", () => {
         renderBreadcrumbs([{ label: "Home" }]);
 
@@ -67,5 +66,4 @@ describe("Breadcrumbs", () => {
 
         expect(screen.queryByText("/")).not.toBeInTheDocument();
     });
-
 });

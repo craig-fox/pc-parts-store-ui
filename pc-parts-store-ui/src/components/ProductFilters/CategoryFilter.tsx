@@ -5,17 +5,8 @@ type CategoryFilterProps = {
     onChange: (value: ProductCategory) => void;
 };
 
-function CategoryFilter({
-    value,
-    onChange,
-}: CategoryFilterProps) {
-    const categories = [
-        "All",
-        "CPU",
-        "GPU",
-        "Memory",
-        "Storage",
-    ];
+function CategoryFilter({ value, onChange }: CategoryFilterProps) {
+    const categories = ["All", "CPU", "GPU", "Memory", "Storage"];
 
     return (
         <div className="flex flex-col">
@@ -29,14 +20,13 @@ function CategoryFilter({
             <select
                 id="category"
                 value={value}
-                onChange={(event) => onChange(event.target.value as ProductCategory)}
+                onChange={(event) =>
+                    onChange(event.target.value as ProductCategory)
+                }
                 className="rounded-md border border-slate-300 px-4 py-2"
             >
                 {categories.map((category) => (
-                    <option
-                        key={category}
-                        value={category}
-                    >
+                    <option key={category} value={category}>
                         {category}
                     </option>
                 ))}

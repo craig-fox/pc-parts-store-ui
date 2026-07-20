@@ -10,12 +10,22 @@ vi.mock("../context/useOrders", () => ({ useOrders: vi.fn() }));
 
 describe("OrderConfirmationPage", () => {
     it("shows a recovery state when there is no latest order", () => {
-        vi.mocked(useOrders).mockReturnValue({ latestOrder: undefined } as ReturnType<typeof useOrders>);
+        vi.mocked(useOrders).mockReturnValue({
+            latestOrder: undefined,
+        } as ReturnType<typeof useOrders>);
 
-        render(<MemoryRouter><OrderConfirmationPage /></MemoryRouter>);
+        render(
+            <MemoryRouter>
+                <OrderConfirmationPage />
+            </MemoryRouter>
+        );
 
-        expect(screen.getByRole("heading", { name: "No Recent Order" })).toBeInTheDocument();
-        expect(screen.getByRole("link", { name: "Continue Shopping" })).toHaveAttribute("href", "/products");
+        expect(
+            screen.getByRole("heading", { name: "No Recent Order" })
+        ).toBeInTheDocument();
+        expect(
+            screen.getByRole("link", { name: "Continue Shopping" })
+        ).toHaveAttribute("href", "/products");
     });
 
     it("shows the placed order number and next actions", () => {
@@ -23,8 +33,17 @@ describe("OrderConfirmationPage", () => {
             latestOrder: {
                 id: "order-123",
                 checkout: {
-                    customer: { firstName: "Craig", lastName: "Fox", email: "craig@example.com" },
-                    shippingAddress: { addressLine1: "1 Main St", city: "Auckland", postcode: "1010", country: "NZ" },
+                    customer: {
+                        firstName: "Craig",
+                        lastName: "Fox",
+                        email: "craig@example.com",
+                    },
+                    shippingAddress: {
+                        addressLine1: "1 Main St",
+                        city: "Auckland",
+                        postcode: "1010",
+                        country: "NZ",
+                    },
                 },
                 items: [{ product: testProducts[0], quantity: 1 }],
                 subtotal: 799,
@@ -36,10 +55,18 @@ describe("OrderConfirmationPage", () => {
             },
         } as ReturnType<typeof useOrders>);
 
-        render(<MemoryRouter><OrderConfirmationPage /></MemoryRouter>);
+        render(
+            <MemoryRouter>
+                <OrderConfirmationPage />
+            </MemoryRouter>
+        );
 
-        expect(screen.getByRole("heading", { name: "Order Confirmed" })).toBeInTheDocument();
+        expect(
+            screen.getByRole("heading", { name: "Order Confirmed" })
+        ).toBeInTheDocument();
         expect(screen.getByText("order-123")).toBeInTheDocument();
-        expect(screen.getByRole("link", { name: "View Orders" })).toHaveAttribute("href", "/orders");
+        expect(
+            screen.getByRole("link", { name: "View Orders" })
+        ).toHaveAttribute("href", "/orders");
     });
 });

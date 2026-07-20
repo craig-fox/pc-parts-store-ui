@@ -7,14 +7,27 @@ import { testProducts } from "../test/fixtures/products";
 import { displayProducts } from "../data/displayProducts";
 
 function CartControls() {
-    const { addItem, clearCart, items, totalItems, totalPrice, updateQuantity } = useCart();
+    const {
+        addItem,
+        clearCart,
+        items,
+        totalItems,
+        totalPrice,
+        updateQuantity,
+    } = useCart();
 
     return (
         <>
             <output>{`${items.length}:${totalItems}:${totalPrice}`}</output>
-            <button type="button" onClick={() => addItem(testProducts[0])}>Add</button>
-            <button type="button" onClick={() => updateQuantity(1, 3)}>Set quantity</button>
-            <button type="button" onClick={clearCart}>Clear</button>
+            <button type="button" onClick={() => addItem(testProducts[0])}>
+                Add
+            </button>
+            <button type="button" onClick={() => updateQuantity(1, 3)}>
+                Set quantity
+            </button>
+            <button type="button" onClick={clearCart}>
+                Clear
+            </button>
         </>
     );
 }
@@ -25,8 +38,12 @@ function CartImageControl() {
 
     return (
         <>
-            <button type="button" onClick={() => addItem(staleGpu)}>Add stale GPU</button>
-            {items[0] && <img alt="Cart product" src={items[0].product.imageUrl} />}
+            <button type="button" onClick={() => addItem(staleGpu)}>
+                Add stale GPU
+            </button>
+            {items[0] && (
+                <img alt="Cart product" src={items[0].product.imageUrl} />
+            )}
         </>
     );
 }
@@ -57,7 +74,9 @@ describe("CartProvider", () => {
             return null;
         }
 
-        expect(() => render(<Consumer />)).toThrow("useCart must be used within a CartProvider");
+        expect(() => render(<Consumer />)).toThrow(
+            "useCart must be used within a CartProvider"
+        );
     });
 
     it("uses current product details for an existing cart item", async () => {
@@ -71,9 +90,8 @@ describe("CartProvider", () => {
 
         await user.click(screen.getByRole("button", { name: "Add stale GPU" }));
 
-        expect(screen.getByRole("img", { name: "Cart product" })).toHaveAttribute(
-            "src",
-            displayProducts[2].imageUrl
-        );
+        expect(
+            screen.getByRole("img", { name: "Cart product" })
+        ).toHaveAttribute("src", displayProducts[2].imageUrl);
     });
 });

@@ -19,7 +19,7 @@ function SearchInput({ value, onChange }: SearchInputProps) {
                 value={value}
                 placeholder="Search products..."
                 onChange={(event) => onChange(event.target.value)}
-                className="rounded-md border border-slate-300 px-4 py-2 focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                className="rounded-md border border-slate-300 px-4 py-2 focus:border-sky-500 focus:ring-2 focus:ring-sky-500 focus:outline-none"
             />
         </div>
     );

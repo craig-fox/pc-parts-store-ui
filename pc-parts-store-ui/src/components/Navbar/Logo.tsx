@@ -4,7 +4,7 @@ function Logo() {
     return (
         <Link
             to="/"
-            className="text-2xl font-bold hover:text-sky-400 transition-colors"
+            className="text-2xl font-bold transition-colors hover:text-sky-400"
         >
             🖥️ PC Parts Store
         </Link>

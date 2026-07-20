@@ -6,10 +6,9 @@ import OrderCard from "../components/Orders/OrderCard";
 
 export default function OrdersPage() {
     const { orders } = useOrders();
-    return <div className="mx-auto max-w-5xl p-6">
-        <h1 className="mb-8 text-4xl font-bold">
-                My Orders
-            </h1>
+    return (
+        <div className="mx-auto max-w-5xl p-6">
+            <h1 className="mb-8 text-4xl font-bold">My Orders</h1>
 
             {orders.length === 0 ? (
                 <EmptyState
@@ -31,5 +30,6 @@ export default function OrdersPage() {
                     ))}
                 </div>
             )}
-    </div>
+        </div>
+    );
 }

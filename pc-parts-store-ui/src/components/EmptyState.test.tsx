@@ -13,9 +13,13 @@ describe("EmptyState", () => {
             />
         );
 
-        expect(screen.getByRole("heading", { name: "Nothing here" })).toBeInTheDocument();
+        expect(
+            screen.getByRole("heading", { name: "Nothing here" })
+        ).toBeInTheDocument();
         expect(screen.getByText("Try again later.")).toBeInTheDocument();
-        expect(screen.getByRole("button", { name: "Retry" })).toBeInTheDocument();
+        expect(
+            screen.getByRole("button", { name: "Retry" })
+        ).toBeInTheDocument();
     });
 
     it("does not render an action container when no action is supplied", () => {

@@ -7,7 +7,6 @@ type AddToCartButtonProps = {
 };
 
 function AddToCartButton({ product }: AddToCartButtonProps) {
-
     const { addItem } = useCart();
 
     return (
@@ -21,7 +20,6 @@ function AddToCartButton({ product }: AddToCartButtonProps) {
         >
             Add to Cart
         </Button>
-        
     );
 }
 

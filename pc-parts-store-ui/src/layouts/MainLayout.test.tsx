@@ -20,7 +20,9 @@ describe("MainLayout", () => {
         );
 
         expect(screen.getByRole("navigation")).toBeInTheDocument();
-        expect(screen.getByRole("heading", { name: "Page content" })).toBeInTheDocument();
+        expect(
+            screen.getByRole("heading", { name: "Page content" })
+        ).toBeInTheDocument();
         expect(screen.getByText("© 2026 PC Parts Store")).toBeInTheDocument();
     });
 });

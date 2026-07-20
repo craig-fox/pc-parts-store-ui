@@ -11,13 +11,19 @@ vi.mock("../../../context/CartContext", () => ({
 
 describe("ProductSummary", () => {
     it("shows the product details, stock status, and purchase control", () => {
-        vi.mocked(useCart).mockReturnValue({ addItem: vi.fn() } as ReturnType<typeof useCart>);
+        vi.mocked(useCart).mockReturnValue({ addItem: vi.fn() } as ReturnType<
+            typeof useCart
+        >);
 
         render(<ProductSummary product={testProducts[0]} />);
 
-        expect(screen.getByRole("heading", { name: testProducts[0].name })).toBeInTheDocument();
+        expect(
+            screen.getByRole("heading", { name: testProducts[0].name })
+        ).toBeInTheDocument();
         expect(screen.getByText("AMD")).toBeInTheDocument();
         expect(screen.getByText("In Stock")).toBeInTheDocument();
-        expect(screen.getByRole("button", { name: "Add to Cart" })).toBeInTheDocument();
+        expect(
+            screen.getByRole("button", { name: "Add to Cart" })
+        ).toBeInTheDocument();
     });
 });

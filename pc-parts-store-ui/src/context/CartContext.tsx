@@ -1,9 +1,4 @@
-import {
-    createContext,
-    useContext,
-    useReducer,
-    type ReactNode,
-} from "react";
+import { createContext, useContext, useReducer, type ReactNode } from "react";
 
 import type { Product } from "../types/Product";
 import type { CartItem } from "../types/CartItem";
@@ -23,10 +18,7 @@ type CartContextValue = {
 
     removeItem: (productId: number) => void;
 
-    updateQuantity: (
-        productId: number,
-        quantity: number
-    ) => void;
+    updateQuantity: (productId: number, quantity: number) => void;
 
     clearCart: () => void;
 };
@@ -37,18 +29,10 @@ type CartProviderProps = {
     children: ReactNode;
 };
 
-
-
-export function CartProvider({
-    children,
-}: CartProviderProps) {
-
-    const [state, dispatch] = useReducer(
-        cartReducer,
-        {
-            items: [],
-        }
-    );
+export function CartProvider({ children }: CartProviderProps) {
+    const [state, dispatch] = useReducer(cartReducer, {
+        items: [],
+    });
 
     const items = state.items.map((item) => {
         const currentProduct = displayProducts.find(
@@ -61,14 +45,10 @@ export function CartProvider({
         };
     });
 
-    const totalItems = items.reduce(
-        (total, item) => total + item.quantity,
-        0
-    );
+    const totalItems = items.reduce((total, item) => total + item.quantity, 0);
 
     const totalWeight = state.items.reduce(
-        (total, item) =>
-            total + item.product.weightKg * item.quantity,
+        (total, item) => total + item.product.weightKg * item.quantity,
         0
     );
 
@@ -78,7 +58,6 @@ export function CartProvider({
     );
 
     const value: CartContextValue = {
-
         items,
 
         totalItems,
@@ -118,25 +97,17 @@ export function CartProvider({
         },
     };
 
-
     return (
-        <CartContext.Provider value={value}>
-            {children}
-        </CartContext.Provider>
+        <CartContext.Provider value={value}>{children}</CartContext.Provider>
     );
-
 }
 
 export function useCart() {
-
     const context = useContext(CartContext);
 
     if (!context) {
-        throw new Error(
-            "useCart must be used within a CartProvider"
-        );
+        throw new Error("useCart must be used within a CartProvider");
     }
 
     return context;
-
 }

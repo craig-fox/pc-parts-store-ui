@@ -8,11 +8,9 @@ import ProductSummary from "../components/Product/ProductSummary/ProductSummary"
 function ProductDetailsPage() {
     const { id } = useParams();
     const productId = Number(id);
-    const product = displayProducts.find(
-        product => product.id === productId
-    );
+    const product = displayProducts.find((product) => product.id === productId);
     if (!product) {
-        return(
+        return (
             <EmptyState
                 title="Product not found"
                 message="The requested product does not exist."
@@ -26,7 +24,6 @@ function ProductDetailsPage() {
                 }
             />
         );
-        
     }
 
     const breadcrumbs = [
@@ -43,7 +40,6 @@ function ProductDetailsPage() {
         },
     ];
 
-
     return (
         <>
             <Breadcrumbs items={breadcrumbs} />
@@ -55,30 +51,19 @@ function ProductDetailsPage() {
             </Link>
 
             <div className="grid gap-10 lg:grid-cols-2">
-
-                <ProductImage
-                    imageUrl={product.imageUrl}
-                    name={product.name}
-                />
+                <ProductImage imageUrl={product.imageUrl} name={product.name} />
 
                 <ProductSummary product={product} />
-
             </div>
 
             <div className="mt-12">
-
-                <h2 className="text-2xl font-semibold">
-                    Description
-                </h2>
+                <h2 className="text-2xl font-semibold">Description</h2>
 
                 <p className="mt-4 leading-7 text-slate-600">
                     {product.description}
                 </p>
-
-            </div>   
+            </div>
         </>
-
-        
     );
 }
 

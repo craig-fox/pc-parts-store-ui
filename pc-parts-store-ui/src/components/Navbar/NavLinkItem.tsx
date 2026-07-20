@@ -11,8 +11,8 @@ function NavLinkItem({ to, label }: NavLinkItemProps) {
             to={to}
             className={({ isActive }) =>
                 isActive
-                    ? "text-sky-400 font-semibold"
-                    : "hover:text-sky-400 transition-colors"
+                    ? "font-semibold text-sky-400"
+                    : "transition-colors hover:text-sky-400"
             }
         >
             {label}

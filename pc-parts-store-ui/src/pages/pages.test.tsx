@@ -14,7 +14,7 @@ import { OrdersProvider } from "../context/OrdersContext";
 describe("pages", () => {
     it("renders the home page heading", () => {
         render(<HomePage />);
-    
+
         expect(
             screen.getByRole("heading", {
                 name: /welcome to the pc parts store/i,
@@ -24,7 +24,7 @@ describe("pages", () => {
 
     it("renders the login heading", () => {
         render(<LoginPage />);
-    
+
         expect(
             screen.getByRole("heading", {
                 name: /login/i,
@@ -44,10 +44,8 @@ describe("pages", () => {
         expect(
             screen.getByRole("heading", { name: /my orders/i })
         ).toBeInTheDocument();
-        
-        expect(
-            screen.getByText(/no orders yet/i)
-        ).toBeInTheDocument();
+
+        expect(screen.getByText(/no orders yet/i)).toBeInTheDocument();
     });
 
     it("renders the product catalogue", () => {
@@ -59,9 +57,13 @@ describe("pages", () => {
             </MemoryRouter>
         );
 
-        expect(screen.getByRole("heading", { name: "Products" })).toBeInTheDocument();
+        expect(
+            screen.getByRole("heading", { name: "Products" })
+        ).toBeInTheDocument();
         expect(screen.getByText("AMD Ryzen 7 9800X3D")).toBeInTheDocument();
-        expect(screen.getByText("Western Digital Black SN850X")).toBeInTheDocument();
+        expect(
+            screen.getByText("Western Digital Black SN850X")
+        ).toBeInTheDocument();
     });
 
     it("renders the cart empty state and its browse-products link", () => {
@@ -74,7 +76,9 @@ describe("pages", () => {
         );
 
         expect(screen.getByText("Your cart is empty")).toBeInTheDocument();
-        expect(screen.getByRole("link", { name: "Browse Products" })).toHaveAttribute("href", "/products");
+        expect(
+            screen.getByRole("link", { name: "Browse Products" })
+        ).toHaveAttribute("href", "/products");
     });
 
     it("renders product details for an existing route parameter", () => {
@@ -82,13 +86,18 @@ describe("pages", () => {
             <MemoryRouter initialEntries={["/products/1"]}>
                 <CartProvider>
                     <Routes>
-                        <Route path="/products/:id" element={<ProductDetailsPage />} />
+                        <Route
+                            path="/products/:id"
+                            element={<ProductDetailsPage />}
+                        />
                     </Routes>
                 </CartProvider>
             </MemoryRouter>
         );
 
-        expect(screen.getByRole("heading", { name: "AMD Ryzen 7 9800X3D" })).toBeInTheDocument();
+        expect(
+            screen.getByRole("heading", { name: "AMD Ryzen 7 9800X3D" })
+        ).toBeInTheDocument();
         expect(screen.getByText("8-Core Gaming Processor")).toBeInTheDocument();
     });
 
@@ -96,12 +105,17 @@ describe("pages", () => {
         render(
             <MemoryRouter initialEntries={["/products/999"]}>
                 <Routes>
-                    <Route path="/products/:id" element={<ProductDetailsPage />} />
+                    <Route
+                        path="/products/:id"
+                        element={<ProductDetailsPage />}
+                    />
                 </Routes>
             </MemoryRouter>
         );
 
         expect(screen.getByText("Product not found")).toBeInTheDocument();
-        expect(screen.getByRole("link", { name: /back to products/i })).toHaveAttribute("href", "/products");
+        expect(
+            screen.getByRole("link", { name: /back to products/i })
+        ).toHaveAttribute("href", "/products");
     });
 });

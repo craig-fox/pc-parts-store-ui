@@ -14,10 +14,12 @@ describe("calculateOrderTotals", () => {
     });
 
     it("calculates price, weight, shipping, and total for multiple items", () => {
-        expect(calculateOrderTotals([
-            { product: testProducts[0], quantity: 2 },
-            { product: testProducts[2], quantity: 1 },
-        ])).toEqual({
+        expect(
+            calculateOrderTotals([
+                { product: testProducts[0], quantity: 2 },
+                { product: testProducts[2], quantity: 1 },
+            ])
+        ).toEqual({
             subtotal: 2597,
             shipping: 0,
             total: 2597,
@@ -26,9 +28,9 @@ describe("calculateOrderTotals", () => {
     });
 
     it("includes shipping for a smaller order", () => {
-        expect(calculateOrderTotals([
-            { product: testProducts[4], quantity: 1 },
-        ])).toEqual({
+        expect(
+            calculateOrderTotals([{ product: testProducts[4], quantity: 1 }])
+        ).toEqual({
             subtotal: 269,
             shipping: 8,
             total: 277,

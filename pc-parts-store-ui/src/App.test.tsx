@@ -11,11 +11,17 @@ vi.mock("./context/CartContext", () => ({
 describe("App", () => {
     it("renders the home route inside the application layout", () => {
         window.history.pushState({}, "", "/");
-        vi.mocked(useCart).mockReturnValue({ totalItems: 0 } as ReturnType<typeof useCart>);
+        vi.mocked(useCart).mockReturnValue({ totalItems: 0 } as ReturnType<
+            typeof useCart
+        >);
 
         render(<App />);
 
-        expect(screen.getByRole("heading", { name: "Welcome to the PC Parts Store" })).toBeInTheDocument();
+        expect(
+            screen.getByRole("heading", {
+                name: "Welcome to the PC Parts Store",
+            })
+        ).toBeInTheDocument();
         expect(screen.getByText("© 2026 PC Parts Store")).toBeInTheDocument();
     });
 });

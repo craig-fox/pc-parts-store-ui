@@ -3,7 +3,6 @@ import { describe, expect, it } from "vitest";
 import { calculateShippingCost } from "./shipping";
 
 describe("calculateShipping", () => {
-
     it("returns free shipping for orders of $1000 or more", () => {
         expect(calculateShippingCost(1000, 0.04)).toBe(0);
         expect(calculateShippingCost(1500, 1.2)).toBe(0);
@@ -27,5 +26,4 @@ describe("calculateShipping", () => {
         expect(calculateShippingCost(999, 3.5)).toBe(25);
         expect(calculateShippingCost(999, 10)).toBe(25);
     });
-
 });

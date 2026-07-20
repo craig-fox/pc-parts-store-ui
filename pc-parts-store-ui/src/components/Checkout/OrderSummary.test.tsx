@@ -28,13 +28,17 @@ describe("OrderSummary", () => {
 
         render(<OrderSummary />);
 
-        expect(screen.getByRole("heading", { name: "Order Summary" })).toBeInTheDocument();
-        expect(screen.getByText(new RegExp(testProducts[0].name))).toBeInTheDocument();
-        expect(screen.getByText(new RegExp(testProducts[2].name))).toBeInTheDocument();
-        expect(screen.getByText("3")).toBeInTheDocument();
         expect(
-            screen.getAllByText(formatCurrency(2597))
-        ).toHaveLength(2);
+            screen.getByRole("heading", { name: "Order Summary" })
+        ).toBeInTheDocument();
+        expect(
+            screen.getByText(new RegExp(testProducts[0].name))
+        ).toBeInTheDocument();
+        expect(
+            screen.getByText(new RegExp(testProducts[2].name))
+        ).toBeInTheDocument();
+        expect(screen.getByText("3")).toBeInTheDocument();
+        expect(screen.getAllByText(formatCurrency(2597))).toHaveLength(2);
     });
 
     it("displays the shipping charge and total when shipping is not free", () => {

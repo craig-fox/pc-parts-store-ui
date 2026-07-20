@@ -66,6 +66,8 @@ describe("ProductFilters", () => {
         expect(onSearchChange).toHaveBeenLastCalledWith("ryzen");
         expect(onCategoryChange).toHaveBeenCalledWith("CPU");
         expect(onSortChange).toHaveBeenCalledWith("priceAsc");
-        expect(screen.getByText(/Showing/)).toHaveTextContent("Showing 2 products");
+        expect(screen.getByText(/Showing/)).toHaveTextContent(
+            "Showing 2 products"
+        );
     });
 });

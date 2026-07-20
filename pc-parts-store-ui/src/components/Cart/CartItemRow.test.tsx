@@ -44,7 +44,6 @@ const testProduct: Product = {
 };
 
 describe("CartItemRow", () => {
-
     it("displays the product name", () => {
         const item: CartItem = { product: testProduct, quantity: 2 };
 
@@ -75,8 +74,12 @@ describe("CartItemRow", () => {
         const item: CartItem = { product: testProduct, quantity: 2 };
         const { updateQuantity } = renderCartItemRow(item);
 
-        await user.click(screen.getByRole("button", { name: "Increase quantity" }));
-        await user.click(screen.getByRole("button", { name: "Decrease quantity" }));
+        await user.click(
+            screen.getByRole("button", { name: "Increase quantity" })
+        );
+        await user.click(
+            screen.getByRole("button", { name: "Decrease quantity" })
+        );
 
         expect(updateQuantity).toHaveBeenNthCalledWith(1, 1, 3);
         expect(updateQuantity).toHaveBeenNthCalledWith(2, 1, 1);
@@ -93,7 +96,7 @@ describe("CartItemRow", () => {
     });
 
     it.each`
-        quantity | price | expectedTotal
+        quantity | price  | expectedTotal
         ${1}     | ${799} | ${799}
         ${2}     | ${799} | ${1598}
         ${5}     | ${100} | ${500}
@@ -107,8 +110,9 @@ describe("CartItemRow", () => {
 
             renderCartItemRow(item);
 
-            expect(screen.getByText(new RegExp(String(expectedTotal)))).toBeInTheDocument();
+            expect(
+                screen.getByText(new RegExp(String(expectedTotal)))
+            ).toBeInTheDocument();
         }
     );
-
 });

@@ -11,7 +11,9 @@ vi.mock("../../context/CartContext", () => ({
 
 describe("Navbar", () => {
     it("renders the primary navigation, logo, login, and cart links", () => {
-        vi.mocked(useCart).mockReturnValue({ totalItems: 2 } as ReturnType<typeof useCart>);
+        vi.mocked(useCart).mockReturnValue({ totalItems: 2 } as ReturnType<
+            typeof useCart
+        >);
 
         render(
             <MemoryRouter>
@@ -19,10 +21,21 @@ describe("Navbar", () => {
             </MemoryRouter>
         );
 
-        expect(screen.getByRole("link", { name: /pc parts store/i })).toHaveAttribute("href", "/");
-        expect(screen.getByRole("link", { name: "Products" })).toHaveAttribute("href", "/products");
-        expect(screen.getByRole("link", { name: "Orders" })).toHaveAttribute("href", "/orders");
-        expect(screen.getByRole("link", { name: "Login" })).toHaveAttribute("href", "/login");
+        expect(
+            screen.getByRole("link", { name: /pc parts store/i })
+        ).toHaveAttribute("href", "/");
+        expect(screen.getByRole("link", { name: "Products" })).toHaveAttribute(
+            "href",
+            "/products"
+        );
+        expect(screen.getByRole("link", { name: "Orders" })).toHaveAttribute(
+            "href",
+            "/orders"
+        );
+        expect(screen.getByRole("link", { name: "Login" })).toHaveAttribute(
+            "href",
+            "/login"
+        );
         expect(screen.getByText("2")).toBeInTheDocument();
     });
 });

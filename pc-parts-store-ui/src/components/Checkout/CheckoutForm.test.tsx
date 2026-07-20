@@ -46,13 +46,18 @@ function renderCheckoutForm(
     return { setCheckout };
 }
 
-
 describe("CheckoutForm", () => {
     it("renders fields for checkout contact and address details", () => {
         renderCheckoutForm();
 
-        expect(screen.getByLabelText("First Name")).toHaveAttribute("name", "firstName");
-        expect(screen.getByLabelText("Last Name")).toHaveAttribute("name", "lastName");
+        expect(screen.getByLabelText("First Name")).toHaveAttribute(
+            "name",
+            "firstName"
+        );
+        expect(screen.getByLabelText("Last Name")).toHaveAttribute(
+            "name",
+            "lastName"
+        );
         expect(screen.getByLabelText("Email")).toHaveAttribute("type", "email");
         expect(screen.getByLabelText("Address")).toBeInTheDocument();
         expect(screen.getByLabelText("City")).toBeInTheDocument();

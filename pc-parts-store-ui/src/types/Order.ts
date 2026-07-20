@@ -2,14 +2,9 @@ import type { CartItem } from "./CartItem";
 import type { Checkout } from "./Checkout";
 
 export type OrderStatus =
-    | "PLACED"
-    | "PROCESSING"
-    | "SHIPPED"
-    | "DELIVERED"
-    | "CANCELLED";
+    "PLACED" | "PROCESSING" | "SHIPPED" | "DELIVERED" | "CANCELLED";
 
-
-export interface Order {
+export type Order = {
     id: string;
     checkout: Checkout;
     items: CartItem[];
@@ -19,4 +14,4 @@ export interface Order {
     totalWeight: number;
     placedAt: Date;
     status: OrderStatus;
-}
+};

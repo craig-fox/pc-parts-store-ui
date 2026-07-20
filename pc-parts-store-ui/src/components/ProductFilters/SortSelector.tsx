@@ -5,10 +5,7 @@ type SortSelectorProps = {
     onChange: (value: ProductSortOption) => void;
 };
 
-function SortSelector({
-    value,
-    onChange,
-}: SortSelectorProps) {
+function SortSelector({ value, onChange }: SortSelectorProps) {
     return (
         <div className="flex flex-col">
             <label
@@ -21,7 +18,9 @@ function SortSelector({
             <select
                 id="sort"
                 value={value}
-                onChange={(event) => onChange(event.target.value as ProductSortOption)}
+                onChange={(event) =>
+                    onChange(event.target.value as ProductSortOption)
+                }
                 className="rounded-md border border-slate-300 px-4 py-2"
             >
                 <option value="name">Name</option>

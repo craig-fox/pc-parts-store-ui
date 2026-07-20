@@ -2,7 +2,6 @@ export function calculateShippingCost(
     subtotal: number,
     totalWeight: number
 ): number {
-
     if (subtotal === 0) {
         return 0;
     }

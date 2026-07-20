@@ -12,7 +12,9 @@ vi.mock("../../../context/CartContext", () => ({
 
 describe("ProductCard", () => {
     it("shows product information and links to product details", () => {
-        vi.mocked(useCart).mockReturnValue({ addItem: vi.fn() } as ReturnType<typeof useCart>);
+        vi.mocked(useCart).mockReturnValue({ addItem: vi.fn() } as ReturnType<
+            typeof useCart
+        >);
         const product = testProducts[0];
 
         render(

@@ -13,7 +13,6 @@ describe("ProductGrid", () => {
                 <CartProvider>
                     <ProductGrid products={testProducts} />
                 </CartProvider>
-                
             </MemoryRouter>
         );
 
@@ -27,7 +26,7 @@ describe("ProductGrid", () => {
                 <ProductGrid products={[]} />
             </MemoryRouter>
         );
-    
+
         expect(screen.getByText("No products found")).toBeInTheDocument();
         expect(
             screen.getByText("Try adjusting your search or filters.")

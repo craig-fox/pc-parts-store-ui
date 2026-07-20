@@ -14,7 +14,9 @@ describe("AddToCartButton", () => {
     it("adds its product to the cart when clicked", async () => {
         const user = userEvent.setup();
         const addItem = vi.fn();
-        vi.mocked(useCart).mockReturnValue({ addItem } as ReturnType<typeof useCart>);
+        vi.mocked(useCart).mockReturnValue({ addItem } as ReturnType<
+            typeof useCart
+        >);
 
         render(<AddToCartButton product={testProducts[0]} />);
         await user.click(screen.getByRole("button", { name: "Add to Cart" }));

@@ -11,7 +11,6 @@ function QuantitySelector({
 }: QuantitySelectorProps) {
     return (
         <div className="inline-flex items-center rounded-md border border-slate-300">
-
             <button
                 type="button"
                 onClick={onDecrease}
@@ -33,7 +32,6 @@ function QuantitySelector({
             >
                 +
             </button>
-
         </div>
     );
 }

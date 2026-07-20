@@ -3,7 +3,6 @@ import { describe, expect, it } from "vitest";
 import { formatCurrency } from "./currency";
 
 describe("formatCurrency", () => {
-
     it("formats NZD by default", () => {
         expect(formatCurrency(799)).toBe("$799.00");
     });
@@ -19,5 +18,4 @@ describe("formatCurrency", () => {
     it("formats USD", () => {
         expect(formatCurrency(799, "USD")).toBe("$799.00");
     });
-
 });

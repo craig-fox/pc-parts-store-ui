@@ -12,12 +12,9 @@ function CartSummary() {
 
     return (
         <section className="rounded-lg border border-slate-200 bg-white p-6">
-            <h2 className="text-2xl font-semibold">
-                Order Summary
-            </h2>
+            <h2 className="text-2xl font-semibold">Order Summary</h2>
 
             <dl className="mt-6 space-y-4">
-
                 <div className="flex justify-between gap-4">
                     <dt>Items</dt>
                     <dd>{totalItems}</dd>
@@ -32,15 +29,12 @@ function CartSummary() {
                     <dt>Shipping</dt>
                     <dd>Calculated at checkout</dd>
                 </div>
-
             </dl>
 
             <hr className="my-6 border-slate-200" />
 
-            <div className="flex justify-between items-center">
-                <span className="text-lg font-semibold">
-                    Total
-                </span>
+            <div className="flex items-center justify-between">
+                <span className="text-lg font-semibold">Total</span>
 
                 <span className="text-lg font-semibold">
                     Calculated after shipping
@@ -49,21 +43,7 @@ function CartSummary() {
 
             <Link
                 to="/checkout"
-                className="
-                    mt-6
-                    flex
-                    w-full
-                    items-center
-                    justify-center
-                    rounded-md
-                    bg-sky-600
-                    px-4
-                    py-3
-                    font-medium
-                    text-white
-                    transition-colors
-                    hover:bg-sky-700
-                "
+                className="mt-6 flex w-full items-center justify-center rounded-md bg-sky-600 px-4 py-3 font-medium text-white transition-colors hover:bg-sky-700"
             >
                 Checkout
             </Link>

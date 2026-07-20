@@ -1,42 +1,42 @@
-import { createContext, useState, type PropsWithChildren, type JSX } from "react";
+import {
+    createContext,
+    useState,
+    type PropsWithChildren,
+    type JSX,
+} from "react";
 import type { Order } from "../types/Order";
 
-interface OrdersContextType {
+type OrdersContextType = {
     orders: Order[];
     latestOrder: Order | undefined;
     addOrder: (order: Order) => void;
     getOrder: (id: string) => Order | undefined;
     clearOrders: () => void;
-}
+};
 
 export const OrdersContext = createContext<OrdersContextType | undefined>(
     undefined
 );
 
-export function OrdersProvider({
-    children,
-}: PropsWithChildren): JSX.Element {
-
+export function OrdersProvider({ children }: PropsWithChildren): JSX.Element {
     const [orders, setOrders] = useState<Order[]>([]);
-    const latestOrder  =
-        orders.length > 0
-            ? orders[orders.length - 1]
-            : undefined;
+    const latestOrder =
+        orders.length > 0 ? orders[orders.length - 1] : undefined;
     const addOrder = (order: Order) => {
         console.log("Before:", orders);
-    
-        setOrders(current => {
+
+        setOrders((current) => {
             console.log("Adding:", order);
-    
+
             const updated = [...current, order];
-    
+
             console.log("After:", updated);
-    
+
             return updated;
         });
     };
     const getOrder = (id: string) => {
-        return orders.find(order => order.id === id);
+        return orders.find((order) => order.id === id);
     };
     const clearOrders = () => {
         setOrders([]);
@@ -55,9 +55,3 @@ export function OrdersProvider({
         </OrdersContext.Provider>
     );
 }
-
-
-
-
-
-

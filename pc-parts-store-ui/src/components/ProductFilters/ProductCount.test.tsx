@@ -19,7 +19,6 @@ function matchesTextAcrossElements(text: string) {
 }
 
 describe("ProductCount", () => {
-
     it("displays the singular form for one product", () => {
         render(<ProductCount count={1} />);
         expect(
@@ -33,5 +32,4 @@ describe("ProductCount", () => {
             screen.getByText(matchesTextAcrossElements("Showing 4 products"))
         ).toBeInTheDocument();
     });
-
 });

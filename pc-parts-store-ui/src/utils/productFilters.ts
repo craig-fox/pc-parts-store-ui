@@ -12,8 +12,7 @@ export function filterProducts(
             .includes(searchTerm.toLowerCase());
 
         const matchesCategory =
-            category === "All" ||
-            product.category === category;
+            category === "All" || product.category === category;
 
         return matchesSearch && matchesCategory;
     });
