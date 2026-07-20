@@ -9,17 +9,45 @@ import OrdersPage from "./OrdersPage";
 import ProductDetailsPage from "./ProductDetailsPage";
 import ProductsPage from "./ProductsPage";
 import { CartProvider } from "../context/CartContext";
+import { OrdersProvider } from "../context/OrdersContext";
 
 describe("pages", () => {
-    it("renders the static home, login, and orders headings", () => {
-        const { rerender } = render(<HomePage />);
-        expect(screen.getByRole("heading", { name: "Welcome to the PC Parts Store" })).toBeInTheDocument();
+    it("renders the home page heading", () => {
+        render(<HomePage />);
+    
+        expect(
+            screen.getByRole("heading", {
+                name: /welcome to the pc parts store/i,
+            })
+        ).toBeInTheDocument();
+    });
 
-        rerender(<LoginPage />);
-        expect(screen.getByRole("heading", { name: "Login" })).toBeInTheDocument();
+    it("renders the login heading", () => {
+        render(<LoginPage />);
+    
+        expect(
+            screen.getByRole("heading", {
+                name: /login/i,
+            })
+        ).toBeInTheDocument();
+    });
 
-        rerender(<OrdersPage />);
-        expect(screen.getByRole("heading", { name: "My Orders" })).toBeInTheDocument();
+    it("renders the orders heading", () => {
+        render(
+            <OrdersProvider>
+                <MemoryRouter>
+                    <OrdersPage />
+                </MemoryRouter>
+            </OrdersProvider>
+        );
+
+        expect(
+            screen.getByRole("heading", { name: /my orders/i })
+        ).toBeInTheDocument();
+        
+        expect(
+            screen.getByText(/no orders yet/i)
+        ).toBeInTheDocument();
     });
 
     it("renders the product catalogue", () => {

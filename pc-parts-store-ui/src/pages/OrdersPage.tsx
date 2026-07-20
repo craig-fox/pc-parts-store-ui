@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-import { useOrders } from "../context/OrdersContext";
+import { useOrders } from "../context/useOrders";
 import EmptyState from "../components/EmptyState";
 import OrderCard from "../components/Orders/OrderCard";
 

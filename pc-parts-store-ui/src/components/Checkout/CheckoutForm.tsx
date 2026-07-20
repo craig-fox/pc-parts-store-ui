@@ -7,6 +7,7 @@ interface CheckoutFormProps {
     errors: CheckoutErrors;
 }
 
+
 function CheckoutForm({
     checkout,
     setCheckout,

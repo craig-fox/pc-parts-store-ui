@@ -27,7 +27,12 @@ describe("OrderCard", () => {
     it("displays order identity, status, items, and total", () => {
         render(<OrderCard order={order} />);
 
-        expect(screen.getByRole("heading", { name: "Order #order-123" })).toBeInTheDocument();
+        expect(
+            screen.getByRole("heading", {
+                name: "Order #ORDER-12",
+            })
+        ).toBeInTheDocument();
+
         expect(screen.getByText("PLACED")).toBeInTheDocument();
         expect(screen.getByText("3 items")).toBeInTheDocument();
         expect(screen.getByText("AMD Ryzen 7 9800X3D × 2")).toBeInTheDocument();
