@@ -16,9 +16,22 @@ function renderOrdersPage() {
     );
 }
 
+function createOrdersContext(
+    overrides: Partial<ReturnType<typeof useOrders>> = {}
+): ReturnType<typeof useOrders> {
+    return {
+        orders: [],
+        latestOrder: undefined,
+        addOrder: vi.fn(),
+        getOrder: vi.fn(),
+        clearOrders: vi.fn(),
+        ...overrides,
+    };
+}
+
 describe("OrdersPage", () => {
     it("shows an empty state when no orders have been placed", () => {
-        vi.mocked(useOrders).mockReturnValue({ orders: [] } as ReturnType<typeof useOrders>);
+        vi.mocked(useOrders).mockReturnValue(createOrdersContext());
 
         renderOrdersPage();
 
