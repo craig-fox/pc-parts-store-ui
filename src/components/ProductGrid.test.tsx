@@ -7,29 +7,29 @@ import { testProducts } from "../test/fixtures/products";
 import { CartProvider } from "../context/CartContext";
 
 describe("ProductGrid", () => {
-    it("displays a card for every product", () => {
-        render(
-            <MemoryRouter>
-                <CartProvider>
-                    <ProductGrid products={testProducts} />
-                </CartProvider>
-            </MemoryRouter>
-        );
+  it("displays a card for every product", () => {
+    render(
+      <MemoryRouter>
+        <CartProvider>
+          <ProductGrid products={testProducts} />
+        </CartProvider>
+      </MemoryRouter>,
+    );
 
-        testProducts.forEach((product) => {
-            expect(screen.getByText(product.name)).toBeInTheDocument();
-        });
+    testProducts.forEach((product) => {
+      expect(screen.getByText(product.name)).toBeInTheDocument();
     });
-    it("displays the empty state when there are no products", () => {
-        render(
-            <MemoryRouter>
-                <ProductGrid products={[]} />
-            </MemoryRouter>
-        );
+  });
+  it("displays the empty state when there are no products", () => {
+    render(
+      <MemoryRouter>
+        <ProductGrid products={[]} />
+      </MemoryRouter>,
+    );
 
-        expect(screen.getByText("No products found")).toBeInTheDocument();
-        expect(
-            screen.getByText("Try adjusting your search or filters.")
-        ).toBeInTheDocument();
-    });
+    expect(screen.getByText("No products found")).toBeInTheDocument();
+    expect(
+      screen.getByText("Try adjusting your search or filters."),
+    ).toBeInTheDocument();
+  });
 });

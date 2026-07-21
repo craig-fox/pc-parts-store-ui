@@ -6,38 +6,38 @@ import type { ProductCategory } from "../../types/ProductCategory";
 import ProductCount from "./ProductCount";
 
 type ProductFiltersProps = {
-    searchTerm: string;
-    category: ProductCategory;
-    sortBy: ProductSortOption;
-    productCount: number;
+  searchTerm: string;
+  category: ProductCategory;
+  sortBy: ProductSortOption;
+  productCount: number;
 
-    onSearchChange: (value: string) => void;
-    onCategoryChange: (value: ProductCategory) => void;
-    onSortChange: (value: ProductSortOption) => void;
+  onSearchChange: (value: string) => void;
+  onCategoryChange: (value: ProductCategory) => void;
+  onSortChange: (value: ProductSortOption) => void;
 };
 
 function ProductFilters({
-    searchTerm,
-    category,
-    sortBy,
-    productCount,
-    onSearchChange,
-    onCategoryChange,
-    onSortChange,
+  searchTerm,
+  category,
+  sortBy,
+  productCount,
+  onSearchChange,
+  onCategoryChange,
+  onSortChange,
 }: ProductFiltersProps) {
-    return (
-        <div className="mb-8 grid gap-6 rounded-lg bg-white p-6 shadow-sm md:grid-cols-3">
-            <SearchInput value={searchTerm} onChange={onSearchChange} />
+  return (
+    <div className="mb-8 grid gap-6 rounded-lg bg-white p-6 shadow-sm md:grid-cols-3">
+      <SearchInput value={searchTerm} onChange={onSearchChange} />
 
-            <CategoryFilter value={category} onChange={onCategoryChange} />
+      <CategoryFilter value={category} onChange={onCategoryChange} />
 
-            <SortSelector value={sortBy} onChange={onSortChange} />
+      <SortSelector value={sortBy} onChange={onSortChange} />
 
-            <div className="mt-6 flex justify-end">
-                <ProductCount count={productCount} />
-            </div>
-        </div>
-    );
+      <div className="mt-6 flex justify-end">
+        <ProductCount count={productCount} />
+      </div>
+    </div>
+  );
 }
 
 export default ProductFilters;

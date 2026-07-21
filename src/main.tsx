@@ -6,11 +6,11 @@ import { CartProvider } from "./context/CartContext";
 import { OrdersProvider } from "./context/OrdersContext.tsx";
 
 createRoot(document.getElementById("root")!).render(
-    <StrictMode>
-        <OrdersProvider>
-            <CartProvider>
-                <App />
-            </CartProvider>
-        </OrdersProvider>
-    </StrictMode>
+  <StrictMode>
+    <OrdersProvider>
+      <CartProvider>
+        <App />
+      </CartProvider>
+    </OrdersProvider>
+  </StrictMode>,
 );
