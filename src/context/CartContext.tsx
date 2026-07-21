@@ -5,109 +5,107 @@ import type { CartItem } from "../types/CartItem";
 import { displayProducts } from "../data/displayProducts";
 import { cartReducer } from "../reducers/cartReducer";
 
-type CartContextValue = {
-    items: CartItem[];
+export type CartContextType = {
+  items: CartItem[];
 
-    totalItems: number;
+  totalItems: number;
 
-    totalWeight: number;
+  totalWeight: number;
 
-    totalPrice: number;
+  totalPrice: number;
 
-    addItem: (product: Product) => void;
+  addItem: (product: Product) => void;
 
-    removeItem: (productId: number) => void;
+  removeItem: (productId: number) => void;
 
-    updateQuantity: (productId: number, quantity: number) => void;
+  updateQuantity: (productId: number, quantity: number) => void;
 
-    clearCart: () => void;
+  clearCart: () => void;
 };
 
-const CartContext = createContext<CartContextValue | undefined>(undefined);
+const CartContext = createContext<CartContextType | undefined>(undefined);
 
 type CartProviderProps = {
-    children: ReactNode;
+  children: ReactNode;
 };
 
 export function CartProvider({ children }: CartProviderProps) {
-    const [state, dispatch] = useReducer(cartReducer, {
-        items: [],
-    });
+  const [state, dispatch] = useReducer(cartReducer, {
+    items: [],
+  });
 
-    const items = state.items.map((item) => {
-        const currentProduct = displayProducts.find(
-            (product) => product.id === item.product.id
-        );
-
-        return {
-            ...item,
-            product: currentProduct ?? item.product,
-        };
-    });
-
-    const totalItems = items.reduce((total, item) => total + item.quantity, 0);
-
-    const totalWeight = state.items.reduce(
-        (total, item) => total + item.product.weightKg * item.quantity,
-        0
+  const items = state.items.map((item) => {
+    const currentProduct = displayProducts.find(
+      (product) => product.id === item.product.id,
     );
 
-    const totalPrice = items.reduce(
-        (total, item) => total + item.product.price * item.quantity,
-        0
-    );
-
-    const value: CartContextValue = {
-        items,
-
-        totalItems,
-
-        totalWeight,
-
-        totalPrice,
-
-        addItem(product) {
-            dispatch({
-                type: "ADD_ITEM",
-                payload: product,
-            });
-        },
-
-        removeItem(productId) {
-            dispatch({
-                type: "REMOVE_ITEM",
-                payload: productId,
-            });
-        },
-
-        updateQuantity(productId, quantity) {
-            dispatch({
-                type: "UPDATE_QUANTITY",
-                payload: {
-                    productId,
-                    quantity,
-                },
-            });
-        },
-
-        clearCart() {
-            dispatch({
-                type: "CLEAR_CART",
-            });
-        },
+    return {
+      ...item,
+      product: currentProduct ?? item.product,
     };
+  });
 
-    return (
-        <CartContext.Provider value={value}>{children}</CartContext.Provider>
-    );
+  const totalItems = items.reduce((total, item) => total + item.quantity, 0);
+
+  const totalWeight = state.items.reduce(
+    (total, item) => total + item.product.weightKg * item.quantity,
+    0,
+  );
+
+  const totalPrice = items.reduce(
+    (total, item) => total + item.product.price * item.quantity,
+    0,
+  );
+
+  const value: CartContextType = {
+    items,
+
+    totalItems,
+
+    totalWeight,
+
+    totalPrice,
+
+    addItem(product) {
+      dispatch({
+        type: "ADD_ITEM",
+        payload: product,
+      });
+    },
+
+    removeItem(productId) {
+      dispatch({
+        type: "REMOVE_ITEM",
+        payload: productId,
+      });
+    },
+
+    updateQuantity(productId, quantity) {
+      dispatch({
+        type: "UPDATE_QUANTITY",
+        payload: {
+          productId,
+          quantity,
+        },
+      });
+    },
+
+    clearCart() {
+      dispatch({
+        type: "CLEAR_CART",
+      });
+    },
+  };
+
+  return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 }
 
 export function useCart() {
-    const context = useContext(CartContext);
+  const context = useContext(CartContext);
 
-    if (!context) {
-        throw new Error("useCart must be used within a CartProvider");
-    }
+  if (!context) {
+    throw new Error("useCart must be used within a CartProvider");
+  }
 
-    return context;
+  return context;
 }

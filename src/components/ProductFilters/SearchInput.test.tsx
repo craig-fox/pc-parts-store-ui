@@ -6,27 +6,27 @@ import SearchInput from "./SearchInput";
 import { useState } from "react";
 
 function SearchInputHarness() {
-    const [value, setValue] = useState("");
+  const [value, setValue] = useState("");
 
-    return <SearchInput value={value} onChange={setValue} />;
+  return <SearchInput value={value} onChange={setValue} />;
 }
 
 describe("SearchInput", () => {
-    it("displays the supplied value", () => {
-        render(<SearchInput value="Ryzen" onChange={vi.fn()} />);
+  it("displays the supplied value", () => {
+    render(<SearchInput value="Ryzen" onChange={vi.fn()} />);
 
-        expect(screen.getByDisplayValue("Ryzen")).toBeInTheDocument();
-    });
+    expect(screen.getByDisplayValue("Ryzen")).toBeInTheDocument();
+  });
 
-    it("updates the displayed value as the user types", async () => {
-        const user = userEvent.setup();
+  it("updates the displayed value as the user types", async () => {
+    const user = userEvent.setup();
 
-        render(<SearchInputHarness />);
+    render(<SearchInputHarness />);
 
-        const input = screen.getByRole("textbox");
+    const input = screen.getByRole("textbox");
 
-        await user.type(input, "Ryzen");
+    await user.type(input, "Ryzen");
 
-        expect(input).toHaveValue("Ryzen");
-    });
+    expect(input).toHaveValue("Ryzen");
+  });
 });

@@ -12,35 +12,32 @@ import CheckoutPage from "./pages/CheckoutPage";
 import OrderConfirmationPage from "./pages/OrderConfirmationPage";
 
 function App() {
-    return (
-        <BrowserRouter>
-            <Routes>
-                <Route element={<MainLayout />}>
-                    <Route path="/" element={<HomePage />} />
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route element={<MainLayout />}>
+          <Route path="/" element={<HomePage />} />
 
-                    <Route path="/products" element={<ProductsPage />} />
+          <Route path="/products" element={<ProductsPage />} />
 
-                    <Route path="/cart" element={<CartPage />} />
+          <Route path="/cart" element={<CartPage />} />
 
-                    <Route path="/checkout" element={<CheckoutPage />} />
+          <Route path="/checkout" element={<CheckoutPage />} />
 
-                    <Route path="/orders" element={<OrdersPage />} />
+          <Route path="/orders" element={<OrdersPage />} />
 
-                    <Route path="/login" element={<LoginPage />} />
+          <Route path="/login" element={<LoginPage />} />
 
-                    <Route
-                        path="/products/:id"
-                        element={<ProductDetailsPage />}
-                    />
+          <Route path="/products/:id" element={<ProductDetailsPage />} />
 
-                    <Route
-                        path="/order-confirmation"
-                        element={<OrderConfirmationPage />}
-                    />
-                </Route>
-            </Routes>
-        </BrowserRouter>
-    );
+          <Route
+            path="/order-confirmation"
+            element={<OrderConfirmationPage />}
+          />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
 export default App;

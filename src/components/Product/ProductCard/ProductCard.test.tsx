@@ -5,27 +5,31 @@ import { describe, expect, it, vi } from "vitest";
 import ProductCard from "./ProductCard";
 import { useCart } from "../../../context/CartContext";
 import { testProducts } from "../../../test/fixtures/products";
+import { createMockCartContext } from "../../../test/mocks/cartContext";
 
 vi.mock("../../../context/CartContext", () => ({
-    useCart: vi.fn(),
+  useCart: vi.fn(),
 }));
 
 describe("ProductCard", () => {
-    it("shows product information and links to product details", () => {
-        vi.mocked(useCart).mockReturnValue({ addItem: vi.fn() } as ReturnType<
-            typeof useCart
-        >);
-        const product = testProducts[0];
+  it("shows product information and links to product details", () => {
+    const addItem = vi.fn();
+    vi.mocked(useCart).mockReturnValue(
+      createMockCartContext({
+        addItem,
+      }),
+    );
+    const product = testProducts[0];
 
-        render(
-            <MemoryRouter>
-                <ProductCard product={product} />
-            </MemoryRouter>
-        );
+    render(
+      <MemoryRouter>
+        <ProductCard product={product} />
+      </MemoryRouter>,
+    );
 
-        expect(screen.getByText(product.category)).toBeInTheDocument();
-        expect(screen.getByText(product.description)).toBeInTheDocument();
-        expect(screen.getByText("$799.00")).toBeInTheDocument();
-        expect(screen.getByRole("link")).toHaveAttribute("href", "/products/1");
-    });
+    expect(screen.getByText(product.category)).toBeInTheDocument();
+    expect(screen.getByText(product.description)).toBeInTheDocument();
+    expect(screen.getByText("$799.00")).toBeInTheDocument();
+    expect(screen.getByRole("link")).toHaveAttribute("href", "/products/1");
+  });
 });

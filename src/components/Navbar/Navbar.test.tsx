@@ -4,38 +4,41 @@ import { describe, expect, it, vi } from "vitest";
 
 import Navbar from "./Navbar";
 import { useCart } from "../../context/CartContext";
+import { createMockCartContext } from "../../test/mocks/cartContext";
 
 vi.mock("../../context/CartContext", () => ({
-    useCart: vi.fn(),
+  useCart: vi.fn(),
 }));
 
 describe("Navbar", () => {
-    it("renders the primary navigation, logo, login, and cart links", () => {
-        vi.mocked(useCart).mockReturnValue({ totalItems: 2 } as ReturnType<
-            typeof useCart
-        >);
+  it("renders the primary navigation, logo, login, and cart links", () => {
+    vi.mocked(useCart).mockReturnValue(
+      createMockCartContext({
+        totalItems: 2,
+      }),
+    );
 
-        render(
-            <MemoryRouter>
-                <Navbar />
-            </MemoryRouter>
-        );
+    render(
+      <MemoryRouter>
+        <Navbar />
+      </MemoryRouter>,
+    );
 
-        expect(
-            screen.getByRole("link", { name: /pc parts store/i })
-        ).toHaveAttribute("href", "/");
-        expect(screen.getByRole("link", { name: "Products" })).toHaveAttribute(
-            "href",
-            "/products"
-        );
-        expect(screen.getByRole("link", { name: "Orders" })).toHaveAttribute(
-            "href",
-            "/orders"
-        );
-        expect(screen.getByRole("link", { name: "Login" })).toHaveAttribute(
-            "href",
-            "/login"
-        );
-        expect(screen.getByText("2")).toBeInTheDocument();
-    });
+    expect(
+      screen.getByRole("link", { name: /pc parts store/i }),
+    ).toHaveAttribute("href", "/");
+    expect(screen.getByRole("link", { name: "Products" })).toHaveAttribute(
+      "href",
+      "/products",
+    );
+    expect(screen.getByRole("link", { name: "Orders" })).toHaveAttribute(
+      "href",
+      "/orders",
+    );
+    expect(screen.getByRole("link", { name: "Login" })).toHaveAttribute(
+      "href",
+      "/login",
+    );
+    expect(screen.getByText("2")).toBeInTheDocument();
+  });
 });
