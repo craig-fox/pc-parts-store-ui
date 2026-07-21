@@ -55,3 +55,11 @@ test("home navigation does not expose checkout without cart items", async ({
     page.getByRole("link", { name: "Checkout", exact: true }),
   ).not.toBeVisible();
 });
+
+test("displays the 404 page for an unknown route", async ({ page }) => {
+  await page.goto("/this-page-does-not-exist");
+
+  await expect(page.getByRole("heading", { name: /404/i })).toBeVisible();
+
+  await expect(page.getByRole("link", { name: /return home/i })).toBeVisible();
+});

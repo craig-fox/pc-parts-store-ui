@@ -10,6 +10,7 @@ import LoginPage from "./pages/LoginPage";
 import ProductDetailsPage from "./pages/ProductDetailsPage";
 import CheckoutPage from "./pages/CheckoutPage";
 import OrderConfirmationPage from "./pages/OrderConfirmationPage";
+import NotFoundPage from "./pages/NotFoundPage";
 
 function App() {
   return (
@@ -34,6 +35,8 @@ function App() {
             path="/order-confirmation"
             element={<OrderConfirmationPage />}
           />
+
+          <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
