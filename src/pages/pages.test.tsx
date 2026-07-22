@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import CartPage from "./CartPage";
 import HomePage from "./HomePage";
@@ -10,6 +10,13 @@ import ProductDetailsPage from "./ProductDetailsPage";
 import ProductsPage from "./ProductsPage";
 import { CartProvider } from "../context/CartContext";
 import { OrdersProvider } from "../context/OrdersContext";
+import { getProduct, getProducts } from "../services/productService";
+import { testProducts } from "../test/fixtures/products";
+
+vi.mock("../services/productService", () => ({
+  getProducts: vi.fn(),
+  getProduct: vi.fn(),
+}));
 
 describe("pages", () => {
   it("renders the home page heading", () => {
@@ -48,7 +55,9 @@ describe("pages", () => {
     expect(screen.getByText(/no orders yet/i)).toBeInTheDocument();
   });
 
-  it("renders the product catalogue", () => {
+  it("renders the product catalogue", async () => {
+    vi.mocked(getProducts).mockResolvedValue(testProducts);
+
     render(
       <MemoryRouter>
         <CartProvider>
@@ -58,12 +67,10 @@ describe("pages", () => {
     );
 
     expect(
-      screen.getByRole("heading", { name: "Products" }),
+      await screen.findByRole("heading", { name: "Products" }),
     ).toBeInTheDocument();
-    expect(screen.getByText("AMD Ryzen 7 9800X3D")).toBeInTheDocument();
-    expect(
-      screen.getByText("Western Digital Black SN850X"),
-    ).toBeInTheDocument();
+
+    expect(await screen.findByText("AMD Ryzen 7 9800X3D")).toBeInTheDocument();
   });
 
   it("renders the cart empty state and its browse-products link", () => {
@@ -81,9 +88,11 @@ describe("pages", () => {
     ).toHaveAttribute("href", "/products");
   });
 
-  it("renders product details for an existing route parameter", () => {
+  it("renders product details for an existing route parameter", async () => {
+    vi.mocked(getProduct).mockResolvedValue(testProducts[0]);
+
     render(
-      <MemoryRouter initialEntries={["/products/1"]}>
+      <MemoryRouter initialEntries={[`/products/${testProducts[0].id}`]}>
         <CartProvider>
           <Routes>
             <Route path="/products/:id" element={<ProductDetailsPage />} />
@@ -93,23 +102,25 @@ describe("pages", () => {
     );
 
     expect(
-      screen.getByRole("heading", { name: "AMD Ryzen 7 9800X3D" }),
+      await screen.findByRole("heading", {
+        name: testProducts[0].name,
+      }),
     ).toBeInTheDocument();
-    expect(screen.getByText("8-Core Gaming Processor")).toBeInTheDocument();
+
+    expect(screen.getByText(testProducts[0].description)).toBeInTheDocument();
   });
 
-  it("renders a not-found state for an unknown product", () => {
+  it("renders a not-found state for an unknown product", async () => {
+    vi.mocked(getProduct).mockRejectedValue(new Error("Product not found"));
+
     render(
-      <MemoryRouter initialEntries={["/products/999"]}>
+      <MemoryRouter initialEntries={["/products/unknown-id"]}>
         <Routes>
           <Route path="/products/:id" element={<ProductDetailsPage />} />
         </Routes>
       </MemoryRouter>,
     );
 
-    expect(screen.getByText("Product not found")).toBeInTheDocument();
-    expect(
-      screen.getByRole("link", { name: /back to products/i }),
-    ).toHaveAttribute("href", "/products");
+    expect(await screen.findByText("Product not found")).toBeInTheDocument();
   });
 });

@@ -2,7 +2,6 @@ import { createContext, useContext, useReducer, type ReactNode } from "react";
 
 import type { Product } from "../types/Product";
 import type { CartItem } from "../types/CartItem";
-import { displayProducts } from "../data/displayProducts";
 import { cartReducer } from "../reducers/cartReducer";
 
 export type CartContextType = {
@@ -34,31 +33,23 @@ export function CartProvider({ children }: CartProviderProps) {
     items: [],
   });
 
-  const items = state.items.map((item) => {
-    const currentProduct = displayProducts.find(
-      (product) => product.id === item.product.id,
-    );
-
-    return {
-      ...item,
-      product: currentProduct ?? item.product,
-    };
-  });
-
-  const totalItems = items.reduce((total, item) => total + item.quantity, 0);
+  const totalItems = state.items.reduce(
+    (total, item) => total + item.quantity,
+    0,
+  );
 
   const totalWeight = state.items.reduce(
     (total, item) => total + item.product.weightKg * item.quantity,
     0,
   );
 
-  const totalPrice = items.reduce(
+  const totalPrice = state.items.reduce(
     (total, item) => total + item.product.price * item.quantity,
     0,
   );
 
   const value: CartContextType = {
-    items,
+    items: state.items,
 
     totalItems,
 

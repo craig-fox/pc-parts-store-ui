@@ -22,10 +22,13 @@ function ProductFiltersHarness({
   const [category, setCategory] = useState<ProductCategory>("All");
   const [sortBy, setSortBy] = useState<ProductSortOption>("name");
 
+  const categories = ["All", "CPU", "GPU", "Memory", "Storage"];
+
   return (
     <ProductFilters
       searchTerm={searchTerm}
       category={category}
+      categories={categories}
       sortBy={sortBy}
       productCount={2}
       onSearchChange={(value) => {
