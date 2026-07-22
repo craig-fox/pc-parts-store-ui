@@ -1,12 +1,13 @@
 import type { ProductCategory } from "../../types/ProductCategory";
 
 type CategoryFilterProps = {
+  categories: ProductCategory[];
   value: ProductCategory;
   onChange: (value: ProductCategory) => void;
 };
 
-function CategoryFilter({ value, onChange }: CategoryFilterProps) {
-  const categories = ["All", "CPU", "GPU", "Memory", "Storage"];
+function CategoryFilter({ categories, value, onChange }: CategoryFilterProps) {
+ // const categories = ["All", "CPU", "GPU", "Memory", "Storage"];
 
   return (
     <div className="flex flex-col">
