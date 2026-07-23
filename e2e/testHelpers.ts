@@ -16,23 +16,29 @@ export async function openCart(page: Page) {
   ).toBeVisible();
 }
 
-export async function addProductToCart(page: Page, productId: number) {
-  await page
-    .getByTestId(`product-card-${productId}`)
-    .getByRole("button", { name: "Add to Cart" })
-    .click();
+export async function addProductToCart(
+  page: Page,
+  productName: string,
+) {
+  const card = page.getByTestId("product-card").filter({
+    has: page.getByRole("heading", {
+      name: productName,
+    }),
+  });
+
+  await card.getByRole("button", { name: "Add to Cart" }).click();
 }
 
-export async function addProductsToCart(page: Page, productIds: number[]) {
+export async function addProductsToCart(page: Page, productNames: string[]) {
   await openProductsPage(page);
 
-  for (const productId of productIds) {
-    await addProductToCart(page, productId);
+  for (const productName of productNames) {
+    await addProductToCart(page, productName);
   }
 }
 
-export async function goToCheckout(page: Page, productIds: number[]) {
-  await addProductsToCart(page, productIds);
+export async function goToCheckout(page: Page, productNames: string[]) {
+  await addProductsToCart(page, productNames);
   await openCart(page);
 
   await page.getByRole("link", { name: "Checkout" }).click();

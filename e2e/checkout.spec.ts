@@ -1,15 +1,19 @@
 import { test, expect } from "@playwright/test";
 import { completeCheckoutForm, goToCheckout } from "./testHelpers";
+import { Products } from "./test-data/products";
 
 test.describe("Checkout", () => {
   test("user can successfully place an order", async ({ page }) => {
     /** Add products and navigate to checkout */
-    await goToCheckout(page, [1, 3]);
+    await goToCheckout(page, [
+      Products.Ryzen9800X3D,
+      Products.RTX5070,
+    ]);
 
     /** Ensure selected products are present */
-    await expect(page.getByText("AMD Ryzen 7 9800X3D")).toBeVisible();
+    await expect(page.getByText(Products.Ryzen9800X3D)).toBeVisible();
 
-    await expect(page.getByText("NVIDIA RTX 5070")).toBeVisible();
+    await expect(page.getByText(Products.RTX5070)).toBeVisible();
 
     /** Fill in customer details */
     await completeCheckoutForm(page);
@@ -32,7 +36,7 @@ test.describe("Checkout", () => {
   test("user sees validation errors when required fields are empty", async ({
     page,
   }) => {
-    await goToCheckout(page, [1]);
+    await goToCheckout(page, [Products.Ryzen9800X3D]);
 
     await page.getByRole("button", { name: "Confirm Order" }).click();
 

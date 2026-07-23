@@ -13,7 +13,7 @@ type ProductCardProps = {
 function ProductCard({ product }: ProductCardProps) {
   return (
     <div
-      data-testid={`product-card-${product.id}`}
+      data-testid="product-card"
       className="flex h-full flex-col overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm transition-shadow hover:-translate-y-1 hover:shadow-lg"
     >
       <Link to={`/products/${product.id}`} className="block">

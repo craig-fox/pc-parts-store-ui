@@ -16,9 +16,23 @@ test("user can add products, update quantities, and remove an item", async ({
 }) => {
   /** Go to Products page and select products */
   await openProductsPage(page);
+  await expect(
+    page.getByRole("heading", {
+      name: "AMD Ryzen 7 9800X3D",
+    }),
+  ).toBeVisible();
 
-  const ryzenCard = page.getByTestId("product-card-1");
-  const rtxCard = page.getByTestId("product-card-3");
+  const ryzenCard = page.getByTestId("product-card").filter({
+    has: page.getByRole("heading", {
+      name: "AMD Ryzen 7 9800X3D",
+    }),
+  });
+  
+  const rtxCard = page.getByTestId("product-card").filter({
+    has: page.getByRole("heading", {
+      name: "NVIDIA RTX 5070",
+    }),
+  });
 
   await ryzenCard.getByRole("button", { name: "Add to Cart" }).click();
   await ryzenCard.getByRole("button", { name: "Add to Cart" }).click();
@@ -51,8 +65,13 @@ test("user can add products, update quantities, and remove an item", async ({
 test("user can clear all cart items", async ({ page }) => {
   await openProductsPage(page);
 
-  await page
-    .getByTestId("product-card-5")
+  const samsungCard = page.getByTestId("product-card").filter({
+    has: page.getByRole("heading", {
+      name: "Samsung 990 Pro 2TB",
+    }),
+  });
+  
+  await samsungCard
     .getByRole("button", { name: "Add to Cart" })
     .click();
 
