@@ -7,8 +7,6 @@ type CategoryFilterProps = {
 };
 
 function CategoryFilter({ categories, value, onChange }: CategoryFilterProps) {
- // const categories = ["All", "CPU", "GPU", "Memory", "Storage"];
-
   return (
     <div className="flex flex-col">
       <label

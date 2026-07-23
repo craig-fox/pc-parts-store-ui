@@ -1,14 +1,33 @@
 import { Link, useParams } from "react-router-dom";
-import { displayProducts } from "../data/displayProducts";
 import EmptyState from "../components/EmptyState";
 import ProductImage from "../components/Product/ProductImage";
 import Breadcrumbs from "../components/Breadcrumbs/Breadcrumbs";
 import ProductSummary from "../components/Product/ProductSummary/ProductSummary";
+import { useEffect, useState } from "react";
+import type { Product } from "../types/Product";
+import { getProduct } from "../services/productService";
 
 function ProductDetailsPage() {
   const { id } = useParams();
-  const productId = Number(id);
-  const product = displayProducts.find((product) => product.id === productId);
+  const [product, setProduct] = useState<Product | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!id) {
+      setLoading(false);
+      return;
+    }
+
+    getProduct(id)
+      .then(setProduct)
+      .catch(() => setProduct(null))
+      .finally(() => setLoading(false));
+  }, [id]);
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
   if (!product) {
     return (
       <EmptyState

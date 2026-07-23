@@ -16,16 +16,16 @@ function ProductsPage() {
   const [catalogue, setCatalogue] = useState<Product[]>([]);
 
   useEffect(() => {
-      getProducts().then(setCatalogue);
+    getProducts().then(setCatalogue);
   }, []);
 
   const categories = useMemo(() => {
-      return [
-          "All",
-          ...Array.from(
-              new Set(catalogue.map(product => product.category))
-          ).sort(),
-      ];
+    return [
+      "All",
+      ...Array.from(
+        new Set(catalogue.map((product) => product.category)),
+      ).sort(),
+    ];
   }, [catalogue]);
 
   const filteredProducts = sortProducts(

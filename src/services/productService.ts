@@ -3,24 +3,47 @@ import { localProducts } from "../fixtures/products";
 import type { Product } from "../types/Product";
 
 export async function getProducts(): Promise<Product[]> {
-    if (environment.dataSource === "fixture") {
-        return localProducts;
+  if (environment.dataSource === "fixture") {
+    return localProducts;
+  }
+
+  const response = await fetch(`${environment.productApiBaseUrl}/products`);
+
+  if (!response.ok) {
+    throw new Error("Unable to load products");
+  }
+
+  const products: Product[] = await response.json();
+
+  return products.map((product) => ({
+    ...product,
+    imageUrl: `${environment.assetBaseUrl}${product.imageUrl}`,
+  }));
+}
+
+export async function getProduct(id: string): Promise<Product> {
+  if (environment.dataSource === "fixture") {
+    const product = localProducts.find((p) => p.id === id);
+
+    if (!product) {
+      throw new Error("Product not found");
     }
 
-    const response = await fetch(
-        `${environment.productApiBaseUrl}/products`
-    );
+    return product;
+  }
 
-    if (!response.ok) {
-        throw new Error("Unable to load products");
-    }
+  const response = await fetch(
+    `${environment.productApiBaseUrl}/products/${id}`,
+  );
 
-    const products: Product[] = await response.json();
+  if (!response.ok) {
+    throw new Error("Unable to load product");
+  }
 
-    return products.map(product => ({
-        ...product,
-        imageUrl: `${environment.productApiBaseUrl}${product.imageUrl}`,
-    }));
+  const product: Product = await response.json();
 
-    //return response.json();
+  return {
+    ...product,
+    imageUrl: `${environment.assetBaseUrl}${product.imageUrl}`,
+  };
 }

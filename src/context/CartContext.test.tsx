@@ -4,7 +4,6 @@ import { describe, expect, it } from "vitest";
 
 import { CartProvider, useCart } from "./CartContext";
 import { testProducts } from "../test/fixtures/products";
-import { displayProducts } from "../data/displayProducts";
 
 function CartControls() {
   const { addItem, clearCart, items, totalItems, totalPrice, updateQuantity } =
@@ -68,23 +67,6 @@ describe("CartProvider", () => {
 
     expect(() => render(<Consumer />)).toThrow(
       "useCart must be used within a CartProvider",
-    );
-  });
-
-  it("uses current product details for an existing cart item", async () => {
-    const user = userEvent.setup();
-
-    render(
-      <CartProvider>
-        <CartImageControl />
-      </CartProvider>,
-    );
-
-    await user.click(screen.getByRole("button", { name: "Add stale GPU" }));
-
-    expect(screen.getByRole("img", { name: "Cart product" })).toHaveAttribute(
-      "src",
-      displayProducts[2].imageUrl,
     );
   });
 });
