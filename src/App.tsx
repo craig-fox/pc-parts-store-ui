@@ -6,7 +6,7 @@ import HomePage from "./pages/HomePage";
 import ProductsPage from "./pages/ProductsPage";
 import CartPage from "./pages/CartPage";
 import OrdersPage from "./pages/OrdersPage";
-import LoginPage from "./pages/LoginPage";
+import LoginPage from "./auth/LoginPage";
 import ProductDetailsPage from "./pages/ProductDetailsPage";
 import CheckoutPage from "./pages/CheckoutPage";
 import OrderConfirmationPage from "./pages/OrderConfirmationPage";

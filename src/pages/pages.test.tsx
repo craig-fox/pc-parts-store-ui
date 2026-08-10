@@ -4,7 +4,7 @@ import { describe, expect, it, vi } from "vitest";
 
 import CartPage from "./CartPage";
 import HomePage from "./HomePage";
-import LoginPage from "./LoginPage";
+import LoginPage from "../auth/LoginPage";
 import OrdersPage from "./OrdersPage";
 import ProductDetailsPage from "./ProductDetailsPage";
 import ProductsPage from "./ProductsPage";
