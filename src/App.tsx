@@ -8,9 +8,9 @@ import CartPage from "./pages/CartPage";
 import OrdersPage from "./pages/OrdersPage";
 import LoginPage from "./auth/LoginPage";
 import ProductDetailsPage from "./pages/ProductDetailsPage";
-import CheckoutPage from "./pages/CheckoutPage";
 import OrderConfirmationPage from "./pages/OrderConfirmationPage";
 import NotFoundPage from "./pages/NotFoundPage";
+import ProtectedRoute from "./auth/ProtectedRoute";
 
 function App() {
   return (
@@ -23,7 +23,9 @@ function App() {
 
           <Route path="/cart" element={<CartPage />} />
 
-          <Route path="/checkout" element={<CheckoutPage />} />
+          <Route element={<ProtectedRoute />}>
+            <Route path="/checkout" element={<div>Checkout Page</div>} />
+          </Route>
 
           <Route path="/orders" element={<OrdersPage />} />
 
