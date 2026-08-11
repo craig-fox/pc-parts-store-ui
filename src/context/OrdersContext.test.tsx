@@ -1,96 +1,146 @@
-import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { describe, expect, it } from "vitest";
+import { renderHook, waitFor } from "@testing-library/react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { OrdersProvider } from "./OrdersContext";
 import { useOrders } from "./useOrders";
-import { testProducts } from "../test/fixtures/products";
-import type { Order } from "../types/Order";
+import { useAuth } from "../auth/AuthContext";
+import { orderService } from "../services/orderService";
+import type { OrderResponse } from "../types/OrderResponse";
 
-const firstOrder: Order = {
-  id: "order-1",
-  checkout: {
-    customer: {
-      firstName: "Craig",
-      lastName: "Fox",
-      email: "craig@example.com",
-    },
-    shippingAddress: {
-      addressLine1: "1 Main St",
-      city: "Auckland",
-      postcode: "1010",
-      country: "NZ",
-    },
+vi.mock("../auth/AuthContext", () => ({
+  useAuth: vi.fn(),
+}));
+
+vi.mock("../services/orderService", () => ({
+  orderService: {
+    getOrders: vi.fn(),
   },
-  items: [{ product: testProducts[0], quantity: 1 }],
+}));
+
+const mockOrder: OrderResponse = {
+  id: "order-123",
+  customerId: "11111111-1111-1111-1111-111111111111",
+  orderDate: "2026-08-11T10:00:00",
+  status: "PLACED",
   subtotal: 799,
   shipping: 8,
   total: 807,
-  totalWeight: 0.04,
-  placedAt: new Date("2026-07-20T00:00:00Z"),
-  status: "PLACED",
+  items: [
+    {
+      productId: "22222222-2222-2222-2222-222222222222",
+      productName: "AMD Ryzen 7 9800X3D",
+      quantity: 1,
+      unitPrice: 799,
+      lineTotal: 799,
+    },
+  ],
 };
 
-function OrdersControls() {
-  const { addOrder, clearOrders, getOrder, latestOrder, orders } = useOrders();
-  const secondOrder = { ...firstOrder, id: "order-2" };
-
-  return (
-    <>
-      <output aria-label="Order state">{`${orders.length}:${latestOrder?.id ?? "none"}`}</output>
-      <output aria-label="Found order">
-        {getOrder("order-1")?.id ?? "none"}
-      </output>
-      <button type="button" onClick={() => addOrder(firstOrder)}>
-        Add first
-      </button>
-      <button type="button" onClick={() => addOrder(secondOrder)}>
-        Add second
-      </button>
-      <button type="button" onClick={clearOrders}>
-        Clear
-      </button>
-    </>
-  );
+function wrapper({ children }: { children: React.ReactNode }) {
+  return <OrdersProvider>{children}</OrdersProvider>;
 }
 
-describe("OrdersProvider and useOrders", () => {
-  it("adds, retrieves, tracks, and clears orders", async () => {
-    const user = userEvent.setup();
-
-    render(
-      <OrdersProvider>
-        <OrdersControls />
-      </OrdersProvider>,
-    );
-
-    await user.click(screen.getByRole("button", { name: "Add first" }));
-    expect(
-      screen.getByRole("status", { name: "Order state" }),
-    ).toHaveTextContent("1:order-1");
-    expect(
-      screen.getByRole("status", { name: "Found order" }),
-    ).toHaveTextContent("order-1");
-
-    await user.click(screen.getByRole("button", { name: "Add second" }));
-    expect(
-      screen.getByRole("status", { name: "Order state" }),
-    ).toHaveTextContent("2:order-2");
-
-    await user.click(screen.getByRole("button", { name: "Clear" }));
-    expect(
-      screen.getByRole("status", { name: "Order state" }),
-    ).toHaveTextContent("0:none");
+describe("OrdersContext", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
   });
 
-  it("requires useOrders consumers to be inside OrdersProvider", () => {
-    function Consumer() {
-      useOrders();
-      return null;
-    }
+  it("loads orders for an authenticated user", async () => {
+    vi.mocked(useAuth).mockReturnValue({
+      user: null,
+      isAuthenticated: true,
+      login: vi.fn(),
+      logout: vi.fn(),
+    });
 
-    expect(() => render(<Consumer />)).toThrow(
-      "useOrders must be used within an OrdersProvider.",
+    vi.mocked(orderService.getOrders).mockResolvedValue([mockOrder]);
+
+    const { result } = renderHook(() => useOrders(), { wrapper });
+
+    await waitFor(() => {
+      expect(result.current.loading).toBe(false);
+    });
+
+    expect(result.current.orders).toEqual([mockOrder]);
+    expect(result.current.error).toBeNull();
+    expect(orderService.getOrders).toHaveBeenCalledOnce();
+  });
+
+  it("sets an error when loading orders fails", async () => {
+    vi.mocked(useAuth).mockReturnValue({
+      user: null,
+      isAuthenticated: true,
+      login: vi.fn(),
+      logout: vi.fn(),
+    });
+
+    vi.mocked(orderService.getOrders).mockRejectedValue(
+      new Error("Request failed"),
     );
+
+    const { result } = renderHook(() => useOrders(), { wrapper });
+
+    await waitFor(() => {
+      expect(result.current.loading).toBe(false);
+    });
+
+    expect(result.current.orders).toEqual([]);
+    expect(result.current.error).toBe("Unable to load your orders.");
+  });
+
+  it("returns an order from getOrder", async () => {
+    vi.mocked(useAuth).mockReturnValue({
+      user: null,
+      isAuthenticated: true,
+      login: vi.fn(),
+      logout: vi.fn(),
+    });
+
+    vi.mocked(orderService.getOrders).mockResolvedValue([mockOrder]);
+
+    const { result } = renderHook(() => useOrders(), { wrapper });
+
+    await waitFor(() => {
+      expect(result.current.loading).toBe(false);
+    });
+
+    expect(result.current.getOrder("order-123")).toEqual(mockOrder);
+  });
+
+  it("returns undefined when getOrder cannot find an order", async () => {
+    vi.mocked(useAuth).mockReturnValue({
+      user: null,
+      isAuthenticated: true,
+      login: vi.fn(),
+      logout: vi.fn(),
+    });
+
+    vi.mocked(orderService.getOrders).mockResolvedValue([mockOrder]);
+
+    const { result } = renderHook(() => useOrders(), { wrapper });
+
+    await waitFor(() => {
+      expect(result.current.loading).toBe(false);
+    });
+
+    expect(result.current.getOrder("does-not-exist")).toBeUndefined();
+  });
+
+  it("does not load orders when the user is not authenticated", async () => {
+    vi.mocked(useAuth).mockReturnValue({
+      user: null,
+      isAuthenticated: false,
+      login: vi.fn(),
+      logout: vi.fn(),
+    });
+
+    const { result } = renderHook(() => useOrders(), { wrapper });
+
+    await waitFor(() => {
+      expect(result.current.loading).toBe(false);
+    });
+
+    expect(result.current.orders).toEqual([]);
+    expect(orderService.getOrders).not.toHaveBeenCalled();
   });
 });

@@ -4,18 +4,13 @@ import OrderSummary from "../components/Checkout/OrderSummary";
 import EmptyState from "../components/EmptyState";
 import { useCart } from "../context/CartContext";
 import Button from "../components/common/Button";
-import type { Order } from "../types/Order";
 import { useState } from "react";
 import type { Checkout } from "../types/Checkout";
 import type { CheckoutErrors } from "../types/CheckoutErrors";
-import type { OrderTotals } from "../utils/orderCalculations";
-
-import { calculateOrderTotals } from "../utils/orderCalculations";
-import { useOrders } from "../context/useOrders";
+import { orderService } from "../services/orderService";
 
 function CheckoutPage() {
   const { items, clearCart } = useCart();
-  const { addOrder } = useOrders();
   const navigate = useNavigate();
 
   const [checkout, setCheckout] = useState<Checkout>({
@@ -42,29 +37,37 @@ function CheckoutPage() {
     postcode: "",
   });
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const [submitting, setSubmitting] = useState(false);
+
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
     if (!validate()) {
       return;
     }
 
-    const totals: OrderTotals = calculateOrderTotals(items);
+    setSubmitting(true);
 
-    const order: Order = {
-      id: crypto.randomUUID(),
-      checkout,
-      items,
-      subtotal: totals.subtotal,
-      shipping: totals.shipping,
-      total: totals.total,
-      totalWeight: totals.totalWeight,
-      placedAt: new Date(),
-      status: "PLACED",
-    };
-    addOrder(order);
-    clearCart();
-    navigate("/order-confirmation");
+    try {
+      const request = {
+        items: items.map((item) => ({
+          productId: item.product.id,
+          quantity: item.quantity,
+        })),
+      };
+
+      const order = await orderService.createOrder(request);
+
+      clearCart();
+
+      navigate("/order-confirmation", {
+        state: { order },
+      });
+    } catch (error) {
+      console.error("Failed to create order:", error);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   function validate() {
@@ -135,8 +138,8 @@ function CheckoutPage() {
           <div>
             <OrderSummary />
 
-            <Button type="submit" className="mt-6 w-full">
-              Confirm Order
+            <Button type="submit" disabled={submitting} className="mt-6 w-full">
+              {submitting ? "Placing Order..." : "Confirm Order"}
             </Button>
           </div>
         </div>

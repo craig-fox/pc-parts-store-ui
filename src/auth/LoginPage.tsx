@@ -43,19 +43,19 @@ function LoginPage() {
     <div className="flex justify-center px-4 py-12">
       <div className="w-full max-w-md">
         <h1 className="mb-6 text-3xl font-bold">Login</h1>
-  
+
         <form onSubmit={handleSubmit} className="space-y-5">
           {error && (
             <div className="rounded-md border border-red-300 bg-red-50 p-3 text-sm text-red-700">
               {error}
             </div>
           )}
-  
+
           <div className="flex flex-col">
             <label htmlFor="email" className="mb-2 font-medium">
               Email
             </label>
-  
+
             <input
               id="email"
               type="email"
@@ -65,12 +65,12 @@ function LoginPage() {
               required
             />
           </div>
-  
+
           <div className="flex flex-col">
             <label htmlFor="password" className="mb-2 font-medium">
               Password
             </label>
-  
+
             <input
               id="password"
               type="password"
@@ -80,7 +80,7 @@ function LoginPage() {
               required
             />
           </div>
-  
+
           <button
             type="submit"
             disabled={loading}
