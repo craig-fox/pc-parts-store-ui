@@ -5,10 +5,7 @@ import { Products } from "./test-data/products";
 test.describe("Checkout", () => {
   test("user can successfully place an order", async ({ page }) => {
     /** Add products and navigate to checkout */
-    await goToCheckout(page, [
-      Products.Ryzen9800X3D,
-      Products.RTX5070,
-    ]);
+    await goToCheckout(page, [Products.Ryzen9800X3D, Products.RTX5070]);
 
     /** Ensure selected products are present */
     await expect(page.getByText(Products.Ryzen9800X3D)).toBeVisible();

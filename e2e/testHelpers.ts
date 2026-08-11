@@ -16,10 +16,7 @@ export async function openCart(page: Page) {
   ).toBeVisible();
 }
 
-export async function addProductToCart(
-  page: Page,
-  productName: string,
-) {
+export async function addProductToCart(page: Page, productName: string) {
   const card = page.getByTestId("product-card").filter({
     has: page.getByRole("heading", {
       name: productName,
