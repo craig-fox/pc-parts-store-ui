@@ -11,6 +11,7 @@ import ProductDetailsPage from "./pages/ProductDetailsPage";
 import OrderConfirmationPage from "./pages/OrderConfirmationPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import ProtectedRoute from "./auth/ProtectedRoute";
+import CheckoutPage from "./pages/CheckoutPage";
 
 function App() {
   return (
@@ -24,7 +25,7 @@ function App() {
           <Route path="/cart" element={<CartPage />} />
 
           <Route element={<ProtectedRoute />}>
-            <Route path="/checkout" element={<div>Checkout Page</div>} />
+            <Route path="/checkout" element={<CheckoutPage />} />
           </Route>
 
           <Route path="/orders" element={<OrdersPage />} />
