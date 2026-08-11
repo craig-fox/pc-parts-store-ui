@@ -1,17 +1,20 @@
 import {
   createContext,
+  useEffect,
   useState,
   type PropsWithChildren,
   type JSX,
 } from "react";
-import type { Order } from "../types/Order";
+
+import type { OrderResponse } from "../types/OrderResponse";
+import { orderService } from "../services/orderService";
+import { useAuth } from "../auth/AuthContext";
 
 export type OrdersContextType = {
-  orders: Order[];
-  latestOrder: Order | undefined;
-  addOrder: (order: Order) => void;
-  getOrder: (id: string) => Order | undefined;
-  clearOrders: () => void;
+  orders: OrderResponse[];
+  loading: boolean;
+  error: string | null;
+  getOrder: (id: string) => OrderResponse | undefined;
 };
 
 export const OrdersContext = createContext<OrdersContextType | undefined>(
@@ -19,35 +22,49 @@ export const OrdersContext = createContext<OrdersContextType | undefined>(
 );
 
 export function OrdersProvider({ children }: PropsWithChildren): JSX.Element {
-  const [orders, setOrders] = useState<Order[]>([]);
-  const latestOrder = orders.length > 0 ? orders[orders.length - 1] : undefined;
-  const addOrder = (order: Order) => {
-    console.log("Before:", orders);
+  const [orders, setOrders] = useState<OrderResponse[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-    setOrders((current) => {
-      console.log("Adding:", order);
+  const { isAuthenticated } = useAuth();
 
-      const updated = [...current, order];
+  useEffect(() => {
+    if (!isAuthenticated) {
+      setOrders([]);
+      setLoading(false);
+      return;
+    }
 
-      console.log("After:", updated);
+    async function loadOrders() {
+      try {
+        setLoading(true);
+        setError(null);
 
-      return updated;
-    });
-  };
+        const response = await orderService.getOrders();
+
+        setOrders(response);
+      } catch (error) {
+        console.error("Failed to load orders:", error);
+        setError("Unable to load your orders.");
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadOrders();
+  }, [isAuthenticated]);
+
   const getOrder = (id: string) => {
     return orders.find((order) => order.id === id);
   };
-  const clearOrders = () => {
-    setOrders([]);
-  };
+
   return (
     <OrdersContext.Provider
       value={{
         orders,
-        latestOrder,
-        addOrder,
+        loading,
+        error,
         getOrder,
-        clearOrders,
       }}
     >
       {children}

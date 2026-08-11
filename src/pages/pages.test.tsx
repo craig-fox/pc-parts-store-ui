@@ -8,13 +8,17 @@ import OrdersPage from "./OrdersPage";
 import ProductDetailsPage from "./ProductDetailsPage";
 import ProductsPage from "./ProductsPage";
 import { CartProvider } from "../context/CartContext";
-import { OrdersProvider } from "../context/OrdersContext";
 import { getProduct, getProducts } from "../services/productService";
 import { testProducts } from "../test/fixtures/products";
+import { useOrders } from "../context/useOrders";
 
 vi.mock("../services/productService", () => ({
   getProducts: vi.fn(),
   getProduct: vi.fn(),
+}));
+
+vi.mock("../context/useOrders", () => ({
+  useOrders: vi.fn(),
 }));
 
 describe("pages", () => {
@@ -29,12 +33,17 @@ describe("pages", () => {
   });
 
   it("renders the orders heading", () => {
+    vi.mocked(useOrders).mockReturnValue({
+      orders: [],
+      loading: false,
+      error: null,
+      getOrder: vi.fn(),
+    });
+
     render(
-      <OrdersProvider>
-        <MemoryRouter>
-          <OrdersPage />
-        </MemoryRouter>
-      </OrdersProvider>,
+      <MemoryRouter>
+        <OrdersPage />
+      </MemoryRouter>,
     );
 
     expect(
