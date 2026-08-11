@@ -3,7 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { describe, expect, it } from "vitest";
 
 import { CartProvider, useCart } from "./CartContext";
-import { testProducts } from "../test/fixtures/products";
+import { localProducts } from "../fixtures/products";
 
 function CartControls() {
   const { addItem, clearCart, items, totalItems, totalPrice, updateQuantity } =
@@ -12,10 +12,13 @@ function CartControls() {
   return (
     <>
       <output>{`${items.length}:${totalItems}:${totalPrice}`}</output>
-      <button type="button" onClick={() => addItem(testProducts[0])}>
+      <button type="button" onClick={() => addItem(localProducts[0])}>
         Add
       </button>
-      <button type="button" onClick={() => updateQuantity(1, 3)}>
+      <button
+        type="button"
+        onClick={() => updateQuantity(localProducts[0].id, 3)}
+      >
         Set quantity
       </button>
       <button type="button" onClick={clearCart}>
@@ -27,7 +30,7 @@ function CartControls() {
 
 function CartImageControl() {
   const { addItem, items } = useCart();
-  const staleGpu = { ...testProducts[2], imageUrl: "" };
+  const staleGpu = { ...localProducts[2], imageUrl: "" };
 
   return (
     <>

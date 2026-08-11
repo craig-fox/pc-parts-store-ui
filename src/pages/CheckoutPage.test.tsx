@@ -5,7 +5,7 @@ import { describe, expect, it, vi } from "vitest";
 import CheckoutPage from "./CheckoutPage";
 import { useCart } from "../context/CartContext";
 import { useOrders } from "../context/useOrders";
-import { testProducts } from "../test/fixtures/products";
+import { localProducts } from "../fixtures/products";
 import { createMockCartContext } from "../test/mocks/cartContext";
 import { createMockOrdersContext } from "../test/mocks/ordersContext";
 import { orderService } from "../services/orderService";
@@ -61,7 +61,7 @@ describe("CheckoutPage", () => {
   it("shows checkout fields, the order summary, and confirmation action for cart items", () => {
     vi.mocked(useCart).mockReturnValue(
       createMockCartContext({
-        items: [{ product: testProducts[0], quantity: 1 }],
+        items: [{ product: localProducts[0], quantity: 1 }],
         totalItems: 1,
         totalPrice: 799,
         totalWeight: 0.04,
@@ -137,7 +137,7 @@ describe("CheckoutPage", () => {
       expect(orderService.createOrder).toHaveBeenCalledWith({
         items: [
           {
-            productId: testProducts[0].id,
+            productId: localProducts[0].id,
             quantity: 1,
           },
         ],

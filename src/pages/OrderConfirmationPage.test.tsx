@@ -3,7 +3,7 @@ import { MemoryRouter } from "react-router-dom";
 import { describe, expect, it } from "vitest";
 
 import OrderConfirmationPage from "./OrderConfirmationPage";
-import { testProducts } from "../test/fixtures/products";
+import { localProducts } from "../fixtures/products";
 
 describe("OrderConfirmationPage", () => {
   it("shows a recovery state when there is no order", () => {
@@ -37,8 +37,8 @@ describe("OrderConfirmationPage", () => {
       total: 807,
       items: [
         {
-          productId: testProducts[0].id,
-          productName: testProducts[0].name,
+          productId: localProducts[0].id,
+          productName: localProducts[0].name,
           quantity: 1,
           unitPrice: 799,
         },
