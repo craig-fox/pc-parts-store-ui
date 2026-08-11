@@ -1,12 +1,24 @@
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import MainLayout from "./MainLayout";
 import { CartProvider } from "../context/CartContext";
+import { useAuth } from "../auth/AuthContext";
+
+vi.mock("../auth/AuthContext", () => ({
+  useAuth: vi.fn(),
+}));
 
 describe("MainLayout", () => {
   it("renders the navigation, routed page content, and footer", () => {
+    vi.mocked(useAuth).mockReturnValue({
+      user: null,
+      isAuthenticated: false,
+      login: vi.fn(),
+      logout: vi.fn(),
+    });
+
     render(
       <MemoryRouter initialEntries={["/"]}>
         <CartProvider>

@@ -5,9 +5,14 @@ import { describe, expect, it, vi } from "vitest";
 import Navbar from "./Navbar";
 import { useCart } from "../../context/CartContext";
 import { createMockCartContext } from "../../test/mocks/cartContext";
+import { useAuth } from "../../auth/AuthContext";
 
 vi.mock("../../context/CartContext", () => ({
   useCart: vi.fn(),
+}));
+
+vi.mock("../../auth/AuthContext", () => ({
+  useAuth: vi.fn(),
 }));
 
 describe("Navbar", () => {
@@ -17,6 +22,13 @@ describe("Navbar", () => {
         totalItems: 2,
       }),
     );
+
+    vi.mocked(useAuth).mockReturnValue({
+      user: null,
+      isAuthenticated: false,
+      login: vi.fn(),
+      logout: vi.fn(),
+    });
 
     render(
       <MemoryRouter>

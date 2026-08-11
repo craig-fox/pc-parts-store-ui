@@ -65,7 +65,6 @@ function CheckoutPage() {
       navigate("/order-confirmation", {
         state: { order },
       });
-
     } catch (error) {
       console.error("Failed to create order:", error);
     } finally {
