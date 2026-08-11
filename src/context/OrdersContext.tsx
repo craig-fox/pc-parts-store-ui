@@ -70,7 +70,7 @@ export function OrdersProvider({ children }: PropsWithChildren): JSX.Element {
         loading,
         error,
         getOrder,
-        addOrder
+        addOrder,
       }}
     >
       {children}

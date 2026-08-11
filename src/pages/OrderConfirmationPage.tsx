@@ -41,9 +41,7 @@ function OrderConfirmationPage() {
             Order Number
           </p>
 
-          <p className="mt-2 font-mono text-lg font-semibold">
-            {order.id}
-          </p>
+          <p className="mt-2 font-mono text-lg font-semibold">{order.id}</p>
         </div>
       )}
 

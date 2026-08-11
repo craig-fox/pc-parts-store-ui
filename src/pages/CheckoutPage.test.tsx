@@ -10,9 +10,13 @@ import { createMockCartContext } from "../test/mocks/cartContext";
 import { createMockOrdersContext } from "../test/mocks/ordersContext";
 import { orderService } from "../services/orderService";
 
-
 vi.mock("../context/CartContext", () => ({ useCart: vi.fn() }));
 vi.mock("../context/useOrders", () => ({ useOrders: vi.fn() }));
+vi.mock("../services/orderService", () => ({
+  orderService: {
+    createOrder: vi.fn(),
+  },
+}));
 
 function renderCheckoutPage() {
   render(
@@ -82,7 +86,7 @@ describe("CheckoutPage", () => {
 
   it("adds the created order to the orders context after successful submission", async () => {
     const addOrder = vi.fn();
-  
+
     vi.mocked(useOrders).mockReturnValue({
       orders: [],
       loading: false,
@@ -90,47 +94,45 @@ describe("CheckoutPage", () => {
       getOrder: vi.fn(),
       addOrder,
     });
-  
+
     vi.mocked(orderService.createOrder).mockResolvedValue(createdOrder);
-  
+
     render(
       <MemoryRouter>
         <CheckoutPage />
       </MemoryRouter>,
     );
-  
+
     fireEvent.change(screen.getByLabelText("First Name"), {
       target: { value: "Craig" },
     });
-  
+
     fireEvent.change(screen.getByLabelText("Last Name"), {
       target: { value: "Fox" },
     });
-  
+
     fireEvent.change(screen.getByLabelText("Email"), {
       target: { value: "craig@example.com" },
     });
-  
+
     fireEvent.change(screen.getByLabelText("Address"), {
       target: { value: "1 Main St" },
     });
-  
+
     fireEvent.change(screen.getByLabelText("City"), {
       target: { value: "Auckland" },
     });
-  
+
     fireEvent.change(screen.getByLabelText("Postcode"), {
       target: { value: "1010" },
     });
-  
+
     fireEvent.change(screen.getByLabelText("Country"), {
       target: { value: "NZ" },
     });
-  
-    fireEvent.click(
-      screen.getByRole("button", { name: "Confirm Order" }),
-    );
-  
+
+    fireEvent.click(screen.getByRole("button", { name: "Confirm Order" }));
+
     await waitFor(() => {
       expect(orderService.createOrder).toHaveBeenCalledWith({
         items: [
@@ -141,7 +143,7 @@ describe("CheckoutPage", () => {
         ],
       });
     });
-  
+
     expect(addOrder).toHaveBeenCalledWith(createdOrder);
   });
 });
