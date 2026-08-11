@@ -2,50 +2,76 @@ import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
 import OrderCard from "./OrderCard";
-import { testProducts } from "../../test/fixtures/products";
-import type { Order } from "../../types/Order";
+import type { OrderResponse } from "../../types/OrderResponse";
 
-const order: Order = {
-  id: "order-123",
-  checkout: {
-    customer: {
-      firstName: "Craig",
-      lastName: "Fox",
-      email: "craig@example.com",
-    },
-    shippingAddress: {
-      addressLine1: "1 Main St",
-      city: "Auckland",
-      postcode: "1010",
-      country: "NZ",
-    },
-  },
-  items: [
-    { product: testProducts[0], quantity: 2 },
-    { product: testProducts[2], quantity: 1 },
-  ],
-  subtotal: 2597,
-  shipping: 0,
-  total: 2597,
-  totalWeight: 1.28,
-  placedAt: new Date("2026-07-20T00:00:00Z"),
+const order: OrderResponse = {
+  id: "order-12345678",
+  customerId: "customer-123",
+  orderDate: "2026-07-20T10:00:00",
   status: "PLACED",
+  subtotal: 799,
+  shipping: 8,
+  total: 807,
+  items: [
+    {
+      productId: "product-123",
+      productName: "AMD Ryzen 7 9800X3D",
+      quantity: 1,
+      unitPrice: 799,
+      lineTotal: 799,
+    },
+  ],
 };
 
 describe("OrderCard", () => {
-  it("displays order identity, status, items, and total", () => {
+  it("renders the order details", () => {
     render(<OrderCard order={order} />);
 
     expect(
-      screen.getByRole("heading", {
-        name: "Order #ORDER-12",
-      }),
+      screen.getByRole("heading", { name: "Order #ORDER-12" }),
     ).toBeInTheDocument();
 
+    expect(screen.getByText("Placed 20/07/2026")).toBeInTheDocument();
+
     expect(screen.getByText("PLACED")).toBeInTheDocument();
-    expect(screen.getByText("3 items")).toBeInTheDocument();
-    expect(screen.getByText("AMD Ryzen 7 9800X3D × 2")).toBeInTheDocument();
-    expect(screen.getByText("NVIDIA RTX 5070 × 1")).toBeInTheDocument();
-    expect(screen.getAllByText("$2,597.00")).toHaveLength(2);
+
+    expect(screen.getByText("1 item")).toBeInTheDocument();
+
+    expect(screen.getByText("AMD Ryzen 7 9800X3D × 1")).toBeInTheDocument();
+  });
+
+  it("uses plural items when the order contains multiple items", () => {
+    render(
+      <OrderCard
+        order={{
+          ...order,
+          items: [
+            ...order.items,
+            {
+              productId: "product-456",
+              productName: "RTX 5070",
+              quantity: 1,
+              unitPrice: 899,
+              lineTotal: 899,
+            },
+          ],
+        }}
+      />,
+    );
+
+    expect(screen.getByText("2 items")).toBeInTheDocument();
+  });
+
+  it("renders the order status", () => {
+    render(
+      <OrderCard
+        order={{
+          ...order,
+          status: "CANCELLED",
+        }}
+      />,
+    );
+
+    expect(screen.getByText("CANCELLED")).toBeInTheDocument();
   });
 });

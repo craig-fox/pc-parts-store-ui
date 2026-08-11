@@ -1,8 +1,8 @@
-import type { Order } from "../../types/Order";
+import type { OrderResponse } from "../../types/OrderResponse";
 import OrderSummary from "./OrderSummary";
 
 type OrderCardProps = {
-  order: Order;
+  order: OrderResponse;
 };
 
 function OrderCard({ order }: OrderCardProps) {
@@ -10,15 +10,17 @@ function OrderCard({ order }: OrderCardProps) {
     (total, item) => total + item.quantity,
     0,
   );
+
   const displayId = order.id.slice(0, 8).toUpperCase();
 
   return (
-    <article className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
-      <div className="flex flex-wrap items-start justify-between gap-4">
+    <article>
+      <div className="flex items-center justify-between">
         <div>
           <h2 className="text-xl font-semibold">Order #{displayId}</h2>
-          <p className="mt-1 text-sm text-slate-600">
-            Placed {order.placedAt.toLocaleDateString("en-NZ")}
+
+          <p className="text-sm text-slate-500">
+            Placed {new Date(order.orderDate).toLocaleDateString("en-NZ")}
           </p>
         </div>
 
@@ -33,8 +35,8 @@ function OrderCard({ order }: OrderCardProps) {
 
       <ul className="mt-3 space-y-2 text-sm text-slate-600">
         {order.items.map((item) => (
-          <li key={item.product.id}>
-            {item.product.name} × {item.quantity}
+          <li key={item.productId}>
+            {item.productName} × {item.quantity}
           </li>
         ))}
       </ul>

@@ -8,10 +8,12 @@ import { useState } from "react";
 import type { Checkout } from "../types/Checkout";
 import type { CheckoutErrors } from "../types/CheckoutErrors";
 import { orderService } from "../services/orderService";
+import { useOrders } from "../context/useOrders";
 
 function CheckoutPage() {
   const { items, clearCart } = useCart();
   const navigate = useNavigate();
+  const { addOrder } = useOrders();
 
   const [checkout, setCheckout] = useState<Checkout>({
     customer: {
@@ -57,12 +59,13 @@ function CheckoutPage() {
       };
 
       const order = await orderService.createOrder(request);
-
+      addOrder(order);
       clearCart();
 
       navigate("/order-confirmation", {
         state: { order },
       });
+
     } catch (error) {
       console.error("Failed to create order:", error);
     } finally {

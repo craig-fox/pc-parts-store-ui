@@ -1,13 +1,13 @@
-import type { Order } from "../../types/Order";
+import type { OrderResponse } from "../../types/OrderResponse";
 import { formatCurrency } from "../../utils/currency";
 
 type OrderSummaryProps = {
-  order: Order;
+  order: OrderResponse;
 };
 
 function OrderSummary({ order }: OrderSummaryProps) {
   return (
-    <dl className="mt-6 space-y-3 border-t border-slate-200 pt-4 text-sm">
+    <dl className="space-y-3 text-sm text-slate-600">
       <div className="flex justify-between gap-4">
         <dt>Subtotal</dt>
         <dd>{formatCurrency(order.subtotal)}</dd>

@@ -1,13 +1,15 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 import Button from "../components/common/Button";
 
-import { useOrders } from "../context/useOrders";
+import type { OrderResponse } from "../types/OrderResponse";
 
 function OrderConfirmationPage() {
-  const { latestOrder } = useOrders();
+  const location = useLocation();
 
-  if (!latestOrder) {
+  const order = location.state?.order as OrderResponse | undefined;
+
+  if (!order) {
     return (
       <div className="mx-auto max-w-2xl rounded-lg border border-slate-200 bg-white p-8 text-center">
         <h1 className="mb-4 text-3xl font-bold">No Recent Order</h1>
@@ -33,14 +35,14 @@ function OrderConfirmationPage() {
         Thank you for your purchase. Your order has been placed successfully.
       </p>
 
-      {latestOrder && (
+      {order && (
         <div className="mb-8 rounded-lg bg-slate-100 p-4">
           <p className="text-sm tracking-wide text-slate-500 uppercase">
             Order Number
           </p>
 
           <p className="mt-2 font-mono text-lg font-semibold">
-            {latestOrder.id}
+            {order.id}
           </p>
         </div>
       )}

@@ -5,10 +5,29 @@ import EmptyState from "../components/EmptyState";
 import OrderCard from "../components/Orders/OrderCard";
 
 export default function OrdersPage() {
-  const { orders } = useOrders();
+  const { orders, loading, error } = useOrders();
+
+  if (loading) {
+    return (
+      <div className="mx-auto max-w-6xl px-4 py-8">
+        <h1 className="mb-8 text-3xl font-bold">My Orders</h1>
+        <p>Loading your orders...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="mx-auto max-w-6xl px-4 py-8">
+        <h1 className="mb-8 text-3xl font-bold">My Orders</h1>
+        <p className="text-red-600">{error}</p>
+      </div>
+    );
+  }
+
   return (
-    <div className="mx-auto max-w-5xl p-6">
-      <h1 className="mb-8 text-4xl font-bold">My Orders</h1>
+    <div className="mx-auto max-w-6xl px-4 py-8">
+      <h1 className="mb-8 text-3xl font-bold">My Orders</h1>
 
       {orders.length === 0 ? (
         <EmptyState
