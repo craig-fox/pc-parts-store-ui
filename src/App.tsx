@@ -26,9 +26,8 @@ function App() {
 
           <Route element={<ProtectedRoute />}>
             <Route path="/checkout" element={<CheckoutPage />} />
+            <Route path="/orders" element={<OrdersPage />} />
           </Route>
-
-          <Route path="/orders" element={<OrdersPage />} />
 
           <Route path="/login" element={<LoginPage />} />
 

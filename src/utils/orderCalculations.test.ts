@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { calculateOrderTotals } from "./orderCalculations";
-import { testProducts } from "../test/fixtures/products";
+import { localProducts } from "../fixtures/products";
 
 describe("calculateOrderTotals", () => {
   it("returns zero totals for an empty order", () => {
@@ -16,8 +16,8 @@ describe("calculateOrderTotals", () => {
   it("calculates price, weight, shipping, and total for multiple items", () => {
     expect(
       calculateOrderTotals([
-        { product: testProducts[0], quantity: 2 },
-        { product: testProducts[2], quantity: 1 },
+        { product: localProducts[0], quantity: 2 },
+        { product: localProducts[2], quantity: 1 },
       ]),
     ).toEqual({
       subtotal: 2597,
@@ -29,7 +29,7 @@ describe("calculateOrderTotals", () => {
 
   it("includes shipping for a smaller order", () => {
     expect(
-      calculateOrderTotals([{ product: testProducts[4], quantity: 1 }]),
+      calculateOrderTotals([{ product: localProducts[4], quantity: 1 }]),
     ).toEqual({
       subtotal: 269,
       shipping: 8,

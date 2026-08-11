@@ -9,8 +9,8 @@ import ProductDetailsPage from "./ProductDetailsPage";
 import ProductsPage from "./ProductsPage";
 import { CartProvider } from "../context/CartContext";
 import { getProduct, getProducts } from "../services/productService";
-import { testProducts } from "../test/fixtures/products";
 import { useOrders } from "../context/useOrders";
+import { localProducts } from "../fixtures/products";
 
 vi.mock("../services/productService", () => ({
   getProducts: vi.fn(),
@@ -38,6 +38,7 @@ describe("pages", () => {
       loading: false,
       error: null,
       getOrder: vi.fn(),
+      addOrder: vi.fn(),
     });
 
     render(
@@ -54,7 +55,7 @@ describe("pages", () => {
   });
 
   it("renders the product catalogue", async () => {
-    vi.mocked(getProducts).mockResolvedValue(testProducts);
+    vi.mocked(getProducts).mockResolvedValue(localProducts);
 
     render(
       <MemoryRouter>
@@ -87,10 +88,10 @@ describe("pages", () => {
   });
 
   it("renders product details for an existing route parameter", async () => {
-    vi.mocked(getProduct).mockResolvedValue(testProducts[0]);
+    vi.mocked(getProduct).mockResolvedValue(localProducts[0]);
 
     render(
-      <MemoryRouter initialEntries={[`/products/${testProducts[0].id}`]}>
+      <MemoryRouter initialEntries={[`/products/${localProducts[0].id}`]}>
         <CartProvider>
           <Routes>
             <Route path="/products/:id" element={<ProductDetailsPage />} />
@@ -101,11 +102,11 @@ describe("pages", () => {
 
     expect(
       await screen.findByRole("heading", {
-        name: testProducts[0].name,
+        name: localProducts[0].name,
       }),
     ).toBeInTheDocument();
 
-    expect(screen.getByText(testProducts[0].description)).toBeInTheDocument();
+    expect(screen.getByText(localProducts[0].description)).toBeInTheDocument();
   });
 
   it("renders a not-found state for an unknown product", async () => {

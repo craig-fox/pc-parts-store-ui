@@ -4,7 +4,7 @@ import { describe, expect, it, vi } from "vitest";
 
 import AddToCartButton from "./AddToCartButton";
 import { useCart } from "../../context/CartContext";
-import { testProducts } from "../../test/fixtures/products";
+import { localProducts } from "../../fixtures/products";
 import { createMockCartContext } from "../../test/mocks/cartContext";
 
 vi.mock("../../context/CartContext", () => ({
@@ -22,9 +22,9 @@ describe("AddToCartButton", () => {
       }),
     );
 
-    render(<AddToCartButton product={testProducts[0]} />);
+    render(<AddToCartButton product={localProducts[0]} />);
     await user.click(screen.getByRole("button", { name: "Add to Cart" }));
 
-    expect(addItem).toHaveBeenCalledWith(testProducts[0]);
+    expect(addItem).toHaveBeenCalledWith(localProducts[0]);
   });
 });

@@ -5,8 +5,8 @@ import { describe, expect, it, vi } from "vitest";
 
 import CartPage from "./CartPage";
 import { useCart } from "../context/CartContext";
-import { testProducts } from "../test/fixtures/products";
 import { createMockCartContext } from "../test/mocks/cartContext";
+import { localProducts } from "../fixtures/products";
 
 vi.mock("../context/CartContext", () => ({
   useCart: vi.fn(),
@@ -21,8 +21,8 @@ describe("CartPage", () => {
     vi.mocked(useCart).mockReturnValue(
       createMockCartContext({
         items: [
-          { product: testProducts[0], quantity: 2 },
-          { product: testProducts[2], quantity: 1 },
+          { product: localProducts[0], quantity: 2 },
+          { product: localProducts[2], quantity: 1 },
         ],
         totalItems: 3,
         totalWeight: 1.0,
@@ -41,8 +41,8 @@ describe("CartPage", () => {
       screen.getByRole("heading", { name: "Shopping Cart" }),
     ).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Items" })).toBeInTheDocument();
-    expect(screen.getByText(testProducts[0].name)).toBeInTheDocument();
-    expect(screen.getByText(testProducts[2].name)).toBeInTheDocument();
+    expect(screen.getByText(localProducts[0].name)).toBeInTheDocument();
+    expect(screen.getByText(localProducts[2].name)).toBeInTheDocument();
     expect(
       screen.getByRole("heading", { name: "Order Summary" }),
     ).toBeInTheDocument();

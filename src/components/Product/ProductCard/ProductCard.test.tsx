@@ -4,7 +4,7 @@ import { describe, expect, it, vi } from "vitest";
 
 import ProductCard from "./ProductCard";
 import { useCart } from "../../../context/CartContext";
-import { testProducts } from "../../../test/fixtures/products";
+import { localProducts } from "../../../fixtures/products";
 import { createMockCartContext } from "../../../test/mocks/cartContext";
 
 vi.mock("../../../context/CartContext", () => ({
@@ -19,7 +19,9 @@ describe("ProductCard", () => {
         addItem,
       }),
     );
-    const product = testProducts[0];
+    const product = localProducts[0];
+    const productId = "7c2f5db6-8d7a-4b6d-a3d1-1c8d1f2d4e91";
+    const expectedUrl = `/products/${productId}`;
 
     render(
       <MemoryRouter>
@@ -30,6 +32,6 @@ describe("ProductCard", () => {
     expect(screen.getByText(product.category)).toBeInTheDocument();
     expect(screen.getByText(product.description)).toBeInTheDocument();
     expect(screen.getByText("$799.00")).toBeInTheDocument();
-    expect(screen.getByRole("link")).toHaveAttribute("href", "/products/1");
+    expect(screen.getByRole("link")).toHaveAttribute("href", expectedUrl);
   });
 });

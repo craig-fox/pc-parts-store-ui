@@ -1,11 +1,10 @@
 import { describe, expect, it } from "vitest";
-
-import { testProducts } from "../test/fixtures/products";
 import { filterProducts, sortProducts } from "./productFilters";
+import { localProducts } from "../fixtures/products";
 
 describe("filterProducts", () => {
   it("returns products matching the search term", () => {
-    const result = filterProducts(testProducts, "Ryzen", "All");
+    const result = filterProducts(localProducts, "Ryzen", "All");
 
     expect(result).toHaveLength(1);
 
@@ -14,7 +13,7 @@ describe("filterProducts", () => {
 });
 
 it("returns only products in the selected category", () => {
-  const result = filterProducts(testProducts, "", "GPU");
+  const result = filterProducts(localProducts, "", "GPU");
 
   expect(result).toHaveLength(1);
 
@@ -22,14 +21,14 @@ it("returns only products in the selected category", () => {
 });
 
 it("returns every product when category is All", () => {
-  const result = filterProducts(testProducts, "", "All");
+  const result = filterProducts(localProducts, "", "All");
 
-  expect(result).toHaveLength(testProducts.length);
+  expect(result).toHaveLength(localProducts.length);
 });
 
 describe("sortProducts", () => {
   it("sorts by ascending price", () => {
-    const result = sortProducts(testProducts, "priceAsc");
+    const result = sortProducts(localProducts, "priceAsc");
 
     expect(result[0].price).toBe(149);
 
@@ -38,21 +37,21 @@ describe("sortProducts", () => {
 });
 
 it("does not mutate the original array", () => {
-  const original = [...testProducts];
+  const original = [...localProducts];
 
-  sortProducts(testProducts, "priceAsc");
+  sortProducts(localProducts, "priceAsc");
 
-  expect(testProducts).toEqual(original);
+  expect(localProducts).toEqual(original);
 });
 
 it("returns no products when the search term does not match", () => {
-  const result = filterProducts(testProducts, "Eniac", "All");
+  const result = filterProducts(localProducts, "Eniac", "All");
 
   expect(result).toHaveLength(0);
 });
 
 it("returns no products when no products match the category", () => {
-  const result = filterProducts(testProducts, "", "Motherboard");
+  const result = filterProducts(localProducts, "", "Motherboard");
 
   expect(result).toHaveLength(0);
 });

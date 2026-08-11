@@ -3,7 +3,7 @@ import { MemoryRouter } from "react-router-dom";
 import { describe, expect, it } from "vitest";
 
 import ProductGrid from "./ProductGrid";
-import { testProducts } from "../test/fixtures/products";
+import { localProducts } from "../fixtures/products";
 import { CartProvider } from "../context/CartContext";
 
 describe("ProductGrid", () => {
@@ -11,12 +11,12 @@ describe("ProductGrid", () => {
     render(
       <MemoryRouter>
         <CartProvider>
-          <ProductGrid products={testProducts} />
+          <ProductGrid products={localProducts} />
         </CartProvider>
       </MemoryRouter>,
     );
 
-    testProducts.forEach((product) => {
+    localProducts.forEach((product) => {
       expect(screen.getByText(product.name)).toBeInTheDocument();
     });
   });

@@ -3,8 +3,8 @@ import { describe, expect, it, vi } from "vitest";
 
 import ProductSummary from "./ProductSummary";
 import { useCart } from "../../../context/CartContext";
-import { testProducts } from "../../../test/fixtures/products";
 import { createMockCartContext } from "../../../test/mocks/cartContext";
+import { localProducts } from "../../../fixtures/products";
 
 vi.mock("../../../context/CartContext", () => ({
   useCart: vi.fn(),
@@ -19,10 +19,10 @@ describe("ProductSummary", () => {
       }),
     );
 
-    render(<ProductSummary product={testProducts[0]} />);
+    render(<ProductSummary product={localProducts[0]} />);
 
     expect(
-      screen.getByRole("heading", { name: testProducts[0].name }),
+      screen.getByRole("heading", { name: localProducts[0].name }),
     ).toBeInTheDocument();
     expect(screen.getByText("AMD")).toBeInTheDocument();
     expect(screen.getByText("In Stock")).toBeInTheDocument();
