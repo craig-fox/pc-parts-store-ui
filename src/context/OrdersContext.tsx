@@ -15,6 +15,7 @@ export type OrdersContextType = {
   loading: boolean;
   error: string | null;
   getOrder: (id: string) => OrderResponse | undefined;
+  addOrder: (order: OrderResponse) => void;
 };
 
 export const OrdersContext = createContext<OrdersContextType | undefined>(
@@ -58,6 +59,10 @@ export function OrdersProvider({ children }: PropsWithChildren): JSX.Element {
     return orders.find((order) => order.id === id);
   };
 
+  const addOrder = (order: OrderResponse) => {
+    setOrders((current) => [...current, order]);
+  };
+
   return (
     <OrdersContext.Provider
       value={{
@@ -65,6 +70,7 @@ export function OrdersProvider({ children }: PropsWithChildren): JSX.Element {
         loading,
         error,
         getOrder,
+        addOrder
       }}
     >
       {children}

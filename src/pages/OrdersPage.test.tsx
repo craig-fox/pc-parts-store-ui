@@ -4,10 +4,11 @@ import { describe, expect, it, vi } from "vitest";
 
 import OrdersPage from "./OrdersPage";
 import { useOrders } from "../context/useOrders";
-import { testProducts } from "../test/fixtures/products";
 import { createMockOrdersContext } from "../test/mocks/ordersContext";
 
-vi.mock("../context/useOrders", () => ({ useOrders: vi.fn() }));
+vi.mock("../context/useOrders", () => ({
+  useOrders: vi.fn(),
+}));
 
 function renderOrdersPage() {
   render(
@@ -22,10 +23,9 @@ describe("OrdersPage", () => {
     vi.mocked(useOrders).mockReturnValue(
       createMockOrdersContext({
         orders: [],
-        latestOrder: undefined,
-        addOrder: vi.fn(),
+        loading: false,
+        error: null,
         getOrder: vi.fn(),
-        clearOrders: vi.fn(),
       }),
     );
 
@@ -43,28 +43,26 @@ describe("OrdersPage", () => {
         orders: [
           {
             id: "order-123",
-            checkout: {
-              customer: {
-                firstName: "Craig",
-                lastName: "Fox",
-                email: "craig@example.com",
-              },
-              shippingAddress: {
-                addressLine1: "1 Main St",
-                city: "Auckland",
-                postcode: "1010",
-                country: "NZ",
-              },
-            },
-            items: [{ product: testProducts[0], quantity: 1 }],
+            customerId: "customer-123",
+            orderDate: "2026-07-20T00:00:00",
+            status: "PLACED",
             subtotal: 799,
             shipping: 8,
             total: 807,
-            totalWeight: 0.04,
-            placedAt: new Date("2026-07-20T00:00:00Z"),
-            status: "PLACED",
+            items: [
+              {
+                productId: "product-123",
+                productName: "AMD Ryzen 7 9800X3D",
+                quantity: 1,
+                unitPrice: 799,
+                lineTotal: 799,
+              },
+            ],
           },
         ],
+        loading: false,
+        error: null,
+        getOrder: vi.fn(),
       }),
     );
 
@@ -73,6 +71,7 @@ describe("OrdersPage", () => {
     expect(
       screen.getByRole("heading", { name: "Order #ORDER-12" }),
     ).toBeInTheDocument();
+
     expect(screen.getByText("AMD Ryzen 7 9800X3D × 1")).toBeInTheDocument();
   });
 });
