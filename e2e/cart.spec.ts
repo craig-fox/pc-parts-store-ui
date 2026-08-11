@@ -27,7 +27,7 @@ test("user can add products, update quantities, and remove an item", async ({
       name: "AMD Ryzen 7 9800X3D",
     }),
   });
-  
+
   const rtxCard = page.getByTestId("product-card").filter({
     has: page.getByRole("heading", {
       name: "NVIDIA RTX 5070",
@@ -70,10 +70,8 @@ test("user can clear all cart items", async ({ page }) => {
       name: "Samsung 990 Pro 2TB",
     }),
   });
-  
-  await samsungCard
-    .getByRole("button", { name: "Add to Cart" })
-    .click();
+
+  await samsungCard.getByRole("button", { name: "Add to Cart" }).click();
 
   await openCart(page);
   await expect(

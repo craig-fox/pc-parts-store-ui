@@ -1,11 +1,11 @@
 export type LoginRequest = {
-    email: string;
-    password: string;
+  email: string;
+  password: string;
 };
 
 export type LoginResponse = {
-    token: string;
-    customerId: string;
-    firstName: string;
-    preferredName: string;
+  token: string;
+  customerId: string;
+  firstName: string;
+  preferredName: string | null;
 };

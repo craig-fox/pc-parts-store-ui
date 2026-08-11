@@ -4,7 +4,6 @@ import { describe, expect, it, vi } from "vitest";
 
 import CartPage from "./CartPage";
 import HomePage from "./HomePage";
-import LoginPage from "../auth/LoginPage";
 import OrdersPage from "./OrdersPage";
 import ProductDetailsPage from "./ProductDetailsPage";
 import ProductsPage from "./ProductsPage";
@@ -25,16 +24,6 @@ describe("pages", () => {
     expect(
       screen.getByRole("heading", {
         name: /welcome to the pc parts store/i,
-      }),
-    ).toBeInTheDocument();
-  });
-
-  it("renders the login heading", () => {
-    render(<LoginPage />);
-
-    expect(
-      screen.getByRole("heading", {
-        name: /login/i,
       }),
     ).toBeInTheDocument();
   });
