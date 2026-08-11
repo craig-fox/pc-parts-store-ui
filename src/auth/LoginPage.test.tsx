@@ -4,6 +4,7 @@ import userEvent from "@testing-library/user-event";
 import LoginPage from "./LoginPage";
 import { useAuth } from "./AuthContext";
 import { vi, describe, beforeEach, it, expect } from "vitest";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
 
 vi.mock("./AuthContext", () => ({
   useAuth: vi.fn(),
@@ -24,7 +25,11 @@ describe("LoginPage", () => {
   });
 
   it("renders the login form", () => {
-    render(<LoginPage />);
+    render(
+      <MemoryRouter>
+        <LoginPage />
+      </MemoryRouter>,
+    );
 
     expect(screen.getByRole("heading", { name: "Login" })).toBeInTheDocument();
     expect(screen.getByLabelText("Email")).toBeInTheDocument();
@@ -37,7 +42,11 @@ describe("LoginPage", () => {
 
     const user = userEvent.setup();
 
-    render(<LoginPage />);
+    render(
+      <MemoryRouter>
+        <LoginPage />
+      </MemoryRouter>,
+    );
 
     await user.type(screen.getByLabelText("Email"), "alice.smith@example.com");
 
@@ -58,7 +67,11 @@ describe("LoginPage", () => {
 
     const user = userEvent.setup();
 
-    render(<LoginPage />);
+    render(
+      <MemoryRouter>
+        <LoginPage />
+      </MemoryRouter>,
+    );
 
     await user.type(screen.getByLabelText("Email"), "alice.smith@example.com");
 
@@ -82,7 +95,11 @@ describe("LoginPage", () => {
 
     const user = userEvent.setup();
 
-    render(<LoginPage />);
+    render(
+      <MemoryRouter>
+        <LoginPage />
+      </MemoryRouter>,
+    );
 
     await user.type(screen.getByLabelText("Email"), "alice.smith@example.com");
 
@@ -102,5 +119,28 @@ describe("LoginPage", () => {
     });
 
     expect(button).toHaveTextContent("Login");
+  });
+
+  it("redirects to the home page after successful authentication", async () => {
+    mockAuthenticate.mockResolvedValue(undefined);
+
+    const user = userEvent.setup();
+
+    render(
+      <MemoryRouter initialEntries={["/login"]}>
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/products" element={<div>Products Page</div>} />
+        </Routes>
+      </MemoryRouter>,
+    );
+
+    await user.type(screen.getByLabelText("Email"), "alice.smith@example.com");
+
+    await user.type(screen.getByLabelText("Password"), "password");
+
+    await user.click(screen.getByRole("button", { name: "Login" }));
+
+    expect(await screen.findByText("Products Page")).toBeInTheDocument();
   });
 });

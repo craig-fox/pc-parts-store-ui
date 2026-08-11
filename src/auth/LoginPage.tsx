@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { useAuth } from "./AuthContext";
 import type { LoginRequest } from "./authTypes";
+import { useNavigate } from "react-router-dom";
 
 function LoginPage() {
+  const navigate = useNavigate();
   const { login: authenticate } = useAuth();
 
   const [login, setLogin] = useState<LoginRequest>({
@@ -28,6 +30,7 @@ function LoginPage() {
 
     try {
       await authenticate(login);
+      navigate("/products");
     } catch (error) {
       console.error(error);
       setError("Invalid email or password.");
