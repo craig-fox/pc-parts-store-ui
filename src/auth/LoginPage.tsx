@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useAuth } from "./AuthContext";
 import type { LoginRequest } from "./authTypes";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function LoginPage() {
   const navigate = useNavigate();
@@ -89,6 +89,15 @@ function LoginPage() {
             {loading ? "Logging in..." : "Login"}
           </button>
         </form>
+        <p className="mt-6 text-center text-slate-600">
+          Don&apos;t have an account?{" "}
+          <Link
+            to="/register"
+            className="font-medium text-sky-600 hover:text-sky-700"
+          >
+            Create an account
+          </Link>
+        </p>
       </div>
     </div>
   );

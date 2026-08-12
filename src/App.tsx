@@ -12,6 +12,7 @@ import OrderConfirmationPage from "./pages/OrderConfirmationPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import ProtectedRoute from "./auth/ProtectedRoute";
 import CheckoutPage from "./pages/CheckoutPage";
+import RegistrationPage from "./pages/RegistrationPage";
 
 function App() {
   return (
@@ -28,6 +29,8 @@ function App() {
             <Route path="/checkout" element={<CheckoutPage />} />
             <Route path="/orders" element={<OrdersPage />} />
           </Route>
+
+          <Route path="/register" element={<RegistrationPage />} />
 
           <Route path="/login" element={<LoginPage />} />
 
