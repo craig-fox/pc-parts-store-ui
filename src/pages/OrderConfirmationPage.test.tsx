@@ -30,7 +30,7 @@ describe("OrderConfirmationPage", () => {
     const order = {
       id: "order-123",
       customerId: "customer-123",
-      orderDate: new Date("2026-08-12T00:00:00Z"),
+      orderDate: "2026-08-12T00:00:00Z",
       status: "PLACED" as const,
       subtotal: 799,
       shipping: 8,

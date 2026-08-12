@@ -121,7 +121,7 @@ describe("LoginPage", () => {
     expect(button).toHaveTextContent("Login");
   });
 
-  it("redirects to the home page after successful authentication", async () => {
+  it("redirects to the products page after successful authentication", async () => {
     mockAuthenticate.mockResolvedValue(undefined);
 
     const user = userEvent.setup();
