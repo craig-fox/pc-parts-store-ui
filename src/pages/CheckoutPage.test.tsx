@@ -1,6 +1,7 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import { MemoryRouter } from "react-router-dom";
-import { describe, expect, it, vi } from "vitest";
+import { render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import CheckoutPage from "./CheckoutPage";
 import { useCart } from "../context/CartContext";
@@ -46,6 +47,10 @@ const createdOrder = {
 };
 
 describe("CheckoutPage", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
   it("shows a browse-products empty state when the cart is empty", () => {
     vi.mocked(useCart).mockReturnValue(createMockCartContext());
     vi.mocked(useOrders).mockReturnValue(createMockOrdersContext());
@@ -85,8 +90,9 @@ describe("CheckoutPage", () => {
   });
 
   it("adds the created order to the orders context after successful submission", async () => {
+    const user = userEvent.setup();
     const addOrder = vi.fn();
-
+  
     vi.mocked(useOrders).mockReturnValue({
       orders: [],
       loading: false,
@@ -94,45 +100,45 @@ describe("CheckoutPage", () => {
       getOrder: vi.fn(),
       addOrder,
     });
-
+  
     vi.mocked(orderService.createOrder).mockResolvedValue(createdOrder);
-
+  
+    const clearCart = vi.fn();
+  
+    vi.mocked(useCart).mockReturnValue(
+      createMockCartContext({
+        items: [{ product: localProducts[0], quantity: 1 }],
+        totalItems: 1,
+        totalPrice: 799,
+        totalWeight: 0.04,
+        clearCart,
+      }),
+    );
+  
     render(
-      <MemoryRouter>
-        <CheckoutPage />
+      <MemoryRouter initialEntries={["/checkout"]}>
+        <Routes>
+          <Route path="/checkout" element={<CheckoutPage />} />
+          <Route
+            path="/order-confirmation"
+            element={<div>Order Confirmation Page</div>}
+          />
+        </Routes>
       </MemoryRouter>,
     );
-
-    fireEvent.change(screen.getByLabelText("First Name"), {
-      target: { value: "Craig" },
-    });
-
-    fireEvent.change(screen.getByLabelText("Last Name"), {
-      target: { value: "Fox" },
-    });
-
-    fireEvent.change(screen.getByLabelText("Email"), {
-      target: { value: "craig@example.com" },
-    });
-
-    fireEvent.change(screen.getByLabelText("Address"), {
-      target: { value: "1 Main St" },
-    });
-
-    fireEvent.change(screen.getByLabelText("City"), {
-      target: { value: "Auckland" },
-    });
-
-    fireEvent.change(screen.getByLabelText("Postcode"), {
-      target: { value: "1010" },
-    });
-
-    fireEvent.change(screen.getByLabelText("Country"), {
-      target: { value: "NZ" },
-    });
-
-    fireEvent.click(screen.getByRole("button", { name: "Confirm Order" }));
-
+  
+    await user.type(screen.getByLabelText("First Name"), "Craig");
+    await user.type(screen.getByLabelText("Last Name"), "Fox");
+    await user.type(screen.getByLabelText("Email"), "craig@example.com");
+    await user.type(screen.getByLabelText("Address"), "1 Main St");
+    await user.type(screen.getByLabelText("City"), "Auckland");
+    await user.type(screen.getByLabelText("Postcode"), "1010");
+    await user.type(screen.getByLabelText("Country"), "NZ");
+  
+    await user.click(
+      screen.getByRole("button", { name: "Confirm Order" }),
+    );
+  
     await waitFor(() => {
       expect(orderService.createOrder).toHaveBeenCalledWith({
         items: [
@@ -143,7 +149,113 @@ describe("CheckoutPage", () => {
         ],
       });
     });
-
+  
     expect(addOrder).toHaveBeenCalledWith(createdOrder);
+    expect(clearCart).toHaveBeenCalled();
+    expect(
+      await screen.findByText("Order Confirmation Page"),
+    ).toBeInTheDocument();
+  });
+
+ 
+  it("shows validation errors and does not submit an invalid checkout", async () => {
+    const user = userEvent.setup();
+  
+    vi.mocked(useCart).mockReturnValue(
+      createMockCartContext({
+        items: [{ product: localProducts[0], quantity: 1 }],
+        totalItems: 1,
+        totalPrice: 799,
+        totalWeight: 0.04,
+      }),
+    );
+  
+    vi.mocked(useOrders).mockReturnValue(createMockOrdersContext());
+  
+    renderCheckoutPage();
+  
+    await user.click(
+      screen.getByRole("button", { name: "Confirm Order" }),
+    );
+  
+    expect(
+      screen.getByText("First name is required."),
+    ).toBeInTheDocument();
+  
+    expect(
+      screen.getByText("Last name is required."),
+    ).toBeInTheDocument();
+  
+    expect(
+      screen.getByText("Email is required."),
+    ).toBeInTheDocument();
+  
+    expect(
+      screen.getByText("Address is required."),
+    ).toBeInTheDocument();
+  
+    expect(
+      screen.getByText("City is required."),
+    ).toBeInTheDocument();
+  
+    expect(
+      screen.getByText("Country is required."),
+    ).toBeInTheDocument();
+  
+    expect(
+      screen.getByText("Postcode is required."),
+    ).toBeInTheDocument();
+  
+    expect(orderService.createOrder).not.toHaveBeenCalled();
+  });
+   
+
+  it("does not clear the cart or add an order when order creation fails", async () => {
+    const user = userEvent.setup();
+    const clearCart = vi.fn();
+    const addOrder = vi.fn();
+  
+    vi.mocked(useCart).mockReturnValue(
+      createMockCartContext({
+        items: [{ product: localProducts[0], quantity: 1 }],
+        totalItems: 1,
+        totalPrice: 799,
+        totalWeight: 0.04,
+        clearCart,
+      }),
+    );
+  
+    vi.mocked(useOrders).mockReturnValue({
+      orders: [],
+      loading: false,
+      error: null,
+      getOrder: vi.fn(),
+      addOrder,
+    });
+  
+    vi.mocked(orderService.createOrder).mockRejectedValue(
+      new Error("Order creation failed"),
+    );
+  
+    renderCheckoutPage();
+  
+    await user.type(screen.getByLabelText("First Name"), "Craig");
+    await user.type(screen.getByLabelText("Last Name"), "Fox");
+    await user.type(screen.getByLabelText("Email"), "craig@example.com");
+    await user.type(screen.getByLabelText("Address"), "1 Main St");
+    await user.type(screen.getByLabelText("City"), "Auckland");
+    await user.type(screen.getByLabelText("Postcode"), "1010");
+    await user.type(screen.getByLabelText("Country"), "NZ");
+  
+    await user.click(
+      screen.getByRole("button", { name: "Confirm Order" }),
+    );
+  
+    await waitFor(() => {
+      expect(orderService.createOrder).toHaveBeenCalled();
+    });
+  
+    expect(addOrder).not.toHaveBeenCalled();
+    expect(clearCart).not.toHaveBeenCalled();
   });
 });

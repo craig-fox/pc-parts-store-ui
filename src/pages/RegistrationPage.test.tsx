@@ -1,4 +1,5 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
 import { describe, expect, it, vi } from "vitest";
 
@@ -24,7 +25,7 @@ describe("RegistrationPage", () => {
     renderRegistrationPage();
 
     expect(
-      screen.getByRole("heading", { name: "Create an Account" }),
+      screen.getByRole("heading", { name: "Register an Account" }),
     ).toBeInTheDocument();
 
     expect(screen.getByLabelText("First Name")).toBeInTheDocument();
@@ -35,7 +36,7 @@ describe("RegistrationPage", () => {
     expect(screen.getByLabelText("Password")).toBeInTheDocument();
 
     expect(
-      screen.getByRole("button", { name: "Create Account" }),
+      screen.getByRole("button", { name: "Register Account" }),
     ).toBeInTheDocument();
 
     expect(screen.getByRole("link", { name: "Log in" })).toHaveAttribute(
@@ -46,8 +47,8 @@ describe("RegistrationPage", () => {
 
   it("shows validation errors and does not submit invalid data", async () => {
     renderRegistrationPage();
-
-    fireEvent.click(screen.getByRole("button", { name: "Create Account" }));
+    const user = userEvent.setup();
+    await user.type(screen.getByRole("button"), "Register Account");
 
     expect(screen.getByText("First name is required.")).toBeInTheDocument();
 
@@ -74,32 +75,14 @@ describe("RegistrationPage", () => {
     });
 
     renderRegistrationPage();
-
-    fireEvent.change(screen.getByLabelText("First Name"), {
-      target: { value: "Craig" },
-    });
-
-    fireEvent.change(screen.getByLabelText("Last Name"), {
-      target: { value: "Fox" },
-    });
-
-    fireEvent.change(screen.getByLabelText("Preferred Name"), {
-      target: { value: "Craig" },
-    });
-
-    fireEvent.change(screen.getByLabelText("Email"), {
-      target: { value: "craig@example.com" },
-    });
-
-    fireEvent.change(screen.getByLabelText("Address"), {
-      target: { value: "1 Main St" },
-    });
-
-    fireEvent.change(screen.getByLabelText("Password"), {
-      target: { value: "password123" },
-    });
-
-    fireEvent.click(screen.getByRole("button", { name: "Create Account" }));
+    const user = userEvent.setup();
+    await user.type(screen.getByLabelText("First Name"), "Craig");
+    await user.type(screen.getByLabelText("Last Name"), "Fox");
+    await user.type(screen.getByLabelText("Preferred Name"), "Craig");
+    await user.type(screen.getByLabelText("Email"), "craig@example.com");
+    await user.type(screen.getByLabelText("Address"), "1 Main St");
+    await user.type(screen.getByLabelText("Password"), "password123");
+    await user.type(screen.getByRole("button"), "Register Account");
 
     await waitFor(() => {
       expect(customerService.registerCustomer).toHaveBeenCalledWith({
@@ -125,28 +108,13 @@ describe("RegistrationPage", () => {
     });
 
     renderRegistrationPage();
-
-    fireEvent.change(screen.getByLabelText("First Name"), {
-      target: { value: "Craig" },
-    });
-
-    fireEvent.change(screen.getByLabelText("Last Name"), {
-      target: { value: "Fox" },
-    });
-
-    fireEvent.change(screen.getByLabelText("Email"), {
-      target: { value: "craig@example.com" },
-    });
-
-    fireEvent.change(screen.getByLabelText("Address"), {
-      target: { value: "1 Main St" },
-    });
-
-    fireEvent.change(screen.getByLabelText("Password"), {
-      target: { value: "password123" },
-    });
-
-    fireEvent.click(screen.getByRole("button", { name: "Create Account" }));
+    const user = userEvent.setup();
+    await user.type(screen.getByLabelText("First Name"), "Craig");
+    await user.type(screen.getByLabelText("Last Name"), "Fox");
+    await user.type(screen.getByLabelText("Email"), "craig@example.com");
+    await user.type(screen.getByLabelText("Address"), "1 Main St");
+    await user.type(screen.getByLabelText("Password"), "password123");
+    await user.type(screen.getByRole("button"), "Register Account");
 
     await waitFor(() => {
       expect(customerService.registerCustomer).toHaveBeenCalledWith({
@@ -166,28 +134,13 @@ describe("RegistrationPage", () => {
     );
 
     renderRegistrationPage();
-
-    fireEvent.change(screen.getByLabelText("First Name"), {
-      target: { value: "Craig" },
-    });
-
-    fireEvent.change(screen.getByLabelText("Last Name"), {
-      target: { value: "Fox" },
-    });
-
-    fireEvent.change(screen.getByLabelText("Email"), {
-      target: { value: "craig@example.com" },
-    });
-
-    fireEvent.change(screen.getByLabelText("Address"), {
-      target: { value: "1 Main St" },
-    });
-
-    fireEvent.change(screen.getByLabelText("Password"), {
-      target: { value: "password123" },
-    });
-
-    fireEvent.click(screen.getByRole("button", { name: "Create Account" }));
+    const user = userEvent.setup();
+    await user.type(screen.getByLabelText("First Name"), "Craig");
+    await user.type(screen.getByLabelText("Last Name"), "Fox");
+    await user.type(screen.getByLabelText("Email"), "craig@example.com");
+    await user.type(screen.getByLabelText("Address"), "1 Main St");
+    await user.type(screen.getByLabelText("Password"), "password123");
+    await user.type(screen.getByRole("button"), "Register Account");
 
     expect(await screen.findByRole("alert")).toHaveTextContent(
       "Unable to complete registration. Please check your details and try again.",

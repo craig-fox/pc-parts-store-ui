@@ -141,9 +141,10 @@ function RegistrationPage() {
   }
 
   return (
+    <>
     <div className="mx-auto max-w-xl px-6 py-12">
-      <h1 className="mb-8 text-4xl font-bold">Create an Account</h1>
-
+      <h1 className="mb-8 text-4xl font-bold">Register an Account</h1>
+     
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="grid gap-6 sm:grid-cols-2">
           <div className="flex flex-col">
@@ -266,7 +267,7 @@ function RegistrationPage() {
         )}
 
         <Button type="submit" disabled={submitting} className="w-full">
-          {submitting ? "Creating Account..." : "Create Account"}
+          {submitting ? "Registering Account..." : "Register Account"}
         </Button>
       </form>
 
@@ -280,6 +281,7 @@ function RegistrationPage() {
         </Link>
       </p>
     </div>
+    </>
   );
 }
 
