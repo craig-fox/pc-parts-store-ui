@@ -1,17 +1,20 @@
 export async function authenticatedFetch(
   url: string,
   options: RequestInit = {},
-): Promise<Response> {
+) {
   const token = localStorage.getItem("token");
 
-  const headers = new Headers(options.headers);
-
-  if (token) {
-    headers.set("Authorization", `Bearer ${token}`);
-  }
+  console.log("AUTHENTICATED FETCH:", {
+    url,
+    method: options.method ?? "GET",
+    hasToken: !!token,
+  });
 
   return fetch(url, {
     ...options,
-    headers,
+    headers: {
+      ...options.headers,
+      Authorization: `Bearer ${token}`,
+    },
   });
 }

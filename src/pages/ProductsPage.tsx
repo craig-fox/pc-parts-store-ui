@@ -11,12 +11,21 @@ import type { Product } from "../types/Product";
 
 function ProductsPage() {
   const [searchTerm, setSearchTerm] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [category, setCategory] = useState<ProductCategory>("All");
   const [sortBy, setSortBy] = useState<ProductSortOption>("name");
   const [catalogue, setCatalogue] = useState<Product[]>([]);
 
   useEffect(() => {
-    getProducts().then(setCatalogue);
+    getProducts()
+      .then(setCatalogue)
+      .catch(() => {
+        setError("Unable to load products");
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, []);
 
   const categories = useMemo(() => {
@@ -32,6 +41,24 @@ function ProductsPage() {
     filterProducts(catalogue, searchTerm, category),
     sortBy,
   );
+
+  if (loading) {
+    return (
+      <div>
+        <h1>Products</h1>
+        <p>Loading products...</p>
+      </div>
+    );
+  }
+  
+  if (error) {
+    return (
+      <div>
+        <h1>Products</h1>
+        <p>{error}</p>
+      </div>
+    );
+  }
 
   return (
     <>

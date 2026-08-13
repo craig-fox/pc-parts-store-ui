@@ -60,9 +60,23 @@ export function OrdersProvider({ children }: PropsWithChildren): JSX.Element {
   };
 
   const addOrder = (order: OrderResponse) => {
-    setOrders((current) => [...current, order]);
+    console.log("ADDING ORDER TO CONTEXT:", order.id);
+  
+    setOrders((current) => {
+      const updated = [...current, order];
+  
+      console.log(
+        "ORDERS CONTEXT AFTER ADD:",
+        updated.map((o) => o.id),
+      );
+  
+      return updated;
+    });
   };
-
+  console.log(
+    "ORDERS PROVIDER RENDER:",
+    orders.map((order) => order.id),
+  );
   return (
     <OrdersContext.Provider
       value={{

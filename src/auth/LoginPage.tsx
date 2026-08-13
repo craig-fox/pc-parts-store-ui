@@ -24,15 +24,20 @@ function LoginPage() {
 
   const handleSubmit = async (event: React.SubmitEvent) => {
     event.preventDefault();
-
+  
     setError("");
     setLoading(true);
-
+  
     try {
-      await authenticate(login);
+      console.log("LOGIN SUBMIT:", login);
+  
+      const result = await authenticate(login);
+  
+      console.log("AUTHENTICATE SUCCEEDED:", result);
+  
       navigate("/products");
     } catch (error) {
-      console.error(error);
+      console.error("AUTHENTICATE FAILED:", error);
       setError("Invalid email or password.");
     } finally {
       setLoading(false);
