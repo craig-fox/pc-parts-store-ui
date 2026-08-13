@@ -44,19 +44,25 @@ export const orderService = {
     if (environment.dataSource === "fixture") {
       return [...demoOrders];
     }
-
+  
     const response = await authenticatedFetch(
       `${environment.orderApiBaseUrl}/orders`,
       {
         method: "GET",
       },
     );
-
+  
+    console.log("GET ORDERS STATUS:", response.status);
+  
     if (!response.ok) {
       throw new Error(`Failed to retrieve orders: ${response.status}`);
     }
-
-    return response.json();
+  
+    const orders = await response.json();
+  
+    console.log("GET ORDERS BODY:", orders);
+  
+    return orders;
   },
 };
 

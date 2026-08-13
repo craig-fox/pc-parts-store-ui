@@ -30,6 +30,7 @@ function setupUnauthenticatedUser() {
   vi.mocked(useAuth).mockReturnValue({
     user: null,
     isAuthenticated: false,
+    loading: true,
     login: vi.fn(),
     logout: vi.fn(),
   });

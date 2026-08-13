@@ -4,6 +4,8 @@ const AUTH_API_BASE_URL = "http://localhost:8085/api/auth";
 
 export const authService = {
   async login(request: LoginRequest): Promise<LoginResponse> {
+    console.log("AUTH API REQUEST:", request);
+
     const response = await fetch(`${AUTH_API_BASE_URL}/login`, {
       method: "POST",
       headers: {
@@ -11,6 +13,8 @@ export const authService = {
       },
       body: JSON.stringify(request),
     });
+
+    console.log("AUTH API RESPONSE:", response.status);
 
     if (!response.ok) {
       const body = await response.text();

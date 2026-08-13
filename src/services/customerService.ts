@@ -16,11 +16,17 @@ export const customerService = {
         body: JSON.stringify(request),
       },
     );
-
+  
+    console.log("REGISTER RESPONSE STATUS:", response.status);
+  
+    const responseBody = await response.text();
+  
+    console.log("REGISTER RESPONSE BODY:", responseBody);
+  
     if (!response.ok) {
       throw new Error(`Registration failed: ${response.status}`);
     }
-
-    return response.json();
-  },
+  
+    return JSON.parse(responseBody);
+  }
 };

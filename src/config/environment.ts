@@ -4,4 +4,5 @@ export const environment = {
   orderApiBaseUrl: import.meta.env.VITE_ORDER_API_BASE_URL,
   assetBaseUrl: import.meta.env.VITE_ASSET_BASE_URL,
   customerApiBaseUrl: import.meta.env.VITE_CUSTOMER_API_BASE_URL,
+  inventoryApiBaseUrl: import.meta.env.VITE_INVENTORY_API_BASE_URL
 };

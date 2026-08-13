@@ -12,6 +12,7 @@ import type { LoginRequest, LoginResponse } from "./authTypes";
 interface AuthContextValue {
   user: LoginResponse | null;
   isAuthenticated: boolean;
+  loading: boolean;
   login: (request: LoginRequest) => Promise<void>;
   logout: () => void;
 }
@@ -24,13 +25,16 @@ interface AuthProviderProps {
 
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<LoginResponse | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const storedUser = localStorage.getItem("authUser");
-
+  
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
+  
+    setLoading(false);
   }, []);
 
   async function login(request: LoginRequest): Promise<void> {
@@ -52,6 +56,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const value: AuthContextValue = {
     user,
     isAuthenticated: user !== null,
+    loading,
     login,
     logout,
   };
