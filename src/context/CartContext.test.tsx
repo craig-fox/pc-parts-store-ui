@@ -28,19 +28,6 @@ function CartControls() {
   );
 }
 
-function CartImageControl() {
-  const { addItem, items } = useCart();
-  const staleGpu = { ...localProducts[2], imageUrl: "" };
-
-  return (
-    <>
-      <button type="button" onClick={() => addItem(staleGpu)}>
-        Add stale GPU
-      </button>
-      {items[0] && <img alt="Cart product" src={items[0].product.imageUrl} />}
-    </>
-  );
-}
 
 describe("CartProvider", () => {
   it("maintains cart items and derived totals through cart actions", async () => {

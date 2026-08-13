@@ -2,7 +2,6 @@ import { environment } from "../config/environment";
 import type { InventoryResponse } from "../types/InventoryResponse";
 import { authenticatedFetch } from "./api";
 
-
 export const inventoryService = {
   async getInventory(productId: string): Promise<InventoryResponse> {
     const response = await authenticatedFetch(
@@ -13,9 +12,7 @@ export const inventoryService = {
     );
 
     if (!response.ok) {
-      throw new Error(
-        `Failed to get inventory: ${response.status}`,
-      );
+      throw new Error(`Failed to get inventory: ${response.status}`);
     }
 
     return response.json();
@@ -37,9 +34,7 @@ export const inventoryService = {
     );
 
     if (!response.ok) {
-      throw new Error(
-        `Failed to reserve inventory: ${response.status}`,
-      );
+      throw new Error(`Failed to reserve inventory: ${response.status}`);
     }
 
     return response.json();
@@ -61,9 +56,7 @@ export const inventoryService = {
     );
 
     if (!response.ok) {
-      throw new Error(
-        `Failed to release inventory: ${response.status}`,
-      );
+      throw new Error(`Failed to release inventory: ${response.status}`);
     }
 
     return response.json();
@@ -85,13 +78,9 @@ export const inventoryService = {
     );
 
     if (!response.ok) {
-      throw new Error(
-        `Failed to confirm inventory: ${response.status}`,
-      );
+      throw new Error(`Failed to confirm inventory: ${response.status}`);
     }
 
     return response.json();
   },
-
-  
 };

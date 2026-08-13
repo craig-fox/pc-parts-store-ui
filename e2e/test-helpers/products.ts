@@ -9,7 +9,6 @@ export async function openProductsPage(page: Page) {
   await expect(page.getByRole("heading", { name: "Products" })).toBeVisible();
 }
 
-
 export async function addProductsToCart(page: Page, productNames: string[]) {
   await openProductsPage(page);
 
@@ -17,7 +16,6 @@ export async function addProductsToCart(page: Page, productNames: string[]) {
     await addProductToCart(page, productName);
   }
 }
-
 
 export async function openCart(page: Page) {
   await page.getByRole("link", { name: /^Cart \d+$/ }).click();
@@ -39,17 +37,12 @@ export function getProductByName(name: string) {
   return product;
 }
 
-export async function addProductToCart(
-  page: Page,
-  productName: string,
-) {
+export async function addProductToCart(page: Page, productName: string) {
   const productCard = page
     .getByTestId("product-card")
     .filter({ hasText: productName });
 
   await expect(productCard).toBeVisible();
 
-  await productCard
-    .getByRole("button", { name: "Add to Cart" })
-    .click();
+  await productCard.getByRole("button", { name: "Add to Cart" }).click();
 }

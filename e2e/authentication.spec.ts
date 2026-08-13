@@ -32,7 +32,6 @@ test.describe("Authentication", () => {
 
     await page.getByRole("link", { name: "Orders", exact: true }).click();
 
-
     console.log("CURRENT URL:", page.url());
     console.log("PAGE TITLE:", await page.title());
     console.log("PAGE TEXT:", await page.locator("body").innerText());

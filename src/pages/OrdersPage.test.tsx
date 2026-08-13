@@ -81,13 +81,13 @@ describe("OrdersPage", () => {
         error: null,
       }),
     );
-  
+
     renderOrdersPage();
-  
+
     expect(
       screen.getByRole("heading", { name: "My Orders" }),
     ).toBeInTheDocument();
-  
+
     expect(screen.getByText("Loading your orders...")).toBeInTheDocument();
   });
 
@@ -99,16 +99,14 @@ describe("OrdersPage", () => {
         error: "Unable to load orders.",
       }),
     );
-  
+
     renderOrdersPage();
-  
+
     expect(
       screen.getByRole("heading", { name: "My Orders" }),
     ).toBeInTheDocument();
-  
-    expect(
-      screen.getByText("Unable to load orders."),
-    ).toBeInTheDocument();
+
+    expect(screen.getByText("Unable to load orders.")).toBeInTheDocument();
   });
 
   it("renders a card for each placed order", () => {
@@ -157,23 +155,19 @@ describe("OrdersPage", () => {
         getOrder: vi.fn(),
       }),
     );
-  
+
     renderOrdersPage();
-  
+
     expect(
       screen.getByRole("heading", { name: "Order #ORDER-12" }),
     ).toBeInTheDocument();
-  
+
     expect(
       screen.getByRole("heading", { name: "Order #ORDER-45" }),
     ).toBeInTheDocument();
-  
-    expect(
-      screen.getByText("AMD Ryzen 7 9800X3D × 1"),
-    ).toBeInTheDocument();
-  
-    expect(
-      screen.getByText("Corsair Vengeance RAM × 1"),
-    ).toBeInTheDocument();
+
+    expect(screen.getByText("AMD Ryzen 7 9800X3D × 1")).toBeInTheDocument();
+
+    expect(screen.getByText("Corsair Vengeance RAM × 1")).toBeInTheDocument();
   });
 });

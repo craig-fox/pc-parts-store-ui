@@ -40,9 +40,7 @@ describe("CartPage", () => {
     expect(screen.getByText("Your cart is empty")).toBeInTheDocument();
 
     expect(
-      screen.getByText(
-        "Browse our products and add something to your cart.",
-      ),
+      screen.getByText("Browse our products and add something to your cart."),
     ).toBeInTheDocument();
 
     expect(
@@ -79,9 +77,7 @@ describe("CartPage", () => {
       screen.getByRole("heading", { name: "Shopping Cart" }),
     ).toBeInTheDocument();
 
-    expect(
-      screen.getByRole("heading", { name: "Items" }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Items" })).toBeInTheDocument();
 
     expect(screen.getByText(localProducts[0].name)).toBeInTheDocument();
     expect(screen.getByText(localProducts[2].name)).toBeInTheDocument();
@@ -92,13 +88,12 @@ describe("CartPage", () => {
 
     expect(screen.getByText("$2,597.00")).toBeInTheDocument();
 
-    expect(
-      screen.getByRole("link", { name: "Checkout" }),
-    ).toHaveAttribute("href", "/checkout");
-
-    await user.click(
-      screen.getByRole("button", { name: "Clear Cart" }),
+    expect(screen.getByRole("link", { name: "Checkout" })).toHaveAttribute(
+      "href",
+      "/checkout",
     );
+
+    await user.click(screen.getByRole("button", { name: "Clear Cart" }));
 
     expect(window.confirm).toHaveBeenCalledWith(
       "Are you sure you want to remove all items from your cart?",
@@ -129,9 +124,7 @@ describe("CartPage", () => {
       </MemoryRouter>,
     );
 
-    await user.click(
-      screen.getByRole("button", { name: "Clear Cart" }),
-    );
+    await user.click(screen.getByRole("button", { name: "Clear Cart" }));
 
     expect(window.confirm).toHaveBeenCalled();
     expect(clearCart).not.toHaveBeenCalled();

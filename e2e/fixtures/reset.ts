@@ -12,10 +12,7 @@ async function resetInventory(
   const inventory = await inventoryApi.getInventory(productId);
 
   if (inventory.quantityReserved > 0) {
-    await inventoryApi.releaseStock(
-      productId,
-      inventory.quantityReserved,
-    );
+    await inventoryApi.releaseStock(productId, inventory.quantityReserved);
   }
 
   const reset = await inventoryApi.getInventory(productId);
@@ -26,8 +23,8 @@ async function resetInventory(
   ) {
     throw new Error(
       `Inventory reset failed for ${productId}: ` +
-      `expected ${expectedQuantityOnHand} on hand and 0 reserved, ` +
-      `got ${reset.quantityOnHand} on hand and ${reset.quantityReserved} reserved`,
+        `expected ${expectedQuantityOnHand} on hand and 0 reserved, ` +
+        `got ${reset.quantityOnHand} on hand and ${reset.quantityReserved} reserved`,
     );
   }
 }

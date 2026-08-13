@@ -15,6 +15,7 @@ describe("LoginButton", () => {
     vi.mocked(useAuth).mockReturnValue({
       user: null,
       isAuthenticated: false,
+      loading: false,
       login: vi.fn(),
       logout: vi.fn(),
     });
@@ -42,6 +43,7 @@ describe("LoginButton", () => {
         firstName: "Alice",
         preferredName: null,
       },
+      loading: false,
       isAuthenticated: true,
       login: vi.fn(),
       logout,

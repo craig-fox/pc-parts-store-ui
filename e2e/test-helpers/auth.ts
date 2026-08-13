@@ -14,22 +14,18 @@ type TestUser = {
   password: string;
 };
 
-  
-  export function createE2ECustomer(): E2ECustomer {
-    return {
-      firstName: "E2E",
-      lastName: "Checkout",
-      preferredName: "E2E",
-      email: `e2e-checkout-${Date.now()}@example.com`,
-      address: "1 Main Street",
-      password: "password123",
-    };
-  }
+export function createE2ECustomer(): E2ECustomer {
+  return {
+    firstName: "E2E",
+    lastName: "Checkout",
+    preferredName: "E2E",
+    email: `e2e-checkout-${Date.now()}@example.com`,
+    address: "1 Main Street",
+    password: "password123",
+  };
+}
 
-export async function registerCustomer(
-  page: Page,
-  customer: E2ECustomer,
-) {
+export async function registerCustomer(page: Page, customer: E2ECustomer) {
   await page.goto("/register");
 
   await expect(
@@ -55,9 +51,7 @@ export async function loginAsCustomer(
 ) {
   await page.goto("/login");
 
-  await expect(
-    page.getByRole("heading", { name: "Login" }),
-  ).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Login" })).toBeVisible();
 
   await page.getByLabel("Email").fill(email);
   await page.getByLabel("Password").fill(password);
@@ -66,4 +60,3 @@ export async function loginAsCustomer(
 
   await expect(page).toHaveURL(/\/products$/);
 }
-

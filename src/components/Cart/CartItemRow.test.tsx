@@ -27,7 +27,7 @@ function renderCartItemRow(item: CartItem, overrides: RenderOptions = {}) {
 }
 
 const testProduct: Product = {
-  id: 1,
+  id: "1",
   name: "AMD Ryzen 7 9800X3D",
   description: "8-Core Gaming Processor",
   category: "CPU",
@@ -73,8 +73,8 @@ describe("CartItemRow", () => {
     await user.click(screen.getByRole("button", { name: "Increase quantity" }));
     await user.click(screen.getByRole("button", { name: "Decrease quantity" }));
 
-    expect(updateQuantity).toHaveBeenNthCalledWith(1, 1, 3);
-    expect(updateQuantity).toHaveBeenNthCalledWith(2, 1, 1);
+    expect(updateQuantity).toHaveBeenNthCalledWith(1, "1", 3);
+    expect(updateQuantity).toHaveBeenNthCalledWith(2, "1", 1);
   });
 
   it("removes the item when the remove button is clicked", async () => {

@@ -24,17 +24,17 @@ function LoginPage() {
 
   const handleSubmit = async (event: React.SubmitEvent) => {
     event.preventDefault();
-  
+
     setError("");
     setLoading(true);
-  
+
     try {
       console.log("LOGIN SUBMIT:", login);
-  
+
       const result = await authenticate(login);
-  
+
       console.log("AUTHENTICATE SUCCEEDED:", result);
-  
+
       navigate("/products");
     } catch (error) {
       console.error("AUTHENTICATE FAILED:", error);

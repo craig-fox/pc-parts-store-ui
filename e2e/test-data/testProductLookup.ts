@@ -1,4 +1,3 @@
-
 export const testProductLookup = {
   Ryzen9800X3D: {
     id: "1b0d0fa6-52e1-4acd-8286-892bc29f8b3a",

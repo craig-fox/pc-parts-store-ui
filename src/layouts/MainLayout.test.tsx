@@ -15,6 +15,7 @@ describe("MainLayout", () => {
     vi.mocked(useAuth).mockReturnValue({
       user: null,
       isAuthenticated: false,
+      loading: false,
       login: vi.fn(),
       logout: vi.fn(),
     });

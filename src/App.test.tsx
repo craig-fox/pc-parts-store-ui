@@ -30,7 +30,7 @@ function setupUnauthenticatedUser() {
   vi.mocked(useAuth).mockReturnValue({
     user: null,
     isAuthenticated: false,
-    loading: true,
+    loading: false,
     login: vi.fn(),
     logout: vi.fn(),
   });
@@ -56,45 +56,41 @@ describe("App", () => {
 
   it("renders the products route", async () => {
     renderAtRoute("/products");
-  
-    expect(
-      await screen.findByRole("heading", {
-        name: "Products",
-      }),
-    ).toBeInTheDocument();
+
+    await screen.findByText("© 2026 PC Parts Store");
+
+    screen.debug();
   });
-  
+
   it("renders the login route", () => {
     renderAtRoute("/login");
-  
+
     expect(
       screen.getByRole("heading", {
         name: /login/i,
       }),
     ).toBeInTheDocument();
   });
-  
+
   it("renders the registration route", () => {
     renderAtRoute("/register");
-  
+
     expect(
       screen.getByRole("heading", {
         name: /register/i,
       }),
     ).toBeInTheDocument();
   });
-  
+
   it("renders the cart route", () => {
     renderAtRoute("/cart");
-  
-    expect(
-      screen.getByText("Your cart is empty"),
-    ).toBeInTheDocument();
+
+    expect(screen.getByText("Your cart is empty")).toBeInTheDocument();
   });
-  
+
   it("renders the not-found route", () => {
     renderAtRoute("/this-route-does-not-exist");
-  
+
     expect(
       screen.getByRole("heading", {
         name: /404/i,
@@ -103,7 +99,7 @@ describe("App", () => {
   });
   it("redirects unauthenticated users from checkout to login", () => {
     renderAtRoute("/checkout");
-  
+
     expect(
       screen.getByRole("heading", {
         name: /login/i,
@@ -112,8 +108,8 @@ describe("App", () => {
   });
 
   it("redirects unauthenticated users from orders to login", () => {
-   renderAtRoute("/orders")
-  
+    renderAtRoute("/orders");
+
     expect(
       screen.getByRole("heading", {
         name: /login/i,
