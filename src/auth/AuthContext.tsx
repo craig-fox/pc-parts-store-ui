@@ -29,11 +29,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   useEffect(() => {
     const storedUser = localStorage.getItem("authUser");
-  
+
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
-  
+
     setLoading(false);
   }, []);
 

@@ -41,9 +41,7 @@ describe("productService", () => {
 
       const result = await getProducts();
 
-      expect(fetch).toHaveBeenCalledWith(
-        "http://localhost:8083/api/products",
-      );
+      expect(fetch).toHaveBeenCalledWith("http://localhost:8083/api/products");
 
       expect(result).toEqual([
         {
@@ -60,9 +58,7 @@ describe("productService", () => {
         new Response(null, { status: 500 }),
       );
 
-      await expect(getProducts()).rejects.toThrow(
-        "Unable to load products",
-      );
+      await expect(getProducts()).rejects.toThrow("Unable to load products");
     });
   });
 
@@ -74,9 +70,9 @@ describe("productService", () => {
     });
 
     it("throws when the product does not exist in the fixtures", async () => {
-      await expect(
-        getProduct("unknown-product-id"),
-      ).rejects.toThrow("Product not found");
+      await expect(getProduct("unknown-product-id")).rejects.toThrow(
+        "Product not found",
+      );
     });
 
     it("fetches a product from the API", async () => {
@@ -112,9 +108,9 @@ describe("productService", () => {
         new Response(null, { status: 500 }),
       );
 
-      await expect(
-        getProduct(localProducts[0].id),
-      ).rejects.toThrow("Unable to load product");
+      await expect(getProduct(localProducts[0].id)).rejects.toThrow(
+        "Unable to load product",
+      );
     });
   });
 });

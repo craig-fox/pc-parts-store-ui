@@ -19,7 +19,10 @@ function ProductsPage() {
 
   useEffect(() => {
     getProducts()
-      .then(setCatalogue)
+      .then((products) => {
+        console.log("PRODUCTS PAGE RECEIVED:", products);
+        setCatalogue(products);
+      })
       .catch(() => {
         setError("Unable to load products");
       })
@@ -50,7 +53,7 @@ function ProductsPage() {
       </div>
     );
   }
-  
+
   if (error) {
     return (
       <div>

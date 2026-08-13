@@ -4,14 +4,10 @@ const INVENTORY_API_BASE_URL = "http://localhost:8084/api/inventory";
 
 export const inventoryApi = {
   async getInventory(productId: string): Promise<InventoryResponse> {
-    const response = await fetch(
-      `${INVENTORY_API_BASE_URL}/${productId}`,
-    );
+    const response = await fetch(`${INVENTORY_API_BASE_URL}/${productId}`);
 
     if (!response.ok) {
-      throw new Error(
-        `Failed to get inventory: ${response.status}`,
-      );
+      throw new Error(`Failed to get inventory: ${response.status}`);
     }
 
     return response.json();
@@ -33,9 +29,7 @@ export const inventoryApi = {
     );
 
     if (!response.ok) {
-      throw new Error(
-        `Failed to reserve inventory: ${response.status}`,
-      );
+      throw new Error(`Failed to reserve inventory: ${response.status}`);
     }
 
     return response.json();
@@ -57,9 +51,7 @@ export const inventoryApi = {
     );
 
     if (!response.ok) {
-      throw new Error(
-        `Failed to release inventory: ${response.status}`,
-      );
+      throw new Error(`Failed to release inventory: ${response.status}`);
     }
 
     return response.json();

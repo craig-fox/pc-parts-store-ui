@@ -12,21 +12,18 @@ vi.mock("../services/productService", () => ({
 }));
 
 function renderProductDetailsPage(
-    initialEntry = `/products/${localProducts[0].id}`,
-  ) {
-    return render(
-      <MemoryRouter initialEntries={[initialEntry]}>
-        <CartProvider>
-          <Routes>
-            <Route
-              path="/products/:id"
-              element={<ProductDetailsPage />}
-            />
-          </Routes>
-        </CartProvider>
-      </MemoryRouter>,
-    );
-  }
+  initialEntry = `/products/${localProducts[0].id}`,
+) {
+  return render(
+    <MemoryRouter initialEntries={[initialEntry]}>
+      <CartProvider>
+        <Routes>
+          <Route path="/products/:id" element={<ProductDetailsPage />} />
+        </Routes>
+      </CartProvider>
+    </MemoryRouter>,
+  );
+}
 
 describe("ProductDetailsPage", () => {
   beforeEach(() => {
@@ -54,23 +51,17 @@ describe("ProductDetailsPage", () => {
       }),
     ).toBeInTheDocument();
 
-    expect(
-      screen.getByText(product.description),
-    ).toBeInTheDocument();
+    expect(screen.getByText(product.description)).toBeInTheDocument();
 
     expect(getProduct).toHaveBeenCalledWith(product.id);
   });
 
   it("displays a not-found state when the product cannot be loaded", async () => {
-    vi.mocked(getProduct).mockRejectedValue(
-      new Error("Product not found"),
-    );
+    vi.mocked(getProduct).mockRejectedValue(new Error("Product not found"));
 
     renderProductDetailsPage("/products/unknown-id");
 
-    expect(
-      await screen.findByText("Product not found"),
-    ).toBeInTheDocument();
+    expect(await screen.findByText("Product not found")).toBeInTheDocument();
 
     expect(
       screen.getByText("The requested product does not exist."),
@@ -81,10 +72,7 @@ describe("ProductDetailsPage", () => {
     render(
       <MemoryRouter initialEntries={["/products"]}>
         <Routes>
-          <Route
-            path="/products"
-            element={<ProductDetailsPage />}
-          />
+          <Route path="/products" element={<ProductDetailsPage />} />
         </Routes>
       </MemoryRouter>,
     );

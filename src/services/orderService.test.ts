@@ -209,21 +209,21 @@ describe("orderService", () => {
     });
 
     it("returns previously created fixture orders", async () => {
-        const { orderService } = await import("./orderService");
-        const product = localProducts[0];
-      
-        const createdOrder = await orderService.createOrder({
-          items: [
-            {
-              productId: product.id,
-              quantity: 1,
-            },
-          ],
-        });
-      
-        const orders = await orderService.getOrders();
-      
-        expect(orders).toContainEqual(createdOrder);
+      const { orderService } = await import("./orderService");
+      const product = localProducts[0];
+
+      const createdOrder = await orderService.createOrder({
+        items: [
+          {
+            productId: product.id,
+            quantity: 1,
+          },
+        ],
       });
+
+      const orders = await orderService.getOrders();
+
+      expect(orders).toContainEqual(createdOrder);
+    });
   });
 });

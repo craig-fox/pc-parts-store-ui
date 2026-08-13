@@ -5,7 +5,7 @@ import type { Product } from "../types/Product";
 import type { CartItem } from "../types/CartItem";
 
 const testProduct: Product = {
-  id: 1,
+  id: "1",
   name: "AMD Ryzen 7 9800X3D",
   description: "8-Core Gaming Processor",
   category: "CPU",
@@ -18,7 +18,7 @@ const testProduct: Product = {
 };
 
 const otherProduct: Product = {
-  id: 2,
+  id: "2",
   name: "NVIDIA RTX 5070",
   description: "16GB Graphics Card",
   category: "GPU",
@@ -111,7 +111,7 @@ describe("cartReducer", () => {
 
       const result = cartReducer(state, {
         type: "REMOVE_ITEM",
-        payload: 999,
+        payload: "999",
       });
 
       expect(result).toEqual({ items: [testCartItem] });

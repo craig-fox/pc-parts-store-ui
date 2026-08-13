@@ -14,9 +14,7 @@ test("user can navigate between public pages from the home page", async ({
   await page.getByRole("link", { name: "Products", exact: true }).click();
 
   await expect(page).toHaveURL(/\/products$/);
-  await expect(
-    page.getByRole("heading", { name: "Products" }),
-  ).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Products" })).toBeVisible();
 
   await page.locator('nav a[href="/cart"]').first().click();
 

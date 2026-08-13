@@ -5,11 +5,11 @@ export const createMockOrdersContext = (
   overrides: Partial<OrdersContextType> = {},
 ): OrdersContextType => ({
   orders: [],
-  latestOrder: undefined,
+  loading: false,
+  error: null,
 
   addOrder: vi.fn(),
   getOrder: vi.fn(),
-  clearOrders: vi.fn(),
 
   ...overrides,
 });

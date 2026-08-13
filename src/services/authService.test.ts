@@ -19,16 +19,14 @@ describe("authService", () => {
         token: "test-jwt-token",
       };
 
-      const fetchMock = vi
-        .spyOn(globalThis, "fetch")
-        .mockResolvedValue(
-          new Response(JSON.stringify(loginResponse), {
-            status: 200,
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }),
-        );
+      const fetchMock = vi.spyOn(globalThis, "fetch").mockResolvedValue(
+        new Response(JSON.stringify(loginResponse), {
+          status: 200,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }),
+      );
 
       const result = await authService.login(loginRequest);
 

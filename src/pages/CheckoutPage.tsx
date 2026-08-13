@@ -58,10 +58,7 @@ function CheckoutPage() {
         })),
       };
 
-      console.log(
-        "TOKEN BEFORE ORDER:",
-        localStorage.getItem("token"),
-      );
+      console.log("TOKEN BEFORE ORDER:", localStorage.getItem("token"));
 
       const order = await orderService.createOrder(request);
       addOrder(order);

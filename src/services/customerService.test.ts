@@ -35,16 +35,14 @@ describe("customerService", () => {
         address: "123 Example Street",
       };
 
-      const fetchMock = vi
-        .spyOn(globalThis, "fetch")
-        .mockResolvedValue(
-          new Response(JSON.stringify(customerResponse), {
-            status: 201,
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }),
-        );
+      const fetchMock = vi.spyOn(globalThis, "fetch").mockResolvedValue(
+        new Response(JSON.stringify(customerResponse), {
+          status: 201,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }),
+      );
 
       const result = await customerService.registerCustomer(request);
 

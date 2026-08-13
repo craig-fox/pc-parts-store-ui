@@ -3,19 +3,19 @@ import { test, expect } from "@playwright/test";
 test.describe("Registration and Login", () => {
   test("user can register and then log in", async ({ page }) => {
     page.on("request", (request) => {
-        if (request.url().includes("/customers")) {
-          console.log("REQUEST:", request.method(), request.url());
-          console.log("BODY:", request.postData());
-        }
-      });
-      
-      page.on("response", async (response) => {
-        if (response.url().includes("/customers")) {
-          console.log("RESPONSE:", response.status(), response.url());
-          console.log("BODY:", await response.text());
-        }
-      });
-      
+      if (request.url().includes("/customers")) {
+        console.log("REQUEST:", request.method(), request.url());
+        console.log("BODY:", request.postData());
+      }
+    });
+
+    page.on("response", async (response) => {
+      if (response.url().includes("/customers")) {
+        console.log("RESPONSE:", response.status(), response.url());
+        console.log("BODY:", await response.text());
+      }
+    });
+
     const email = `e2e-${Date.now()}@example.com`;
     const password = "password123";
 
@@ -39,9 +39,7 @@ test.describe("Registration and Login", () => {
     // Successful registration should redirect to login
     await expect(page).toHaveURL(/\/login$/);
 
-    await expect(
-      page.getByRole("heading", { name: "Login" }),
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Login" })).toBeVisible();
 
     // Login
     await page.getByLabel("Email").fill(email);
@@ -53,7 +51,7 @@ test.describe("Registration and Login", () => {
     await expect(page).toHaveURL(/\/products$/);
 
     await expect(
-        page.getByRole("heading", { name: "Products", exact: true }),
-      ).toBeVisible();
+      page.getByRole("heading", { name: "Products", exact: true }),
+    ).toBeVisible();
   });
 });
