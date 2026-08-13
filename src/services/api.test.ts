@@ -88,4 +88,40 @@ describe("authenticatedFetch", () => {
     expect(options?.method).toBe("POST");
     expect(options?.body).toBe(JSON.stringify({ productId: "123" }));
   });
+
+  it("uses the stored token instead of an existing Authorization header", async () => {
+    localStorage.setItem("token", "current-token");
+
+    const fetchMock = vi
+      .spyOn(globalThis, "fetch")
+      .mockResolvedValue(new Response(null, { status: 200 }));
+
+    await authenticatedFetch("https://example.com/api/orders", {
+      headers: {
+        Authorization: "Bearer old-token",
+      },
+    });
+
+    const [, options] = fetchMock.mock.calls[0];
+
+    const headers = new Headers(options?.headers);
+
+    expect(headers.get("Authorization")).toBe("Bearer current-token");
+  });
+
+  it("preserves headers supplied as an array", async () => {
+    const fetchMock = vi
+      .spyOn(globalThis, "fetch")
+      .mockResolvedValue(new Response(null, { status: 200 }));
+
+    await authenticatedFetch("https://example.com/api/orders", {
+      headers: [["X-Custom-Header", "test-value"]],
+    });
+
+    const [, options] = fetchMock.mock.calls[0];
+
+    const headers = new Headers(options?.headers);
+
+    expect(headers.get("X-Custom-Header")).toBe("test-value");
+  });
 });

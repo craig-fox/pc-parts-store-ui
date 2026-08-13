@@ -1,6 +1,35 @@
 # Changelog
 
-## [1.1.0] - 2026-07-21
+## [1.0.0] - 2026-08-14
+
+### Added
+
+- Full API integration with the Spring Boot backend.
+- Customer authentication and login.
+- Protected checkout and order functionality.
+- Orders page displaying orders retrieved from the backend.
+- Fixture mode for standalone demonstrations without the backend.
+- API mode for full-stack integration with the Spring Boot services.
+
+### Changed
+
+- Completed the transition from frontend-only functionality to the integrated full-stack application.
+- Added authenticated API requests for customer and order operations.
+- Refined order management and checkout integration.
+- Removed unused inventory-service integration that is not required for the 1.0 release.
+- Completed automated test coverage across services, contexts, pages and components.
+- Finalised production build and deployment configuration.
+
+### Quality
+
+- All automated tests passing.
+- TypeScript compilation passing.
+- Production build passing.
+- Linting and formatting checks passing.
+- Fixture mode verified.
+- API integration mode verified.
+
+## [0.2.0] - 2026-07-21
 
 ### Added
 
@@ -15,7 +44,7 @@
 - Improved build and deployment process.
 - Updated project documentation.
 
-## [1.0.0] - 2026-07-20
+## [0.1.0] - 2026-07-20
 
 ### Added
 

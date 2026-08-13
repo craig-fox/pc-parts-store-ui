@@ -10,6 +10,7 @@ import { localProducts } from "../fixtures/products";
 import { createMockCartContext } from "../test/mocks/cartContext";
 import { createMockOrdersContext } from "../test/mocks/ordersContext";
 import { orderService } from "../services/orderService";
+import { mockShippingAddress } from "../test/mocks/shippingAddress";
 
 vi.mock("../context/CartContext", () => ({ useCart: vi.fn() }));
 vi.mock("../context/useOrders", () => ({ useOrders: vi.fn() }));
@@ -97,7 +98,6 @@ describe("CheckoutPage", () => {
       orders: [],
       loading: false,
       error: null,
-      getOrder: vi.fn(),
       addOrder,
     });
 
@@ -145,6 +145,7 @@ describe("CheckoutPage", () => {
             quantity: 1,
           },
         ],
+        shippingAddress: mockShippingAddress,
       });
     });
 
@@ -190,7 +191,7 @@ describe("CheckoutPage", () => {
     expect(orderService.createOrder).not.toHaveBeenCalled();
   });
 
-  it("does not clear the cart or add an order when order creation fails", async () => {
+  it("shows an error and preserves the cart when order creation fails", async () => {
     const user = userEvent.setup();
     const clearCart = vi.fn();
     const addOrder = vi.fn();
@@ -209,7 +210,6 @@ describe("CheckoutPage", () => {
       orders: [],
       loading: false,
       error: null,
-      getOrder: vi.fn(),
       addOrder,
     });
 
@@ -235,5 +235,37 @@ describe("CheckoutPage", () => {
 
     expect(addOrder).not.toHaveBeenCalled();
     expect(clearCart).not.toHaveBeenCalled();
+    expect(screen.getByRole("alert")).toHaveTextContent(
+      "We were unable to place your order. Please try again.",
+    );
+  });
+
+  it("shows an error for an invalid email address", async () => {
+    const user = userEvent.setup();
+
+    vi.mocked(useCart).mockReturnValue(
+      createMockCartContext({
+        items: [{ product: localProducts[0], quantity: 1 }],
+        totalItems: 1,
+        totalPrice: 799,
+        totalWeight: 0.04,
+      }),
+    );
+
+    vi.mocked(useOrders).mockReturnValue(createMockOrdersContext());
+
+    renderCheckoutPage();
+
+    await user.type(screen.getByLabelText("First Name"), "Craig");
+    await user.type(screen.getByLabelText("Last Name"), "Fox");
+    await user.type(screen.getByLabelText("Email"), "not-an-email");
+
+    await user.click(screen.getByRole("button", { name: "Confirm Order" }));
+
+    expect(
+      screen.getByText("Please enter a valid email address."),
+    ).toBeInTheDocument();
+
+    expect(orderService.createOrder).not.toHaveBeenCalled();
   });
 });

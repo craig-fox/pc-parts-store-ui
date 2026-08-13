@@ -68,4 +68,29 @@ describe("ProtectedRoute", () => {
     expect(screen.getByText("Checkout Page")).toBeInTheDocument();
     expect(screen.queryByText("Login Page")).not.toBeInTheDocument();
   });
+
+  it("renders nothing while authentication is loading", () => {
+    vi.mocked(useAuth).mockReturnValue({
+      user: null,
+      loading: true,
+      isAuthenticated: false,
+      login: vi.fn(),
+      logout: vi.fn(),
+    });
+
+    render(
+      <MemoryRouter initialEntries={["/checkout"]}>
+        <Routes>
+          <Route path="/login" element={<div>Login Page</div>} />
+
+          <Route element={<ProtectedRoute />}>
+            <Route path="/checkout" element={<div>Checkout Page</div>} />
+          </Route>
+        </Routes>
+      </MemoryRouter>,
+    );
+
+    expect(screen.queryByText("Checkout Page")).not.toBeInTheDocument();
+    expect(screen.queryByText("Login Page")).not.toBeInTheDocument();
+  });
 });

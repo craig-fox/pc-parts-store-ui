@@ -35,15 +35,13 @@ function OrderConfirmationPage() {
         Thank you for your purchase. Your order has been placed successfully.
       </p>
 
-      {order && (
-        <div className="mb-8 rounded-lg bg-slate-100 p-4">
-          <p className="text-sm tracking-wide text-slate-500 uppercase">
-            Order Number
-          </p>
+      <div className="mb-8 rounded-lg bg-slate-100 p-4">
+        <p className="text-sm tracking-wide text-slate-500 uppercase">
+          Order Number
+        </p>
 
-          <p className="mt-2 font-mono text-lg font-semibold">{order.id}</p>
-        </div>
-      )}
+        <p className="mt-2 font-mono text-lg font-semibold">{order.id}</p>
+      </div>
 
       <div className="flex justify-center gap-4">
         <Link to="/products">

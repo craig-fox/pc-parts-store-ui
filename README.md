@@ -1,8 +1,10 @@
 # PC Parts Store
 
-A modern e-commerce frontend built with **React**, **TypeScript**, **Vite**, and **Tailwind CSS**. The application allows customers to browse PC components, manage a shopping cart, complete the checkout process, and view their orders.
+A modern e-commerce frontend built with **React**, **TypeScript**, **Vite**, and **Tailwind CSS**.
 
-This project forms the frontend of a larger full-stack portfolio application that will eventually integrate with a Spring Boot microservices backend.
+The application allows customers to browse PC components, manage a shopping cart, complete checkout, and view their orders.
+
+This project forms the frontend of a larger full-stack portfolio application backed by Spring Boot microservices.
 
 ---
 
@@ -10,12 +12,13 @@ This project forms the frontend of a larger full-stack portfolio application tha
 
 ### Product Catalogue
 
-- Browse a range of PC components
+- Browse PC components
 - Product detail pages
 - Product categories
-- Search products
-- Sort products
+- Product search
+- Product sorting
 - Stock availability indicators
+- Product images
 
 ### Shopping Cart
 
@@ -29,17 +32,34 @@ This project forms the frontend of a larger full-stack portfolio application tha
 
 ### Checkout
 
-- Customer information form
 - Shipping address entry
 - Order summary
 - Shipping cost calculation
 - Order total calculation
+- Authenticated order creation
+- Order confirmation
+
+### Orders
+
+- View previously placed orders
+- Display order status
+- Display order items and quantities
+- Display order totals
+
+### Authentication
+
+- Customer login
+- Authenticated API requests
+- Protected routes
+- Logout
 
 ### Testing
 
 - Unit tests using Vitest
 - Component tests using React Testing Library
-- Utility function tests for business logic
+- Tests for business logic and utility functions
+- Tests for API services and authentication
+- Tests for application state and context
 
 ---
 
@@ -61,11 +81,16 @@ This project forms the frontend of a larger full-stack portfolio application tha
 
 ```text
 src
+├── auth
 ├── components
 ├── context
+├── fixtures
+├── layouts
 ├── pages
+├── reducers
+├── services
 ├── test
-│   └── fixtures
+│   └── mocks
 ├── types
 ├── utils
 ├── assets
@@ -74,32 +99,36 @@ src
 
 ---
 
-## Current Functionality
+## Running Modes
 
-- Home page
-- Product catalogue
-- Product details
-- Shopping cart
-- Checkout
-- Shipping calculation
-- Responsive navigation
-- Reusable UI components
+The application supports two data sources.
 
----
+### Demo / Fixture Mode
 
-## Planned Enhancements
+The frontend runs independently using local product and order data.
 
-- Order confirmation workflow
-- Orders page
-- Local storage persistence
-- User authentication
-- Backend integration with Spring Boot
-- REST API integration
-- Inventory management
-- Order history
-- Product images from backend
-- Responsive improvements
-- Accessibility enhancements
+This mode is useful for demonstrations and can be deployed without the
+Spring Boot backend.
+
+```text
+React application
+      |
+      └── Local fixture data
+```
+
+### API Mode
+
+The frontend communicates with the Spring Boot backend services.
+
+```text
+React application
+      |
+      ├── Authentication Service
+      ├── Product Service
+      └── Order Service
+```
+
+Authenticated requests use the JWT returned by the authentication service.
 
 ---
 
@@ -117,7 +146,37 @@ npm install
 npm run dev
 ```
 
+See below for running the development server in API mode
+
 The application will be available at the URL displayed by Vite.
+
+The configured environment determines whether the application uses fixture
+data or the backend API.
+
+---
+
+## Running the Backend Locally
+
+To run the application against the Spring Boot backend, clone the API
+repository:
+
+```bash
+git clone https://github.com/craig-fox/pc-parts-store-api.git
+```
+
+Start the backend infrastructure and services from the API project root:
+
+```bash
+docker compose up -d
+```
+
+See the `pc-parts-store-api` README for backend setup and prerequisites.
+
+Start the pc-parts-store-ui application by running
+
+```bash
+npm run dev:integration
+```
 
 ---
 
@@ -129,7 +188,7 @@ Run all tests:
 npm test
 ```
 
-or
+or:
 
 ```bash
 npm run test
@@ -152,7 +211,12 @@ This project demonstrates modern frontend development practices, including:
 - Reusable UI components
 - Context-based state management
 - Business logic separated into utility modules
+- Authenticated REST API integration
 - Responsive design with Tailwind CSS
 - Comprehensive automated testing
 
-It is intended to evolve into a full-stack e-commerce application backed by Spring Boot microservices and cloud-native infrastructure.
+The frontend is part of a larger cloud-native e-commerce application using
+Spring Boot microservices and AWS infrastructure.
+
+The application is intended to evolve beyond the 1.0 release as the backend
+architecture and cloud deployment are developed further.

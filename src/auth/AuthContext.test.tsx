@@ -6,6 +6,7 @@ import { authService } from "../services/authService";
 
 import type { LoginResponse } from "./authTypes";
 import { vi, describe, beforeEach, it, expect } from "vitest";
+import { authenticatedFetch } from "../services/api";
 
 vi.mock("../services/authService", () => ({
   authService: {
@@ -142,5 +143,24 @@ describe("AuthContext", () => {
     expect(() => render(<InvalidConsumer />)).toThrow(
       "useAuth must be used within an AuthProvider",
     );
+  });
+  it("uses the stored token for the Authorization header", async () => {
+    localStorage.setItem("token", "current-token");
+
+    const fetchMock = vi
+      .spyOn(globalThis, "fetch")
+      .mockResolvedValue(new Response(null, { status: 200 }));
+
+    await authenticatedFetch("https://example.com/api/orders", {
+      headers: {
+        Authorization: "Bearer old-token",
+      },
+    });
+
+    const [, options] = fetchMock.mock.calls[0];
+
+    const headers = new Headers(options?.headers);
+
+    expect(headers.get("Authorization")).toBe("Bearer current-token");
   });
 });

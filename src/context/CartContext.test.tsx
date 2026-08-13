@@ -28,7 +28,6 @@ function CartControls() {
   );
 }
 
-
 describe("CartProvider", () => {
   it("maintains cart items and derived totals through cart actions", async () => {
     const user = userEvent.setup();

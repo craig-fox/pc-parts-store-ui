@@ -90,46 +90,6 @@ describe("OrdersContext", () => {
     expect(result.current.error).toBe("Unable to load your orders.");
   });
 
-  it("returns an order from getOrder", async () => {
-    vi.mocked(useAuth).mockReturnValue({
-      user: null,
-      isAuthenticated: true,
-      loading: false,
-      login: vi.fn(),
-      logout: vi.fn(),
-    });
-
-    vi.mocked(orderService.getOrders).mockResolvedValue([mockOrder]);
-
-    const { result } = renderHook(() => useOrders(), { wrapper });
-
-    await waitFor(() => {
-      expect(result.current.loading).toBe(false);
-    });
-
-    expect(result.current.getOrder("order-123")).toEqual(mockOrder);
-  });
-
-  it("returns undefined when getOrder cannot find an order", async () => {
-    vi.mocked(useAuth).mockReturnValue({
-      user: null,
-      isAuthenticated: true,
-      loading: false,
-      login: vi.fn(),
-      logout: vi.fn(),
-    });
-
-    vi.mocked(orderService.getOrders).mockResolvedValue([mockOrder]);
-
-    const { result } = renderHook(() => useOrders(), { wrapper });
-
-    await waitFor(() => {
-      expect(result.current.loading).toBe(false);
-    });
-
-    expect(result.current.getOrder("does-not-exist")).toBeUndefined();
-  });
-
   it("does not load orders when the user is not authenticated", async () => {
     vi.mocked(useAuth).mockReturnValue({
       user: null,
@@ -147,5 +107,61 @@ describe("OrdersContext", () => {
 
     expect(result.current.orders).toEqual([]);
     expect(orderService.getOrders).not.toHaveBeenCalled();
+  });
+
+  it("adds a newly created order", async () => {
+    vi.mocked(useAuth).mockReturnValue({
+      user: null,
+      isAuthenticated: true,
+      loading: false,
+      login: vi.fn(),
+      logout: vi.fn(),
+    });
+
+    vi.mocked(orderService.getOrders).mockResolvedValue([]);
+
+    const { result } = renderHook(() => useOrders(), { wrapper });
+
+    await waitFor(() => {
+      expect(result.current.loading).toBe(false);
+    });
+
+    result.current.addOrder(mockOrder);
+
+    await waitFor(() => {
+      expect(result.current.orders).toEqual([mockOrder]);
+    });
+  });
+
+  it("clears orders when the user becomes unauthenticated", async () => {
+    vi.mocked(useAuth).mockReturnValue({
+      user: null,
+      isAuthenticated: true,
+      loading: false,
+      login: vi.fn(),
+      logout: vi.fn(),
+    });
+
+    vi.mocked(orderService.getOrders).mockResolvedValue([mockOrder]);
+
+    const { result, rerender } = renderHook(() => useOrders(), { wrapper });
+
+    await waitFor(() => {
+      expect(result.current.orders).toEqual([mockOrder]);
+    });
+
+    vi.mocked(useAuth).mockReturnValue({
+      user: null,
+      isAuthenticated: false,
+      loading: false,
+      login: vi.fn(),
+      logout: vi.fn(),
+    });
+
+    rerender();
+
+    await waitFor(() => {
+      expect(result.current.orders).toEqual([]);
+    });
   });
 });

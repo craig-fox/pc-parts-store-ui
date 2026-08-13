@@ -36,43 +36,6 @@ describe("OrdersPage", () => {
     ).toHaveAttribute("href", "/products");
   });
 
-  it("renders a card for each placed order", () => {
-    vi.mocked(useOrders).mockReturnValue(
-      createMockOrdersContext({
-        orders: [
-          {
-            id: "order-123",
-            customerId: "customer-123",
-            orderDate: "2026-07-20T00:00:00",
-            status: "PLACED",
-            subtotal: 799,
-            shipping: 8,
-            total: 807,
-            items: [
-              {
-                productId: "product-123",
-                productName: "AMD Ryzen 7 9800X3D",
-                quantity: 1,
-                unitPrice: 799,
-                lineTotal: 799,
-              },
-            ],
-          },
-        ],
-        loading: false,
-        error: null,
-      }),
-    );
-
-    renderOrdersPage();
-
-    expect(
-      screen.getByRole("heading", { name: "Order #ORDER-12" }),
-    ).toBeInTheDocument();
-
-    expect(screen.getByText("AMD Ryzen 7 9800X3D × 1")).toBeInTheDocument();
-  });
-
   it("shows a loading state while orders are being retrieved", () => {
     vi.mocked(useOrders).mockReturnValue(
       createMockOrdersContext({
@@ -96,7 +59,7 @@ describe("OrdersPage", () => {
       createMockOrdersContext({
         orders: [],
         loading: false,
-        error: "Unable to load orders.",
+        error: "Unable to load your orders.",
       }),
     );
 
@@ -106,10 +69,10 @@ describe("OrdersPage", () => {
       screen.getByRole("heading", { name: "My Orders" }),
     ).toBeInTheDocument();
 
-    expect(screen.getByText("Unable to load orders.")).toBeInTheDocument();
+    expect(screen.getByText("Unable to load your orders.")).toBeInTheDocument();
   });
 
-  it("renders a card for each placed order", () => {
+  it("renders a card for each order", () => {
     vi.mocked(useOrders).mockReturnValue(
       createMockOrdersContext({
         orders: [
@@ -152,7 +115,6 @@ describe("OrdersPage", () => {
         ],
         loading: false,
         error: null,
-        getOrder: vi.fn(),
       }),
     );
 

@@ -20,7 +20,6 @@ function ProductsPage() {
   useEffect(() => {
     getProducts()
       .then((products) => {
-        console.log("PRODUCTS PAGE RECEIVED:", products);
         setCatalogue(products);
       })
       .catch(() => {

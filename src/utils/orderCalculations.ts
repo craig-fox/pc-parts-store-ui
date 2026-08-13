@@ -18,19 +18,13 @@ export function calculateOrderTotals(items: CartItem[]): OrderTotals {
     (weight, item) => weight + item.product.weightKg * item.quantity,
     0,
   );
-  const shipping = calculateShipping(subtotal, totalWeight);
+
+  const shipping = calculateShippingCost(subtotal, totalWeight);
+
   return {
     subtotal,
     shipping,
     total: subtotal + shipping,
     totalWeight,
   };
-}
-
-function calculateShipping(subtotal: number, totalWeight: number): number {
-  if (subtotal === 0) {
-    return 0;
-  }
-
-  return calculateShippingCost(subtotal, totalWeight);
 }
