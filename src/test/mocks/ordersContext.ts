@@ -9,7 +9,6 @@ export const createMockOrdersContext = (
   error: null,
 
   addOrder: vi.fn(),
-  getOrder: vi.fn(),
 
   ...overrides,
 });

@@ -40,6 +40,7 @@ function CheckoutPage() {
   });
 
   const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -51,14 +52,15 @@ function CheckoutPage() {
     setSubmitting(true);
 
     try {
+      setSubmitError(null);
+
       const request = {
         items: items.map((item) => ({
           productId: item.product.id,
           quantity: item.quantity,
         })),
+        shippingAddress: checkout.shippingAddress,
       };
-
-      console.log("TOKEN BEFORE ORDER:", localStorage.getItem("token"));
 
       const order = await orderService.createOrder(request);
       addOrder(order);
@@ -69,6 +71,7 @@ function CheckoutPage() {
       });
     } catch (error) {
       console.error("Failed to create order:", error);
+      setSubmitError("We were unable to place your order. Please try again.");
     } finally {
       setSubmitting(false);
     }
@@ -131,7 +134,7 @@ function CheckoutPage() {
     <div>
       <h1 className="mb-8 text-4xl font-bold">Checkout</h1>
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} noValidate>
         <div className="grid gap-8 lg:grid-cols-[2fr_1fr]">
           <CheckoutForm
             checkout={checkout}
@@ -141,6 +144,11 @@ function CheckoutPage() {
 
           <div>
             <OrderSummary />
+            {submitError && (
+              <p className="mt-4 text-sm text-red-600" role="alert">
+                {submitError}
+              </p>
+            )}
 
             <Button type="submit" disabled={submitting} className="mt-6 w-full">
               {submitting ? "Placing Order..." : "Confirm Order"}

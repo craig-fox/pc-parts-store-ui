@@ -1,13 +1,11 @@
 import { useState } from "react";
-import { useAuth } from "./AuthContext";
 import type { LoginRequest } from "./authTypes";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "./AuthContext";
 
 function LoginPage() {
   const navigate = useNavigate();
-  const { login: authenticate } = useAuth();
-
-  const [login, setLogin] = useState<LoginRequest>({
+  const [credentials, setCredentials] = useState<LoginRequest>({
     email: "",
     password: "",
   });
@@ -15,8 +13,10 @@ function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  const { login } = useAuth();
+
   const updateLogin = (field: keyof LoginRequest, value: string) => {
-    setLogin((current) => ({
+    setCredentials((current) => ({
       ...current,
       [field]: value,
     }));
@@ -29,15 +29,10 @@ function LoginPage() {
     setLoading(true);
 
     try {
-      console.log("LOGIN SUBMIT:", login);
-
-      const result = await authenticate(login);
-
-      console.log("AUTHENTICATE SUCCEEDED:", result);
-
+      await login(credentials);
       navigate("/products");
     } catch (error) {
-      console.error("AUTHENTICATE FAILED:", error);
+      console.error("Authentication failed:", error);
       setError("Invalid email or password.");
     } finally {
       setLoading(false);
@@ -64,7 +59,7 @@ function LoginPage() {
             <input
               id="email"
               type="email"
-              value={login.email}
+              value={credentials.email}
               onChange={(e) => updateLogin("email", e.target.value)}
               className="rounded-md border border-slate-300 px-3 py-2"
               required
@@ -79,7 +74,7 @@ function LoginPage() {
             <input
               id="password"
               type="password"
-              value={login.password}
+              value={credentials.password}
               onChange={(e) => updateLogin("password", e.target.value)}
               className="rounded-md border border-slate-300 px-3 py-2"
               required

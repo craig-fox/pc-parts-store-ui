@@ -4,7 +4,6 @@ import { useCart } from "../../context/CartContext";
 
 function CartBadge() {
   const { totalItems } = useCart();
-  console.log("CartBadge rendered:", totalItems);
 
   return (
     <Link to="/cart" className="relative inline-flex items-center">

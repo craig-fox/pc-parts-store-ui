@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { localProducts } from "../fixtures/products";
+import { mockShippingAddress } from "../test/mocks/shippingAddress";
 
 const mockEnvironment = vi.hoisted(() => ({
   dataSource: "api",
@@ -31,6 +32,7 @@ describe("orderService", () => {
             quantity: 2,
           },
         ],
+        shippingAddress: mockShippingAddress,
       };
 
       const orderResponse = {
@@ -83,6 +85,7 @@ describe("orderService", () => {
       await expect(
         orderService.createOrder({
           items: [{ productId: "1", quantity: 1 }],
+          shippingAddress: mockShippingAddress,
         }),
       ).rejects.toThrow("Order creation failed: 400");
     });
@@ -155,6 +158,7 @@ describe("orderService", () => {
             quantity: 1,
           },
         ],
+        shippingAddress: mockShippingAddress,
       });
 
       expect(result.id).toBe("demo-order-1");
@@ -186,6 +190,7 @@ describe("orderService", () => {
             quantity: 2,
           },
         ],
+        shippingAddress: mockShippingAddress,
       });
 
       expect(result.subtotal).toBe(1598);
@@ -204,6 +209,7 @@ describe("orderService", () => {
               quantity: 1,
             },
           ],
+          shippingAddress: mockShippingAddress,
         }),
       ).rejects.toThrow("Product not found: does-not-exist");
     });
@@ -219,11 +225,29 @@ describe("orderService", () => {
             quantity: 1,
           },
         ],
+        shippingAddress: mockShippingAddress,
       });
 
       const orders = await orderService.getOrders();
 
       expect(orders).toContainEqual(createdOrder);
+    });
+    it("charges $15 shipping for orders over 0.5kg", async () => {
+      const { orderService } = await import("./orderService");
+
+      const result = await orderService.createOrder({
+        items: [
+          {
+            productId: localProducts[2].id, // RTX 5070, 1.2kg
+            quantity: 1,
+          },
+        ],
+        shippingAddress: mockShippingAddress,
+      });
+
+      expect(result.subtotal).toBe(999);
+      expect(result.shipping).toBe(15);
+      expect(result.total).toBe(1014);
     });
   });
 });

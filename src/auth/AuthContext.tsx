@@ -31,7 +31,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const storedUser = localStorage.getItem("authUser");
 
     if (storedUser) {
-      setUser(JSON.parse(storedUser));
+      try {
+        setUser(JSON.parse(storedUser));
+      } catch {
+        localStorage.removeItem("authUser");
+        localStorage.removeItem("token");
+      }
     }
 
     setLoading(false);

@@ -14,7 +14,6 @@ export type OrdersContextType = {
   orders: OrderResponse[];
   loading: boolean;
   error: string | null;
-  getOrder: (id: string) => OrderResponse | undefined;
   addOrder: (order: OrderResponse) => void;
 };
 
@@ -55,35 +54,16 @@ export function OrdersProvider({ children }: PropsWithChildren): JSX.Element {
     loadOrders();
   }, [isAuthenticated]);
 
-  const getOrder = (id: string) => {
-    return orders.find((order) => order.id === id);
-  };
-
   const addOrder = (order: OrderResponse) => {
-    console.log("ADDING ORDER TO CONTEXT:", order.id);
-
-    setOrders((current) => {
-      const updated = [...current, order];
-
-      console.log(
-        "ORDERS CONTEXT AFTER ADD:",
-        updated.map((o) => o.id),
-      );
-
-      return updated;
-    });
+    setOrders((current) => [...current, order]);
   };
-  console.log(
-    "ORDERS PROVIDER RENDER:",
-    orders.map((order) => order.id),
-  );
+
   return (
     <OrdersContext.Provider
       value={{
         orders,
         loading,
         error,
-        getOrder,
         addOrder,
       }}
     >

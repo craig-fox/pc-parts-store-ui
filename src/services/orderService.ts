@@ -1,16 +1,9 @@
 import { environment } from "../config/environment";
 import { localProducts } from "../fixtures/products";
 import { authenticatedFetch } from "./api";
+import type { OrderRequest } from "../types/OrderRequest";
 import type { OrderResponse } from "../types/OrderResponse";
-
-export interface OrderItemRequest {
-  productId: string;
-  quantity: number;
-}
-
-export interface OrderRequest {
-  items: OrderItemRequest[];
-}
+import { calculateShippingCost } from "../utils/shipping";
 
 const demoOrders: OrderResponse[] = [];
 
@@ -52,15 +45,11 @@ export const orderService = {
       },
     );
 
-    console.log("GET ORDERS STATUS:", response.status);
-
     if (!response.ok) {
       throw new Error(`Failed to retrieve orders: ${response.status}`);
     }
 
     const orders = await response.json();
-
-    console.log("GET ORDERS BODY:", orders);
 
     return orders;
   },
@@ -89,7 +78,15 @@ function createDemoOrder(request: OrderRequest): OrderResponse {
 
   const subtotal = items.reduce((total, item) => total + item.lineTotal, 0);
 
-  const shipping = subtotal >= 1000 ? 0 : 8;
+  const totalWeight = items.reduce((weight, item) => {
+    const product = localProducts.find(
+      (product) => product.id === item.productId,
+    );
+
+    return weight + (product?.weightKg ?? 0) * item.quantity;
+  }, 0);
+
+  const shipping = calculateShippingCost(subtotal, totalWeight);
   const total = subtotal + shipping;
 
   const order: OrderResponse = {

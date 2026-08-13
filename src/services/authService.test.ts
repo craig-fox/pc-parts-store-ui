@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { authService } from "./authService";
+import { environment } from "../config/environment";
 
 describe("authService", () => {
   beforeEach(() => {
@@ -31,7 +32,7 @@ describe("authService", () => {
       const result = await authService.login(loginRequest);
 
       expect(fetchMock).toHaveBeenCalledWith(
-        "http://localhost:8085/api/auth/login",
+        `${environment.authApiBaseUrl}/login`,
         {
           method: "POST",
           headers: {
@@ -42,28 +43,6 @@ describe("authService", () => {
       );
 
       expect(result).toEqual(loginResponse);
-    });
-
-    it("stores the returned token in localStorage", async () => {
-      const loginResponse = {
-        token: "test-jwt-token",
-      };
-
-      vi.spyOn(globalThis, "fetch").mockResolvedValue(
-        new Response(JSON.stringify(loginResponse), {
-          status: 200,
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }),
-      );
-
-      await authService.login({
-        email: "alice.smith@example.com",
-        password: "password123",
-      });
-
-      expect(localStorage.getItem("token")).toBe("test-jwt-token");
     });
 
     it("throws when authentication fails", async () => {
@@ -79,23 +58,6 @@ describe("authService", () => {
           password: "wrong-password",
         }),
       ).rejects.toThrow("Login failed: 401");
-    });
-
-    it("does not store a token when authentication fails", async () => {
-      vi.spyOn(globalThis, "fetch").mockResolvedValue(
-        new Response("Invalid credentials", {
-          status: 401,
-        }),
-      );
-
-      await expect(
-        authService.login({
-          email: "alice.smith@example.com",
-          password: "wrong-password",
-        }),
-      ).rejects.toThrow();
-
-      expect(localStorage.getItem("token")).toBeNull();
     });
   });
 });

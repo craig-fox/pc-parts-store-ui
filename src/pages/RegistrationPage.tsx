@@ -125,7 +125,6 @@ function RegistrationPage() {
         address: form.address.trim(),
         password: form.password,
       };
-      console.log("ABOUT TO REGISTER:", JSON.stringify(request));
 
       await customerService.registerCustomer(request);
 

@@ -15,10 +15,7 @@ export async function getProducts(): Promise<Product[]> {
 
   const products: Product[] = await response.json();
 
-  return products.map((product) => ({
-    ...product,
-    imageUrl: `${environment.assetBaseUrl}${product.imageUrl}`,
-  }));
+  return products.map(mapProduct);
 }
 
 export async function getProduct(id: string): Promise<Product> {
@@ -42,6 +39,10 @@ export async function getProduct(id: string): Promise<Product> {
 
   const product: Product = await response.json();
 
+  return mapProduct(product);
+}
+
+function mapProduct(product: Product): Product {
   return {
     ...product,
     imageUrl: `${environment.assetBaseUrl}${product.imageUrl}`,
