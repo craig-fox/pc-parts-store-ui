@@ -32,14 +32,6 @@ test.describe("Checkout", () => {
 
     await loginAsCustomer(page, customer.email, customer.password);
 
-    const ryzenInventory = await inventoryApi.getInventory(Ryzen.id);
-    const rtxInventory = await inventoryApi.getInventory(Rtx.id);
-    console.log("RTX INVENTORY BEFORE ORDER:", rtxInventory);
-
-    console.log("BEFORE ORDER:");
-    console.log("Ryzen:", ryzenInventory);
-    console.log("RTX:", rtxInventory);
-
     await goToCheckout(page, [Ryzen.name, Rtx.name]);
 
     /** Ensure selected products are present */
@@ -63,14 +55,6 @@ test.describe("Checkout", () => {
         name: "Order Confirmed",
       }),
     ).toBeVisible();
-
-    const ryzenAfter = await inventoryApi.getInventory(Ryzen.id);
-    const rtxAfter = await inventoryApi.getInventory(Rtx.id);
-
-    console.log("AFTER ORDER:");
-    console.log("Ryzen:", ryzenAfter);
-    console.log("RTX:", rtxAfter);
-    console.log("RTX INVENTORY AFTER ORDER:", rtxAfter);
   });
 
   test("user sees validation errors when required fields are empty", async ({

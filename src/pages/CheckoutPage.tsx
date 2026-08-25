@@ -60,6 +60,7 @@ function CheckoutPage() {
           quantity: item.quantity,
         })),
         shippingAddress: checkout.shippingAddress,
+        shippingMethod: "STANDARD" as const
       };
 
       const order = await orderService.createOrder(request);

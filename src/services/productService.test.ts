@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { getProduct, getProducts } from "./productService";
-import { localProducts } from "../fixtures/products";
+import { localProducts } from "../test/fixtures/products";
 
 const mockEnvironment = vi.hoisted(() => ({
   apiBaseUrl: "http://test-gateway",

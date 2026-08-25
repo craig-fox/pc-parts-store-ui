@@ -6,7 +6,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import CheckoutPage from "./CheckoutPage";
 import { useCart } from "../context/CartContext";
 import { useOrders } from "../context/useOrders";
-import { localProducts } from "../fixtures/products";
+import { localProducts } from "../test/fixtures/products";
 import { createMockCartContext } from "../test/mocks/cartContext";
 import { createMockOrdersContext } from "../test/mocks/ordersContext";
 import { orderService } from "../services/orderService";

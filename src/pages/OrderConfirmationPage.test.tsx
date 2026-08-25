@@ -3,7 +3,7 @@ import { MemoryRouter } from "react-router-dom";
 import { describe, expect, it } from "vitest";
 
 import OrderConfirmationPage from "./OrderConfirmationPage";
-import { localProducts } from "../fixtures/products";
+import { localProducts } from "../test/fixtures/products";
 
 describe("OrderConfirmationPage", () => {
   it("shows a recovery state when there is no order", () => {

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { filterProducts, sortProducts } from "./productFilters";
-import { localProducts } from "../fixtures/products";
+import { localProducts } from "../test/fixtures/products";
 
 describe("filterProducts", () => {
   it("returns products matching the search term", () => {

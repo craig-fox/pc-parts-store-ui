@@ -5,7 +5,7 @@ import OrderSummary from "./OrderSummary";
 import { useCart } from "../../context/CartContext";
 import { formatCurrency } from "../../utils/currency";
 import { createMockCartContext } from "../../test/mocks/cartContext";
-import { localProducts } from "../../fixtures/products";
+import { localProducts } from "../../test/fixtures/products";
 
 vi.mock("../../context/CartContext", () => ({
   useCart: vi.fn(),

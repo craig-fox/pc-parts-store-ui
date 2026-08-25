@@ -33,6 +33,7 @@ describe("customerService", () => {
         preferredName: "Alice",
         email: "alice.smith@example.com",
         address: "123 Example Street",
+        status: "ACTIVE",
       };
 
       const fetchMock = vi.spyOn(globalThis, "fetch").mockResolvedValue(

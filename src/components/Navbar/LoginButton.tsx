@@ -1,13 +1,8 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "../../auth/AuthContext";
-import { environment } from "../../config/environment";
 
 function LoginButton() {
   const { user, isAuthenticated, logout } = useAuth();
-
-  if (environment.dataSource === "fixture") {
-    return null;
-  }
 
   if (isAuthenticated && user) {
     return (
