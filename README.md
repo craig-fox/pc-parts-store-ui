@@ -133,7 +133,6 @@ See below for running the development server in API mode
 
 The application will be available at the URL displayed by Vite.
 
-
 ---
 
 ## Running the Backend Locally

@@ -16,11 +16,11 @@ export const orderService = {
         body: JSON.stringify(request),
       },
     );
-  
+
     if (!response.ok) {
       throw new Error(`Order creation failed: ${response.status}`);
     }
-  
+
     return response.json();
   },
 

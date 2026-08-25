@@ -47,9 +47,7 @@ describe("productService", () => {
         new Response(null, { status: 500 }),
       );
 
-      await expect(getProducts()).rejects.toThrow(
-        "Unable to load products",
-      );
+      await expect(getProducts()).rejects.toThrow("Unable to load products");
     });
   });
 
@@ -69,7 +67,7 @@ describe("productService", () => {
       const result = await getProduct(product.id);
 
       expect(fetch).toHaveBeenCalledWith(
-        `${mockEnvironment.apiBaseUrl}/api/products/${product.id}`
+        `${mockEnvironment.apiBaseUrl}/api/products/${product.id}`,
       );
 
       expect(result).toEqual({

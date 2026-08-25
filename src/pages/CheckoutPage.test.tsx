@@ -146,6 +146,7 @@ describe("CheckoutPage", () => {
           },
         ],
         shippingAddress: mockShippingAddress,
+        shippingMethod: "STANDARD",
       });
     });
 

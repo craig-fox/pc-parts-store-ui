@@ -2,9 +2,7 @@ import { environment } from "../config/environment";
 import type { Product } from "../types/Product";
 
 export async function getProducts(): Promise<Product[]> {
-  const response = await fetch(
-    `${environment.apiBaseUrl}/api/products`,
-  );
+  const response = await fetch(`${environment.apiBaseUrl}/api/products`);
 
   if (!response.ok) {
     throw new Error("Unable to load products");
@@ -16,9 +14,7 @@ export async function getProducts(): Promise<Product[]> {
 }
 
 export async function getProduct(id: string): Promise<Product> {
-  const response = await fetch(
-    `${environment.apiBaseUrl}/api/products/${id}`,
-  );
+  const response = await fetch(`${environment.apiBaseUrl}/api/products/${id}`);
 
   if (!response.ok) {
     throw new Error("Unable to load product");

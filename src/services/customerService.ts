@@ -6,16 +6,13 @@ export const customerService = {
   async registerCustomer(
     request: RegistrationRequest,
   ): Promise<CustomerResponse> {
-    const response = await fetch(
-      `${environment.apiBaseUrl}/api/customers`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(request),
+    const response = await fetch(`${environment.apiBaseUrl}/api/customers`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
       },
-    );
+      body: JSON.stringify(request),
+    });
 
     const responseBody = await response.text();
 

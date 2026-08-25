@@ -1,5 +1,24 @@
 # Changelog
 
+## [1.0.1] - 2026-08-26
+
+### Changed
+
+- Updated the UI to communicate with backend services exclusively through the API Gateway.
+- Removed the demo/fixture data source from the application.
+- Updated authentication, customer registration, product and order API integration for the API Gateway.
+- Updated order creation to provide the required idempotency key and shipping method.
+- Updated local development to use `npm run dev` with the API Gateway as the backend entry point.
+- Removed service-level CORS configuration now that the API Gateway provides the browser-facing API boundary.
+
+### Quality
+
+- Updated automated tests to reflect the API Gateway architecture.
+- All automated tests passing.
+- TypeScript compilation passing.
+- Production build passing.
+- Linting and formatting checks passing.
+
 ## [1.0.0] - 2026-08-14
 
 ### Added

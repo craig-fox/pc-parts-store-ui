@@ -1,5 +1,5 @@
 import type { Product } from "../../types/Product";
-import cpuImage from "../../assets/products/cpu.jpg"
+import cpuImage from "../../assets/products/cpu.jpg";
 import gpuImage from "../../assets/products/gpu.jpg";
 import memoryImage from "../../assets/products/memory.jpg";
 import storageImage from "../../assets/products/storage.jpg";
