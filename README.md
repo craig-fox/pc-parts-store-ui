@@ -99,24 +99,7 @@ src
 
 ---
 
-## Running Modes
-
-The application supports two data sources.
-
-### Demo / Fixture Mode
-
-The frontend runs independently using local product and order data.
-
-This mode is useful for demonstrations and can be deployed without the
-Spring Boot backend.
-
-```text
-React application
-      |
-      └── Local fixture data
-```
-
-### API Mode
+## Running
 
 The frontend communicates with the Spring Boot backend services.
 
@@ -150,8 +133,6 @@ See below for running the development server in API mode
 
 The application will be available at the URL displayed by Vite.
 
-The configured environment determines whether the application uses fixture
-data or the backend API.
 
 ---
 

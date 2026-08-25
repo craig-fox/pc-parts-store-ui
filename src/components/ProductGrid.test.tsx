@@ -3,7 +3,7 @@ import { MemoryRouter } from "react-router-dom";
 import { describe, expect, it } from "vitest";
 
 import ProductGrid from "./ProductGrid";
-import { localProducts } from "../fixtures/products";
+import { localProducts } from "../test/fixtures/products";
 import { CartProvider } from "../context/CartContext";
 
 describe("ProductGrid", () => {

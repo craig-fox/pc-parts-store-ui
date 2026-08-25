@@ -4,7 +4,7 @@ import { describe, expect, it, vi } from "vitest";
 import ProductSummary from "./ProductSummary";
 import { useCart } from "../../../context/CartContext";
 import { createMockCartContext } from "../../../test/mocks/cartContext";
-import { localProducts } from "../../../fixtures/products";
+import { localProducts } from "../../../test/fixtures/products";
 
 vi.mock("../../../context/CartContext", () => ({
   useCart: vi.fn(),

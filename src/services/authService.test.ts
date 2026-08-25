@@ -1,7 +1,14 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { authService } from "./authService";
-import { environment } from "../config/environment";
+
+const mockEnvironment = vi.hoisted(() => ({
+  apiBaseUrl: "http://test-gateway",
+}));
+
+vi.mock("../config/environment", () => ({
+  environment: mockEnvironment,
+}));
 
 describe("authService", () => {
   beforeEach(() => {
@@ -32,7 +39,7 @@ describe("authService", () => {
       const result = await authService.login(loginRequest);
 
       expect(fetchMock).toHaveBeenCalledWith(
-        `${environment.apiBaseUrl}/api/auth/login`,
+        `${mockEnvironment.apiBaseUrl}/api/auth/login`,
         {
           method: "POST",
           headers: {

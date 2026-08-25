@@ -11,15 +11,16 @@ export const orderService = {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Idempotency-Key": crypto.randomUUID(),
         },
         body: JSON.stringify(request),
       },
     );
-
+  
     if (!response.ok) {
       throw new Error(`Order creation failed: ${response.status}`);
     }
-
+  
     return response.json();
   },
 

@@ -17,11 +17,16 @@ vi.mock("./api", () => ({
 
 describe("orderService", () => {
   beforeEach(() => {
+    vi.restoreAllMocks();
     vi.clearAllMocks();
   });
 
  
   it("creates an order", async () => {
+    const idempotencyKey = "11111111-1111-1111-1111-111111111111";
+  
+    vi.spyOn(crypto, "randomUUID").mockReturnValue(idempotencyKey);
+  
     const request = {
       items: [
         {
@@ -30,8 +35,9 @@ describe("orderService", () => {
         },
       ],
       shippingAddress: mockShippingAddress,
+      shippingMethod: "STANDARD" as const,
     };
-
+  
     const orderResponse = {
       id: "order-1",
       customerId: "customer-1",
@@ -42,7 +48,7 @@ describe("orderService", () => {
       total: 1399.98,
       items: [],
     };
-
+  
     mockAuthenticatedFetch.mockResolvedValue(
       new Response(JSON.stringify(orderResponse), {
         status: 201,
@@ -51,24 +57,26 @@ describe("orderService", () => {
         },
       }),
     );
-
+  
     const { orderService } = await import("./orderService");
-
+  
     const result = await orderService.createOrder(request);
-
+  
     expect(mockAuthenticatedFetch).toHaveBeenCalledWith(
       `${mockEnvironment.apiBaseUrl}/api/orders`,
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Idempotency-Key": idempotencyKey,
         },
         body: JSON.stringify(request),
       },
     );
-
+  
     expect(result).toEqual(orderResponse);
   });
+  
 
   it("throws when order creation fails", async () => {
     mockAuthenticatedFetch.mockResolvedValue(
@@ -83,6 +91,7 @@ describe("orderService", () => {
       orderService.createOrder({
         items: [{ productId: "1", quantity: 1 }],
         shippingAddress: mockShippingAddress,
+        shippingMethod: "STANDARD" as const,
       }),
     ).rejects.toThrow("Order creation failed: 400");
   });
@@ -140,6 +149,10 @@ describe("orderService", () => {
 
 
   it("returns an existing order for an idempotent request", async () => {
+    const idempotencyKey = "22222222-2222-2222-2222-222222222222";
+  
+    vi.spyOn(crypto, "randomUUID").mockReturnValue(idempotencyKey);
+  
     const orderResponse = {
       id: "order-1",
       customerId: "customer-1",
@@ -165,7 +178,24 @@ describe("orderService", () => {
     const result = await orderService.createOrder({
       items: [{ productId: "1", quantity: 1 }],
       shippingAddress: mockShippingAddress,
+      shippingMethod: "STANDARD" as const,
     });
+  
+    expect(mockAuthenticatedFetch).toHaveBeenCalledWith(
+      `${mockEnvironment.apiBaseUrl}/api/orders`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Idempotency-Key": idempotencyKey,
+        },
+        body: JSON.stringify({
+          items: [{ productId: "1", quantity: 1 }],
+          shippingAddress: mockShippingAddress,
+          shippingMethod: "STANDARD",
+        }),
+      },
+    );
   
     expect(result).toEqual(orderResponse);
   });

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { calculateOrderTotals } from "./orderCalculations";
-import { localProducts } from "../fixtures/products";
+import { localProducts } from "../test/fixtures/products";
 
 describe("calculateOrderTotals", () => {
   it("returns zero totals for an empty order", () => {

@@ -4,7 +4,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import ProductDetailsPage from "./ProductDetailsPage";
 import { getProduct } from "../services/productService";
-import { localProducts } from "../fixtures/products";
+import { localProducts } from "../test/fixtures/products";
 import { CartProvider } from "../context/CartContext";
 
 vi.mock("../services/productService", () => ({
