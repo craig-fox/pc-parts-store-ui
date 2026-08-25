@@ -1,13 +1,10 @@
 import { environment } from "../config/environment";
-import { localProducts } from "../fixtures/products";
 import type { Product } from "../types/Product";
 
 export async function getProducts(): Promise<Product[]> {
-  if (environment.dataSource === "fixture") {
-    return localProducts;
-  }
-
-  const response = await fetch(`${environment.productApiBaseUrl}/products`);
+  const response = await fetch(
+    `${environment.apiBaseUrl}/api/products`,
+  );
 
   if (!response.ok) {
     throw new Error("Unable to load products");
@@ -19,18 +16,8 @@ export async function getProducts(): Promise<Product[]> {
 }
 
 export async function getProduct(id: string): Promise<Product> {
-  if (environment.dataSource === "fixture") {
-    const product = localProducts.find((p) => p.id === id);
-
-    if (!product) {
-      throw new Error("Product not found");
-    }
-
-    return product;
-  }
-
   const response = await fetch(
-    `${environment.productApiBaseUrl}/products/${id}`,
+    `${environment.apiBaseUrl}/api/products/${id}`,
   );
 
   if (!response.ok) {
@@ -45,6 +32,6 @@ export async function getProduct(id: string): Promise<Product> {
 function mapProduct(product: Product): Product {
   return {
     ...product,
-    imageUrl: `${environment.assetBaseUrl}${product.imageUrl}`,
+    imageUrl: `${environment.apiBaseUrl}${product.imageUrl}`,
   };
 }

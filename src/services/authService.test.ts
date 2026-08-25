@@ -32,7 +32,7 @@ describe("authService", () => {
       const result = await authService.login(loginRequest);
 
       expect(fetchMock).toHaveBeenCalledWith(
-        `${environment.authApiBaseUrl}/login`,
+        `${environment.apiBaseUrl}/api/auth/login`,
         {
           method: "POST",
           headers: {

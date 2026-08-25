@@ -7,7 +7,7 @@ export const customerService = {
     request: RegistrationRequest,
   ): Promise<CustomerResponse> {
     const response = await fetch(
-      `${environment.customerApiBaseUrl}/customers`,
+      `${environment.apiBaseUrl}/api/customers`,
       {
         method: "POST",
         headers: {

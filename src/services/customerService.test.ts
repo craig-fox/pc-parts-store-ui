@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { customerService } from "./customerService";
 
 const mockEnvironment = vi.hoisted(() => ({
-  customerApiBaseUrl: "http://localhost:8081/api",
+  apiBaseUrl: "http://test-gateway",
 }));
 
 vi.mock("../config/environment", () => ({
@@ -47,7 +47,7 @@ describe("customerService", () => {
       const result = await customerService.registerCustomer(request);
 
       expect(fetchMock).toHaveBeenCalledWith(
-        "http://localhost:8081/api/customers",
+        `${mockEnvironment.apiBaseUrl}/api/customers`,
         {
           method: "POST",
           headers: {

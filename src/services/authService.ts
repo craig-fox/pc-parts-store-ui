@@ -3,7 +3,7 @@ import type { LoginRequest, LoginResponse } from "../auth/authTypes";
 
 export const authService = {
   async login(request: LoginRequest): Promise<LoginResponse> {
-    const response = await fetch(`${environment.authApiBaseUrl}/login`, {
+    const response = await fetch(`${environment.apiBaseUrl}/api/auth/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
