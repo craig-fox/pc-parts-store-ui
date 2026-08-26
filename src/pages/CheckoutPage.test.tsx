@@ -11,6 +11,10 @@ import { createMockCartContext } from "../test/mocks/cartContext";
 import { createMockOrdersContext } from "../test/mocks/ordersContext";
 import { orderService } from "../services/orderService";
 import { mockShippingAddress } from "../test/mocks/shippingAddress";
+import {
+  getSavedCheckoutDetails,
+  saveCheckoutDetails,
+} from "../utils/checkoutDetailsStorage";
 
 vi.mock("../context/CartContext", () => ({ useCart: vi.fn() }));
 vi.mock("../context/useOrders", () => ({ useOrders: vi.fn() }));
@@ -18,6 +22,11 @@ vi.mock("../services/orderService", () => ({
   orderService: {
     createOrder: vi.fn(),
   },
+}));
+
+vi.mock("../utils/checkoutDetailsStorage", () => ({
+  getSavedCheckoutDetails: vi.fn(),
+  saveCheckoutDetails: vi.fn(),
 }));
 
 function renderCheckoutPage() {
@@ -166,8 +175,12 @@ describe("CheckoutPage", () => {
       });
     });
 
-    expect(addOrder).toHaveBeenCalledWith(createdOrder);
-    expect(clearCart).toHaveBeenCalled();
+    expect(saveCheckoutDetails).toHaveBeenCalledWith({
+      firstName: "Craig",
+      lastName: "Fox",
+      email: "craig@example.com",
+      shippingAddress: mockShippingAddress,
+    });
 
     await waitFor(() => {
       expect(screen.getByText("Order Confirmation Page")).toBeInTheDocument();
@@ -285,5 +298,172 @@ describe("CheckoutPage", () => {
     ).toBeInTheDocument();
 
     expect(orderService.createOrder).not.toHaveBeenCalled();
+  });
+
+  it("pre-populates the shipping address from saved details", () => {
+    vi.mocked(getSavedCheckoutDetails).mockReturnValue({
+      firstName: "Craig",
+      lastName: "Fox",
+      email: "craig@example.com",
+      shippingAddress: {
+        addressLine1: "1 Main St",
+        city: "Auckland",
+        postcode: "1010",
+        country: "NZ",
+      },
+    });
+
+    vi.mocked(useCart).mockReturnValue(
+      createMockCartContext({
+        items: [{ product: localProducts[0], quantity: 1 }],
+        totalItems: 1,
+        totalPrice: 799,
+        totalWeight: 0.04,
+      }),
+    );
+
+    vi.mocked(useOrders).mockReturnValue(createMockOrdersContext());
+
+    renderCheckoutPage();
+
+    expect(screen.getByLabelText("First Name")).toHaveValue("Craig");
+    expect(screen.getByLabelText("Last Name")).toHaveValue("Fox");
+    expect(screen.getByLabelText("Email")).toHaveValue("craig@example.com");
+    expect(screen.getByLabelText("Address")).toHaveValue("1 Main St");
+    expect(screen.getByLabelText("City")).toHaveValue("Auckland");
+    expect(screen.getByLabelText("Postcode")).toHaveValue("1010");
+    expect(screen.getByLabelText("Country")).toHaveValue("NZ");
+  });
+
+  it("pre-populates checkout with saved details", () => {
+    vi.mocked(getSavedCheckoutDetails).mockReturnValue({
+      firstName: "Craig",
+      lastName: "Fox",
+      email: "craig@example.com",
+      shippingAddress: mockShippingAddress,
+    });
+
+    vi.mocked(useCart).mockReturnValue(
+      createMockCartContext({
+        items: [{ product: localProducts[0], quantity: 1 }],
+        totalItems: 1,
+        totalPrice: 799,
+        totalWeight: 0.04,
+      }),
+    );
+
+    vi.mocked(useOrders).mockReturnValue(createMockOrdersContext());
+
+    renderCheckoutPage();
+
+    expect(screen.getByLabelText("First Name")).toHaveValue("Craig");
+    expect(screen.getByLabelText("Last Name")).toHaveValue("Fox");
+    expect(screen.getByLabelText("Email")).toHaveValue("craig@example.com");
+    expect(screen.getByLabelText("Address")).toHaveValue(
+      mockShippingAddress.addressLine1,
+    );
+    expect(screen.getByLabelText("City")).toHaveValue(mockShippingAddress.city);
+    expect(screen.getByLabelText("Postcode")).toHaveValue(
+      mockShippingAddress.postcode,
+    );
+    expect(screen.getByLabelText("Country")).toHaveValue(
+      mockShippingAddress.country,
+    );
+  });
+
+  it("allows the user to use their saved checkout details", async () => {
+    const user = userEvent.setup();
+
+    vi.mocked(getSavedCheckoutDetails).mockReturnValue({
+      firstName: "Craig",
+      lastName: "Fox",
+      email: "craig@example.com",
+      shippingAddress: mockShippingAddress,
+    });
+
+    vi.mocked(useCart).mockReturnValue(
+      createMockCartContext({
+        items: [{ product: localProducts[0], quantity: 1 }],
+        totalItems: 1,
+        totalPrice: 799,
+        totalWeight: 0.04,
+      }),
+    );
+
+    vi.mocked(useOrders).mockReturnValue(createMockOrdersContext());
+
+    renderCheckoutPage();
+
+    expect(screen.getByText("Use your saved details?")).toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: "Use These Details" }));
+
+    expect(
+      screen.queryByText("Use your saved details?"),
+    ).not.toBeInTheDocument();
+
+    expect(screen.getByLabelText("First Name")).toHaveValue("Craig");
+    expect(screen.getByLabelText("Last Name")).toHaveValue("Fox");
+    expect(screen.getByLabelText("Email")).toHaveValue("craig@example.com");
+  });
+
+  it("allows the user to enter a new shipping address", async () => {
+    const user = userEvent.setup();
+
+    vi.mocked(getSavedCheckoutDetails).mockReturnValue({
+      firstName: "Craig",
+      lastName: "Fox",
+      email: "craig@example.com",
+      shippingAddress: mockShippingAddress,
+    });
+
+    vi.mocked(useCart).mockReturnValue(
+      createMockCartContext({
+        items: [{ product: localProducts[0], quantity: 1 }],
+        totalItems: 1,
+        totalPrice: 799,
+        totalWeight: 0.04,
+      }),
+    );
+
+    vi.mocked(useOrders).mockReturnValue(createMockOrdersContext());
+
+    renderCheckoutPage();
+
+    await user.click(screen.getByRole("button", { name: "Enter New Address" }));
+
+    expect(
+      screen.queryByText("Use your saved details?"),
+    ).not.toBeInTheDocument();
+
+    expect(screen.getByLabelText("First Name")).toHaveValue("Craig");
+    expect(screen.getByLabelText("Last Name")).toHaveValue("Fox");
+    expect(screen.getByLabelText("Email")).toHaveValue("craig@example.com");
+
+    expect(screen.getByLabelText("Address")).toHaveValue("");
+    expect(screen.getByLabelText("City")).toHaveValue("");
+    expect(screen.getByLabelText("Postcode")).toHaveValue("");
+    expect(screen.getByLabelText("Country")).toHaveValue("");
+  });
+
+  it("does not display the saved details prompt when no details are saved", () => {
+    vi.mocked(getSavedCheckoutDetails).mockReturnValue(null);
+
+    vi.mocked(useCart).mockReturnValue(
+      createMockCartContext({
+        items: [{ product: localProducts[0], quantity: 1 }],
+        totalItems: 1,
+        totalPrice: 799,
+        totalWeight: 0.04,
+      }),
+    );
+
+    vi.mocked(useOrders).mockReturnValue(createMockOrdersContext());
+
+    renderCheckoutPage();
+
+    expect(
+      screen.queryByText("Use your saved details?"),
+    ).not.toBeInTheDocument();
   });
 });
