@@ -152,9 +152,26 @@ describe("CheckoutPage", () => {
 
     expect(addOrder).toHaveBeenCalledWith(createdOrder);
     expect(clearCart).toHaveBeenCalled();
-    expect(
-      await screen.findByText("Order Confirmation Page"),
-    ).toBeInTheDocument();
+
+    await waitFor(() => {
+      expect(orderService.createOrder).toHaveBeenCalledWith({
+        items: [
+          {
+            productId: localProducts[0].id,
+            quantity: 1,
+          },
+        ],
+        shippingAddress: mockShippingAddress,
+        shippingMethod: "STANDARD",
+      });
+    });
+
+    expect(addOrder).toHaveBeenCalledWith(createdOrder);
+    expect(clearCart).toHaveBeenCalled();
+
+    await waitFor(() => {
+      expect(screen.getByText("Order Confirmation Page")).toBeInTheDocument();
+    });
   });
 
   it("shows validation errors and does not submit an invalid checkout", async () => {

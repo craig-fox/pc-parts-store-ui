@@ -13,6 +13,10 @@ function OrderCard({ order }: OrderCardProps) {
 
   const displayId = order.id.slice(0, 8).toUpperCase();
 
+  const isPaid = ["PAID", "PACKING", "SHIPPED", "DELIVERED"].includes(
+    order.status,
+  );
+
   return (
     <article>
       <div className="flex items-center justify-between">
@@ -27,6 +31,11 @@ function OrderCard({ order }: OrderCardProps) {
         <span className="rounded-full bg-sky-100 px-3 py-1 text-sm font-medium text-sky-700">
           {order.status}
         </span>
+        {isPaid && (
+          <span className="rounded-full bg-green-100 px-3 py-1 text-sm font-medium text-green-700">
+            Payment: Paid
+          </span>
+        )}
       </div>
 
       <p className="mt-6 text-sm font-medium text-slate-700">
