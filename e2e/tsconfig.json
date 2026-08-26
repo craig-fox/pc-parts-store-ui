@@ -1,15 +1,15 @@
 {
-    "compilerOptions": {
-      "target": "es2023",
-      "lib": ["ES2023", "DOM"],
-      "types": ["node", "@playwright/test"],
-      "skipLibCheck": true,
-      "module": "esnext",
-      "moduleResolution": "bundler",
-      "noEmit": true,
-      "verbatimModuleSyntax": true,
-      "moduleDetection": "force",
-      "strict": true
-    },
-    "include": ["./**/*.ts"]
-  }
+  "compilerOptions": {
+    "target": "es2023",
+    "lib": ["ES2023", "DOM"],
+    "types": ["node", "@playwright/test"],
+    "skipLibCheck": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "noEmit": true,
+    "verbatimModuleSyntax": true,
+    "moduleDetection": "force",
+    "strict": true
+  },
+  "include": ["./**/*.ts"]
+}
