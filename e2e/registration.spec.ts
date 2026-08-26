@@ -2,20 +2,6 @@ import { test, expect } from "@playwright/test";
 
 test.describe("Registration and Login", () => {
   test("user can register and then log in", async ({ page }) => {
-    page.on("request", (request) => {
-      if (request.url().includes("/customers")) {
-        console.log("REQUEST:", request.method(), request.url());
-        console.log("BODY:", request.postData());
-      }
-    });
-
-    page.on("response", async (response) => {
-      if (response.url().includes("/customers")) {
-        console.log("RESPONSE:", response.status(), response.url());
-        console.log("BODY:", await response.text());
-      }
-    });
-
     const email = `e2e-${Date.now()}@example.com`;
     const password = "password123";
 

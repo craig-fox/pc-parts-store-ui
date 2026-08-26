@@ -3,13 +3,15 @@ import { defineConfig } from "@playwright/test";
 export default defineConfig({
   testDir: "./e2e",
 
+  workers: process.env.CI ? 1 : 1,
+
   use: {
     baseURL: "http://localhost:5173",
     headless: true,
   },
 
   webServer: {
-    command: "npm run dev:integration",
+    command: "npm run dev",
     url: "http://localhost:5173",
     reuseExistingServer: !process.env.CI,
   },
