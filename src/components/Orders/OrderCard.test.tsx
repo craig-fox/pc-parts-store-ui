@@ -74,4 +74,23 @@ describe("OrderCard", () => {
 
     expect(screen.getByText("CANCELLED")).toBeInTheDocument();
   });
+
+  it("displays the paid status when the order has been paid", () => {
+    render(
+      <OrderCard
+        order={{
+          ...order,
+          status: "PAID",
+        }}
+      />,
+    );
+
+    expect(screen.getByText("Payment: Paid")).toBeInTheDocument();
+  });
+
+  it("does not display the paid status for an unpaid order", () => {
+    render(<OrderCard order={order} />);
+
+    expect(screen.queryByText("Payment: Paid")).not.toBeInTheDocument();
+  });
 });
