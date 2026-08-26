@@ -16,13 +16,14 @@ describe("calculateOrderTotals", () => {
   it("calculates price, weight, shipping, and total for multiple items", () => {
     expect(
       calculateOrderTotals([
-        { product: localProducts[0], quantity: 2 },
+        { product: localProducts[0], quantity: 1 },
+        { product: localProducts[1], quantity: 1 },
         { product: localProducts[2], quantity: 1 },
       ]),
     ).toEqual({
-      subtotal: 2597,
-      shipping: 0,
-      total: 2597,
+      subtotal: 2447,
+      shipping: 15,
+      total: 2462,
       totalWeight: 1.28,
     });
   });
@@ -35,6 +36,20 @@ describe("calculateOrderTotals", () => {
       shipping: 8,
       total: 277,
       totalWeight: 0.01,
+    });
+  });
+
+  it("calculates express shipping", () => {
+    expect(
+      calculateOrderTotals(
+        [{ product: localProducts[4], quantity: 1 }],
+        "EXPRESS",
+      ),
+    ).toEqual({
+      subtotal: 269,
+      totalWeight: 0.01,
+      shipping: 15,
+      total: 284,
     });
   });
 });

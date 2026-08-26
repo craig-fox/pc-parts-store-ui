@@ -1,16 +1,13 @@
 import type { CartItem } from "../types/CartItem";
+import type { ShippingMethod } from "../types/ShippingMethod";
 import { calculateShippingCost } from "./shipping";
 
-export type OrderTotals = {
-  subtotal: number;
-  shipping: number;
-  total: number;
-  totalWeight: number;
-};
-
-export function calculateOrderTotals(items: CartItem[]): OrderTotals {
+export function calculateOrderTotals(
+  items: CartItem[],
+  shippingMethod: ShippingMethod = "STANDARD",
+) {
   const subtotal = items.reduce(
-    (subtotal, item) => subtotal + item.product.price * item.quantity,
+    (total, item) => total + item.product.price * item.quantity,
     0,
   );
 
@@ -19,12 +16,13 @@ export function calculateOrderTotals(items: CartItem[]): OrderTotals {
     0,
   );
 
-  const shipping = calculateShippingCost(subtotal, totalWeight);
+  const shipping = calculateShippingCost(totalWeight, shippingMethod);
+  const total = subtotal + shipping;
 
   return {
     subtotal,
-    shipping,
-    total: subtotal + shipping,
     totalWeight,
+    shipping,
+    total,
   };
 }

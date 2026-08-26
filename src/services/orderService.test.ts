@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { mockShippingAddress } from "../test/mocks/shippingAddress";
+import type { ShippingMethod } from "../types/ShippingMethod";
 
 const mockEnvironment = vi.hoisted(() => ({
   apiBaseUrl: "http://test-gateway",
@@ -21,6 +22,8 @@ describe("orderService", () => {
     vi.clearAllMocks();
   });
 
+  const method: ShippingMethod = "STANDARD";
+
   it("creates an order", async () => {
     const idempotencyKey = "11111111-1111-1111-1111-111111111111";
 
@@ -34,7 +37,7 @@ describe("orderService", () => {
         },
       ],
       shippingAddress: mockShippingAddress,
-      shippingMethod: "STANDARD" as const,
+      shippingMethod: method,
     };
 
     const orderResponse = {
@@ -89,7 +92,7 @@ describe("orderService", () => {
       orderService.createOrder({
         items: [{ productId: "1", quantity: 1 }],
         shippingAddress: mockShippingAddress,
-        shippingMethod: "STANDARD" as const,
+        shippingMethod: method,
       }),
     ).rejects.toThrow("Order creation failed: 400");
   });
@@ -175,7 +178,7 @@ describe("orderService", () => {
     const result = await orderService.createOrder({
       items: [{ productId: "1", quantity: 1 }],
       shippingAddress: mockShippingAddress,
-      shippingMethod: "STANDARD" as const,
+      shippingMethod: method,
     });
 
     expect(mockAuthenticatedFetch).toHaveBeenCalledWith(
@@ -189,7 +192,7 @@ describe("orderService", () => {
         body: JSON.stringify({
           items: [{ productId: "1", quantity: 1 }],
           shippingAddress: mockShippingAddress,
-          shippingMethod: "STANDARD",
+          shippingMethod: method,
         }),
       },
     );
