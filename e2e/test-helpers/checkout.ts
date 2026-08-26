@@ -1,5 +1,6 @@
-import { Page, expect } from "@playwright/test";
+import { type Page, expect } from "@playwright/test";
 import { addProductsToCart } from "./products";
+import type { E2ECustomer } from "./auth";
 
 export async function goToCheckout(page: Page, productNames: string[]) {
   await addProductsToCart(page, productNames);
@@ -15,11 +16,14 @@ export async function goToCheckout(page: Page, productNames: string[]) {
   await expect(page.getByRole("heading", { name: "Checkout" })).toBeVisible();
 }
 
-export async function completeCheckoutForm(page: Page) {
-  await page.getByLabel("First Name").fill("Craig");
-  await page.getByLabel("Last Name").fill("Fox");
-  await page.getByLabel("Email").fill("craig@example.com");
-  await page.getByLabel("Address").fill("1 Main Street");
+export async function completeCheckoutForm(
+  page: Page,
+  customer: E2ECustomer,
+) {
+  await page.getByLabel("First Name").fill(customer.firstName);
+  await page.getByLabel("Last Name").fill(customer.lastName);
+  await page.getByLabel("Email").fill(customer.email);
+  await page.getByLabel("Address").fill(customer.address);
   await page.getByLabel("City").fill("Auckland");
   await page.getByLabel("Postcode").fill("1010");
   await page.getByLabel("Country").fill("New Zealand");
