@@ -1,60 +1,32 @@
-import { useCart } from "../../context/CartContext";
-import { calculateShippingCost } from "../../utils/shipping";
 import { formatCurrency } from "../../utils/currency";
 
-function OrderSummary() {
-  const { items, totalItems, totalPrice, totalWeight } = useCart();
+type OrderSummaryProps = {
+  subtotal: number;
+  shipping: number;
+  total: number;
+};
 
-  const shipping = calculateShippingCost(totalPrice, totalWeight);
-  const total = totalPrice + shipping;
-
+function OrderSummary({ subtotal, shipping, total }: OrderSummaryProps) {
   return (
-    <section className="rounded-lg border border-slate-200 bg-white p-6">
-      <h2 className="text-2xl font-semibold">Order Summary</h2>
-
-      <div className="mt-6 space-y-4">
-        {items.map((item) => (
-          <div key={item.product.id} className="flex justify-between gap-4">
-            <span>
-              {item.product.name} × {item.quantity}
-            </span>
-
-            <span>{formatCurrency(item.product.price * item.quantity)}</span>
-          </div>
-        ))}
-      </div>
-
-      <hr className="my-6 border-slate-200" />
-
-      <dl className="space-y-4">
-        <div className="flex justify-between">
-          <dt>Items</dt>
-          <dd>{totalItems}</dd>
-        </div>
-
-        <div className="flex justify-between">
-          <dt>Weight</dt>
-          <dd>{totalWeight.toFixed(2)} kg</dd>
-        </div>
-
-        <div className="flex justify-between">
+    <div>
+      <h2 className="mb-4 text-xl font-semibold">Order Summary</h2>
+      <dl className="space-y-3 text-sm text-slate-600">
+        <div className="flex justify-between gap-4">
           <dt>Subtotal</dt>
-          <dd>{formatCurrency(totalPrice)}</dd>
+          <dd>{formatCurrency(subtotal)}</dd>
         </div>
 
-        <div className="flex justify-between">
+        <div className="flex justify-between gap-4">
           <dt>Shipping</dt>
-          <dd>{shipping === 0 ? "FREE" : formatCurrency(shipping)}</dd>
+          <dd>{formatCurrency(shipping)}</dd>
+        </div>
+
+        <div className="flex justify-between gap-4 border-t border-slate-200 pt-3 text-base font-semibold">
+          <dt>Total</dt>
+          <dd>{formatCurrency(total)}</dd>
         </div>
       </dl>
-
-      <hr className="my-6 border-slate-200" />
-
-      <div className="flex items-center justify-between text-lg font-semibold">
-        <span>Total</span>
-        <span>{formatCurrency(total)}</span>
-      </div>
-    </section>
+    </div>
   );
 }
 

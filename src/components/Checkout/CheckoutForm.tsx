@@ -161,6 +161,44 @@ function CheckoutForm({ checkout, setCheckout, errors }: CheckoutFormProps) {
             <p className="mt-1 text-sm text-red-600">{errors.country}</p>
           )}
         </div>
+
+        <fieldset>
+          <legend className="mb-3 font-medium">Shipping Method</legend>
+
+          <div className="space-y-3">
+            <label className="flex items-center gap-3">
+              <input
+                type="radio"
+                name="shippingMethod"
+                value="STANDARD"
+                checked={checkout.shippingMethod === "STANDARD"}
+                onChange={() =>
+                  setCheckout((current) => ({
+                    ...current,
+                    shippingMethod: "STANDARD",
+                  }))
+                }
+              />
+              <span>Standard</span>
+            </label>
+
+            <label className="flex items-center gap-3">
+              <input
+                type="radio"
+                name="shippingMethod"
+                value="EXPRESS"
+                checked={checkout.shippingMethod === "EXPRESS"}
+                onChange={() =>
+                  setCheckout((current) => ({
+                    ...current,
+                    shippingMethod: "EXPRESS",
+                  }))
+                }
+              />
+              <span>Express</span>
+            </label>
+          </div>
+        </fieldset>
       </div>
     </div>
   );

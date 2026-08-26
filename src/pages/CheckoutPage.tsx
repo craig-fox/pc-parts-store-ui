@@ -9,9 +9,10 @@ import type { Checkout } from "../types/Checkout";
 import type { CheckoutErrors } from "../types/CheckoutErrors";
 import { orderService } from "../services/orderService";
 import { useOrders } from "../context/useOrders";
+import { calculateShippingCost } from "../utils/shipping";
 
 function CheckoutPage() {
-  const { items, clearCart } = useCart();
+  const { items, totalPrice, totalWeight, clearCart } = useCart();
   const navigate = useNavigate();
   const { addOrder } = useOrders();
 
@@ -27,6 +28,7 @@ function CheckoutPage() {
       postcode: "",
       country: "",
     },
+    shippingMethod: "STANDARD",
   });
 
   const [errors, setErrors] = useState<CheckoutErrors>({
@@ -60,7 +62,7 @@ function CheckoutPage() {
           quantity: item.quantity,
         })),
         shippingAddress: checkout.shippingAddress,
-        shippingMethod: "STANDARD" as const,
+        shippingMethod: checkout.shippingMethod,
       };
 
       const order = await orderService.createOrder(request);
@@ -131,6 +133,10 @@ function CheckoutPage() {
       />
     );
   }
+
+  const shipping = calculateShippingCost(totalWeight, checkout.shippingMethod);
+
+  const total = totalPrice + shipping;
   return (
     <div>
       <h1 className="mb-8 text-4xl font-bold">Checkout</h1>
@@ -144,7 +150,11 @@ function CheckoutPage() {
           />
 
           <div>
-            <OrderSummary />
+            <OrderSummary
+              subtotal={totalPrice}
+              shipping={shipping}
+              total={total}
+            />
             {submitError && (
               <p className="mt-4 text-sm text-red-600" role="alert">
                 {submitError}
