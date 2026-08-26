@@ -1,5 +1,40 @@
 # Changelog
 
+## [1.1.0] - 2026-08-26
+
+### Added
+
+- Added persisted checkout details using browser local storage.
+- Added automatic pre-population of customer details and shipping address from previously saved checkout details.
+- Added a saved checkout details prompt allowing customers to:
+  - Use their previously saved details.
+  - Enter a new shipping address while retaining their saved customer details.
+- Added payment status display to orders, including a `Payment: Paid` indicator.
+- Added E2E coverage for:
+  - Checkout and order placement.
+  - Inventory availability during checkout.
+  - Standard and express shipping.
+  - Entering a new shipping address.
+  - Reusing saved checkout details.
+  - Payment status on completed orders.
+- Added authenticated inventory API access for E2E test infrastructure.
+- Added an authenticated E2E test account for inventory state management.
+
+### Changed
+
+- Checkout now saves customer and shipping details after a successful order.
+- Checkout form now supports pre-populating first name, last name, email, and shipping address.
+- Updated E2E inventory reset handling to authenticate through the API gateway.
+- Updated E2E tests to work with the authenticated inventory service.
+- E2E tests now run serially to avoid conflicts caused by shared inventory state.
+
+### Testing
+
+- Added unit tests for checkout detail persistence and retrieval.
+- Expanded `CheckoutPage` test coverage for saved checkout details.
+- Updated checkout E2E tests to cover the new persisted checkout experience.
+- All UI unit tests and E2E tests pass.
+
 ## [1.0.1] - 2026-08-26
 
 ### Changed

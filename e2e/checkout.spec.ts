@@ -6,19 +6,17 @@ import {
   type E2ECustomer,
   loginAsCustomer,
   registerCustomer,
-  createAuthenticatedE2ECustomer
+  createAuthenticatedE2ECustomer,
 } from "./test-helpers/auth";
 
 import { inventoryApi } from "./api/inventoryApi";
 import { test } from "./fixtures/reset";
-
 
 test.describe("Checkout", () => {
   const Ryzen = testProductLookup.Ryzen9800X3D;
   const Rtx = testProductLookup.Rtx5070Ti;
 
   test("user can successfully place an order", async ({ page }) => {
-
     const customer: E2ECustomer = {
       firstName: "E2E",
       lastName: "Checkout",
@@ -78,7 +76,6 @@ test.describe("Checkout", () => {
   test("authenticated user can place an order and view it in their orders", async ({
     page,
   }) => {
-
     const customer = createE2ECustomer();
 
     await registerCustomer(page, customer);
@@ -127,37 +124,27 @@ test.describe("Checkout", () => {
   test("authenticated user cannot place an order when inventory is insufficient", async ({
     page,
   }) => {
-  
     const { customer, token } = await createAuthenticatedE2ECustomer();
     const rtxInventory = await inventoryApi.getInventory(Rtx.id, token);
-  
+
     expect(rtxInventory.availableQuantity).toBeGreaterThan(0);
-  
+
     const quantityToReserve = rtxInventory.availableQuantity;
-  
-    await inventoryApi.reserveStock(
-      Rtx.id,
-      quantityToReserve,
-      token,
-    );
-  
+
+    await inventoryApi.reserveStock(Rtx.id, quantityToReserve, token);
+
     try {
       await loginAsCustomer(page, customer.email, customer.password);
       await goToCheckout(page, [Rtx.name]);
       await completeCheckoutForm(page, customer);
-  
+
       await page
         .getByRole("button", {
           name: "Confirm Order",
         })
         .click();
-  
     } finally {
-      await inventoryApi.releaseStock(
-        Rtx.id,
-        quantityToReserve,
-        token,
-      );
+      await inventoryApi.releaseStock(Rtx.id, quantityToReserve, token);
     }
   });
 
@@ -165,48 +152,52 @@ test.describe("Checkout", () => {
     page,
   }) => {
     const customer = createE2ECustomer();
-  
+
     await registerCustomer(page, customer);
     await loginAsCustomer(page, customer.email, customer.password);
     await goToCheckout(page, [Ryzen.name]);
-  
+
     await expect(
       page.getByRole("radio", {
         name: "Standard",
       }),
     ).toBeChecked();
-  
+
     await expect(page.getByText("$8.00")).toBeVisible();
     await expect(page.getByText("$907.99")).toBeVisible();
-  
-    await page.getByRole("radio", {
-      name: "Express",
-    }).check();
-  
+
+    await page
+      .getByRole("radio", {
+        name: "Express",
+      })
+      .check();
+
     await expect(
       page.getByRole("radio", {
         name: "Express",
       }),
     ).toBeChecked();
-  
+
     await expect(page.getByText("$15.00")).toBeVisible();
     await expect(page.getByText("$914.99")).toBeVisible();
   });
 
   test("user can choose to enter a new shipping address", async ({ page }) => {
     const customer = createE2ECustomer();
-  
+
     await registerCustomer(page, customer);
     await loginAsCustomer(page, customer.email, customer.password);
-  
+
     await goToCheckout(page, [Ryzen.name]);
-  
+
     await completeCheckoutForm(page, customer);
-  
-    await page.getByRole("button", {
-      name: "Confirm Order",
-    }).click();
-  
+
+    await page
+      .getByRole("button", {
+        name: "Confirm Order",
+      })
+      .click();
+
     await expect(
       page.getByRole("heading", {
         name: "Order Confirmed",
@@ -215,77 +206,68 @@ test.describe("Checkout", () => {
 
     await goToCheckout(page, [Ryzen.name]);
 
-    await expect(
-      page.getByText("Use your saved details?"),
-    ).toBeVisible();
-  
-    await page.getByRole("button", {
-      name: "Enter New Address",
-    }).click();
-  
+    await expect(page.getByText("Use your saved details?")).toBeVisible();
+
+    await page
+      .getByRole("button", {
+        name: "Enter New Address",
+      })
+      .click();
+
     // Customer details remain saved.
-    await expect(page.getByLabel("First Name"))
-      .toHaveValue(customer.firstName);
-  
-    await expect(page.getByLabel("Last Name"))
-      .toHaveValue(customer.lastName);
-  
-    await expect(page.getByLabel("Email"))
-      .toHaveValue(customer.email);
-  
+    await expect(page.getByLabel("First Name")).toHaveValue(customer.firstName);
+
+    await expect(page.getByLabel("Last Name")).toHaveValue(customer.lastName);
+
+    await expect(page.getByLabel("Email")).toHaveValue(customer.email);
+
     // Address is cleared.
-    await expect(page.getByLabel("Address"))
-      .toHaveValue("");
-  
-    await expect(page.getByLabel("City"))
-      .toHaveValue("");
-  
-    await expect(page.getByLabel("Postcode"))
-      .toHaveValue("");
-  
-    await expect(page.getByLabel("Country"))
-      .toHaveValue("");
+    await expect(page.getByLabel("Address")).toHaveValue("");
+
+    await expect(page.getByLabel("City")).toHaveValue("");
+
+    await expect(page.getByLabel("Postcode")).toHaveValue("");
+
+    await expect(page.getByLabel("Country")).toHaveValue("");
   });
 
   test("user can reuse saved checkout details", async ({ page }) => {
     const customer = createE2ECustomer();
-  
+
     await registerCustomer(page, customer);
     await loginAsCustomer(page, customer.email, customer.password);
-  
+
     await goToCheckout(page, [Ryzen.name]);
-  
+
     await completeCheckoutForm(page, customer);
-  
-    await page.getByRole("button", {
-      name: "Confirm Order",
-    }).click();
-  
+
+    await page
+      .getByRole("button", {
+        name: "Confirm Order",
+      })
+      .click();
+
     await expect(
       page.getByRole("heading", {
         name: "Order Confirmed",
       }),
     ).toBeVisible();
-  
+
     await goToCheckout(page, [Ryzen.name]);
-    await expect(
-      page.getByText("Use your saved details?"),
-    ).toBeVisible();
-  
-    await page.getByRole("button", {
-      name: "Use These Details",
-    }).click();
-  
-    await expect(page.getByLabel("First Name"))
-      .toHaveValue(customer.firstName);
-  
-    await expect(page.getByLabel("Last Name"))
-      .toHaveValue(customer.lastName);
-  
-    await expect(page.getByLabel("Email"))
-      .toHaveValue(customer.email);
-  
-    await expect(page.getByLabel("Address"))
-      .toHaveValue(customer.address);
+    await expect(page.getByText("Use your saved details?")).toBeVisible();
+
+    await page
+      .getByRole("button", {
+        name: "Use These Details",
+      })
+      .click();
+
+    await expect(page.getByLabel("First Name")).toHaveValue(customer.firstName);
+
+    await expect(page.getByLabel("Last Name")).toHaveValue(customer.lastName);
+
+    await expect(page.getByLabel("Email")).toHaveValue(customer.email);
+
+    await expect(page.getByLabel("Address")).toHaveValue(customer.address);
   });
 });

@@ -16,10 +16,7 @@ export async function goToCheckout(page: Page, productNames: string[]) {
   await expect(page.getByRole("heading", { name: "Checkout" })).toBeVisible();
 }
 
-export async function completeCheckoutForm(
-  page: Page,
-  customer: E2ECustomer,
-) {
+export async function completeCheckoutForm(page: Page, customer: E2ECustomer) {
   await page.getByLabel("First Name").fill(customer.firstName);
   await page.getByLabel("Last Name").fill(customer.lastName);
   await page.getByLabel("Email").fill(customer.email);

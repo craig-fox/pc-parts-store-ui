@@ -58,9 +58,7 @@ export async function loginAsCustomer(
   await expect(page).toHaveURL(/\/products$/);
 }
 
-export async function registerCustomerViaApi(
-  customer: E2ECustomer,
-) {
+export async function registerCustomerViaApi(customer: E2ECustomer) {
   const response = await fetch(`${API_BASE_URL}/api/customers`, {
     method: "POST",
     headers: {
@@ -106,7 +104,6 @@ export async function loginCustomerViaApi(
   return loginResponse.token;
 }
 
-
 export async function createAuthenticatedE2ECustomer(): Promise<{
   customer: E2ECustomer;
   token: string;
@@ -115,10 +112,7 @@ export async function createAuthenticatedE2ECustomer(): Promise<{
 
   await registerCustomerViaApi(customer);
 
-  const token = await loginCustomerViaApi(
-    customer.email,
-    customer.password,
-  );
+  const token = await loginCustomerViaApi(customer.email, customer.password);
 
   return { customer, token };
 }
