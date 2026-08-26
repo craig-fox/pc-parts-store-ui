@@ -10,19 +10,61 @@ import type { CheckoutErrors } from "../types/CheckoutErrors";
 import { orderService } from "../services/orderService";
 import { useOrders } from "../context/useOrders";
 import { calculateShippingCost } from "../utils/shipping";
+import {
+  getSavedCheckoutDetails,
+  saveCheckoutDetails,
+} from "../utils/checkoutDetailsStorage";
 
 function CheckoutPage() {
   const { items, totalPrice, totalWeight, clearCart } = useCart();
   const navigate = useNavigate();
   const { addOrder } = useOrders();
 
+  const handleUseSavedCheckoutDetails = () => {
+    if (!savedCheckoutDetails) {
+      return;
+    }
+
+    setCheckout((current) => ({
+      ...current,
+      customer: {
+        firstName: savedCheckoutDetails.firstName,
+        lastName: savedCheckoutDetails.lastName,
+        email: savedCheckoutDetails.email,
+      },
+      shippingAddress: savedCheckoutDetails.shippingAddress,
+    }));
+
+    setShowSavedCheckoutDetails(false);
+  };
+
+  const handleEnterNewAddress = () => {
+    setCheckout((current) => ({
+      ...current,
+      shippingAddress: {
+        addressLine1: "",
+        city: "",
+        postcode: "",
+        country: "",
+      },
+    }));
+
+    setShowSavedCheckoutDetails(false);
+  };
+
+  const savedCheckoutDetails = getSavedCheckoutDetails();
+
+  const [showSavedCheckoutDetails, setShowSavedCheckoutDetails] = useState(
+    savedCheckoutDetails !== null,
+  );
+
   const [checkout, setCheckout] = useState<Checkout>({
     customer: {
-      firstName: "",
-      lastName: "",
-      email: "",
+      firstName: savedCheckoutDetails?.firstName ?? "",
+      lastName: savedCheckoutDetails?.lastName ?? "",
+      email: savedCheckoutDetails?.email ?? "",
     },
-    shippingAddress: {
+    shippingAddress: savedCheckoutDetails?.shippingAddress ?? {
       addressLine1: "",
       city: "",
       postcode: "",
@@ -66,6 +108,12 @@ function CheckoutPage() {
       };
 
       const order = await orderService.createOrder(request);
+      saveCheckoutDetails({
+        firstName: checkout.customer.firstName,
+        lastName: checkout.customer.lastName,
+        email: checkout.customer.email,
+        shippingAddress: checkout.shippingAddress,
+      });
       addOrder(order);
       clearCart();
 
@@ -143,6 +191,40 @@ function CheckoutPage() {
 
       <form onSubmit={handleSubmit} noValidate>
         <div className="grid gap-8 lg:grid-cols-[2fr_1fr]">
+          {showSavedCheckoutDetails && savedCheckoutDetails && (
+            <div className="mb-6 rounded-lg border border-slate-200 bg-slate-50 p-6">
+              <h2 className="text-lg font-semibold">Use your saved details?</h2>
+
+              <p className="mt-3 text-sm text-slate-600">
+                {savedCheckoutDetails.firstName} {savedCheckoutDetails.lastName}
+                <br />
+                {savedCheckoutDetails.email}
+              </p>
+
+              <p className="mt-3 text-sm text-slate-600">
+                {savedCheckoutDetails.shippingAddress.addressLine1}
+                <br />
+                {savedCheckoutDetails.shippingAddress.city},{" "}
+                {savedCheckoutDetails.shippingAddress.postcode}
+                <br />
+                {savedCheckoutDetails.shippingAddress.country}
+              </p>
+
+              <div className="mt-4 flex gap-3">
+                <Button type="button" onClick={handleUseSavedCheckoutDetails}>
+                  Use These Details
+                </Button>
+
+                <Button
+                  type="button"
+                  onClick={handleEnterNewAddress}
+                  className="bg-slate-600 hover:bg-slate-700"
+                >
+                  Enter New Address
+                </Button>
+              </div>
+            </div>
+          )}
           <CheckoutForm
             checkout={checkout}
             setCheckout={setCheckout}
