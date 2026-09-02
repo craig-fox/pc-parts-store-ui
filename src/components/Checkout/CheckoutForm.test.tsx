@@ -22,6 +22,7 @@ function renderCheckoutForm(
       country: "",
       postcode: "",
     },
+    shippingMethod: "STANDARD",
     ...overrides,
   };
 

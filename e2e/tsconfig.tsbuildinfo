@@ -1,0 +1,1 @@
+{"root":["./authentication.spec.ts","./cart.spec.ts","./checkout.spec.ts","./navigation.spec.ts","./registration.spec.ts","./api/inventoryapi.ts","./fixtures/reset.ts","./test-data/testproductlookup.ts","./test-helpers/auth.ts","./test-helpers/checkout.ts","./test-helpers/products.ts"],"version":"6.0.3"}
