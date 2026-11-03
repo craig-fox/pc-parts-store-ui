@@ -15,6 +15,7 @@ export type OrdersContextType = {
   loading: boolean;
   error: string | null;
   addOrder: (order: OrderResponse) => void;
+  cancelOrder: (orderId: string) => Promise<OrderResponse>;
 };
 
 export const OrdersContext = createContext<OrdersContextType | undefined>(
@@ -58,6 +59,18 @@ export function OrdersProvider({ children }: PropsWithChildren): JSX.Element {
     setOrders((current) => [...current, order]);
   };
 
+  const cancelOrder = async (orderId: string): Promise<OrderResponse> => {
+    const updatedOrder = await orderService.cancelOrder(orderId);
+  
+    setOrders((current) =>
+      current.map((order) =>
+        order.id === updatedOrder.id ? updatedOrder : order,
+      ),
+    );
+  
+    return updatedOrder;
+  };
+
   return (
     <OrdersContext.Provider
       value={{
@@ -65,6 +78,7 @@ export function OrdersProvider({ children }: PropsWithChildren): JSX.Element {
         loading,
         error,
         addOrder,
+        cancelOrder,
       }}
     >
       {children}
