@@ -1,6 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-
-import { authenticatedFetch } from "./api";
+import {
+  authenticatedFetch,
+  registerUnauthorizedHandler,
+} from "./api";
 
 describe("authenticatedFetch", () => {
   beforeEach(() => {
@@ -123,5 +125,57 @@ describe("authenticatedFetch", () => {
     const headers = new Headers(options?.headers);
 
     expect(headers.get("X-Custom-Header")).toBe("test-value");
+  });
+
+  it("calls the unauthorized handler when an authenticated request returns 401", async () => {
+    localStorage.setItem("token", "current-token");
+  
+    const handler = vi.fn();
+    const unregister = registerUnauthorizedHandler(handler);
+  
+    vi.spyOn(globalThis, "fetch").mockResolvedValue(
+      new Response(null, { status: 401 }),
+    );
+  
+    const response = await authenticatedFetch(
+      "https://example.com/api/orders",
+    );
+  
+    expect(handler).toHaveBeenCalledOnce();
+    expect(response.status).toBe(401);
+  
+    unregister();
+  });
+  
+  it("does not call the unauthorized handler when no token exists", async () => {
+    const handler = vi.fn();
+    const unregister = registerUnauthorizedHandler(handler);
+  
+    vi.spyOn(globalThis, "fetch").mockResolvedValue(
+      new Response(null, { status: 401 }),
+    );
+  
+    await authenticatedFetch("https://example.com/api/products");
+  
+    expect(handler).not.toHaveBeenCalled();
+  
+    unregister();
+  });
+  
+  it("does not call the unauthorized handler for non-401 responses", async () => {
+    localStorage.setItem("token", "current-token");
+  
+    const handler = vi.fn();
+    const unregister = registerUnauthorizedHandler(handler);
+  
+    vi.spyOn(globalThis, "fetch").mockResolvedValue(
+      new Response(null, { status: 403 }),
+    );
+  
+    await authenticatedFetch("https://example.com/api/orders");
+  
+    expect(handler).not.toHaveBeenCalled();
+  
+    unregister();
   });
 });

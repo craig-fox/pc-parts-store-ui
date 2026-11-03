@@ -15,11 +15,14 @@ vi.mock("../services/authService", () => ({
 }));
 
 const mockLoginResponse: LoginResponse = {
-  token: "test-token",
+  token: createToken({
+    exp: Math.floor(Date.now() / 1000) + 3600,
+  }),
   customerId: "11111111-1111-1111-1111-111111111111",
   firstName: "Alice",
   preferredName: null,
 };
+
 
 function TestConsumer() {
   const { user, isAuthenticated, login, logout } = useAuth();
@@ -54,6 +57,15 @@ function renderAuthContext() {
       <TestConsumer />
     </AuthProvider>,
   );
+}
+
+function createToken(payload: object): string {
+  const encodedPayload = btoa(JSON.stringify(payload))
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_")
+    .replace(/=+$/, "");
+
+  return `header.${encodedPayload}.signature`;
 }
 
 describe("AuthContext", () => {
@@ -132,6 +144,24 @@ describe("AuthContext", () => {
     expect(screen.getByTestId("customer-id")).toHaveTextContent(
       mockLoginResponse.customerId,
     );
+  });
+
+  it("clears an expired session from local storage", async () => {
+    const expiredToken = createToken({
+      exp: Math.floor(Date.now() / 1000) - 3600,
+    });
+  
+    localStorage.setItem("token", expiredToken);
+    localStorage.setItem("authUser", JSON.stringify(mockLoginResponse));
+  
+    renderAuthContext();
+  
+    await waitFor(() => {
+      expect(screen.getByTestId("authenticated")).toHaveTextContent("false");
+    });
+  
+    expect(localStorage.getItem("token")).toBeNull();
+    expect(localStorage.getItem("authUser")).toBeNull();
   });
 
   it("throws when useAuth is used outside AuthProvider", () => {

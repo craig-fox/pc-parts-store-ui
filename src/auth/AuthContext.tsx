@@ -1,13 +1,17 @@
 import {
   createContext,
+  useCallback,
   useContext,
   useEffect,
   useState,
   type ReactNode,
 } from "react";
 
+import { isTokenExpired } from "../utils/jwt";
+
 import { authService } from "../services/authService";
 import type { LoginRequest, LoginResponse } from "./authTypes";
+import { registerUnauthorizedHandler } from "../services/api";
 
 interface AuthContextValue {
   user: LoginResponse | null;
@@ -26,21 +30,36 @@ interface AuthProviderProps {
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<LoginResponse | null>(null);
   const [loading, setLoading] = useState(true);
+  const logout = useCallback((): void => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("authUser");
+  
+    setUser(null);
+  }, []);
+  
 
   useEffect(() => {
     const storedUser = localStorage.getItem("authUser");
-
-    if (storedUser) {
+    const token = localStorage.getItem("token");
+  
+    if (storedUser && token && !isTokenExpired(token)) {
       try {
         setUser(JSON.parse(storedUser));
       } catch {
         localStorage.removeItem("authUser");
         localStorage.removeItem("token");
       }
+    } else {
+      localStorage.removeItem("authUser");
+      localStorage.removeItem("token");
     }
-
+  
     setLoading(false);
   }, []);
+
+  useEffect(() => {
+    return registerUnauthorizedHandler(logout);
+  }, [logout]);
 
   async function login(request: LoginRequest): Promise<void> {
     const response = await authService.login(request);
@@ -51,12 +70,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     setUser(response);
   }
 
-  function logout(): void {
-    localStorage.removeItem("token");
-    localStorage.removeItem("authUser");
 
-    setUser(null);
-  }
 
   const value: AuthContextValue = {
     user,
