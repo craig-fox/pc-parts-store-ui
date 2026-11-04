@@ -199,4 +199,53 @@ describe("orderService", () => {
 
     expect(result).toEqual(orderResponse);
   });
+
+  it("cancels an order and returns the updated order", async () => {
+    const cancelledOrder = {
+      id: "order-1",
+      customerId: "customer-1",
+      orderDate: "2026-08-12T10:00:00Z",
+      status: "CANCELLED",
+      subtotal: 699.99,
+      shipping: 8,
+      total: 707.99,
+      items: [],
+    };
+  
+    mockAuthenticatedFetch.mockResolvedValue(
+      new Response(JSON.stringify(cancelledOrder), {
+        status: 200,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+    );
+  
+    const { orderService } = await import("./orderService");
+  
+    const result = await orderService.cancelOrder("order-1");
+  
+    expect(mockAuthenticatedFetch).toHaveBeenCalledWith(
+      `${mockEnvironment.apiBaseUrl}/api/orders/order-1/cancel`,
+      {
+        method: "POST",
+      },
+    );
+  
+    expect(result).toEqual(cancelledOrder);
+  });
+  
+  it("throws when order cancellation fails", async () => {
+    mockAuthenticatedFetch.mockResolvedValue(
+      new Response("Order cannot be cancelled", {
+        status: 400,
+      }),
+    );
+  
+    const { orderService } = await import("./orderService");
+  
+    await expect(orderService.cancelOrder("order-1")).rejects.toThrow(
+      "Order cancellation failed: 400",
+    );
+  });
 });

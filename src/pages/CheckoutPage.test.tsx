@@ -108,6 +108,7 @@ describe("CheckoutPage", () => {
       loading: false,
       error: null,
       addOrder,
+      cancelOrder: vi.fn(),
     });
 
     vi.mocked(orderService.createOrder).mockResolvedValue(createdOrder);
@@ -242,6 +243,7 @@ describe("CheckoutPage", () => {
       loading: false,
       error: null,
       addOrder,
+      cancelOrder: vi.fn(),
     });
 
     vi.mocked(orderService.createOrder).mockRejectedValue(

@@ -14,6 +14,7 @@ vi.mock("../auth/AuthContext", () => ({
 vi.mock("../services/orderService", () => ({
   orderService: {
     getOrders: vi.fn(),
+    cancelOrder: vi.fn(),
   },
 }));
 
@@ -163,5 +164,66 @@ describe("OrdersContext", () => {
     await waitFor(() => {
       expect(result.current.orders).toEqual([]);
     });
+  });
+
+  it("cancels an order and updates it in context state", async () => {
+    vi.mocked(useAuth).mockReturnValue({
+      user: null,
+      isAuthenticated: true,
+      loading: false,
+      login: vi.fn(),
+      logout: vi.fn(),
+    });
+  
+    vi.mocked(orderService.getOrders).mockResolvedValue([mockOrder]);
+  
+    const cancelledOrder: OrderResponse = {
+      ...mockOrder,
+      status: "CANCELLED",
+    };
+  
+    vi.mocked(orderService.cancelOrder).mockResolvedValue(cancelledOrder);
+  
+    const { result } = renderHook(() => useOrders(), { wrapper });
+  
+    await waitFor(() => {
+      expect(result.current.orders).toEqual([mockOrder]);
+    });
+  
+    await result.current.cancelOrder(mockOrder.id);
+  
+    await waitFor(() => {
+      expect(result.current.orders).toEqual([cancelledOrder]);
+    });
+  
+    expect(orderService.cancelOrder).toHaveBeenCalledWith(mockOrder.id);
+  });
+  
+  it("leaves the order unchanged when cancellation fails", async () => {
+    vi.mocked(useAuth).mockReturnValue({
+      user: null,
+      isAuthenticated: true,
+      loading: false,
+      login: vi.fn(),
+      logout: vi.fn(),
+    });
+  
+    vi.mocked(orderService.getOrders).mockResolvedValue([mockOrder]);
+  
+    vi.mocked(orderService.cancelOrder).mockRejectedValue(
+      new Error("Order cancellation failed: 400"),
+    );
+  
+    const { result } = renderHook(() => useOrders(), { wrapper });
+  
+    await waitFor(() => {
+      expect(result.current.orders).toEqual([mockOrder]);
+    });
+  
+    await expect(result.current.cancelOrder(mockOrder.id)).rejects.toThrow(
+      "Order cancellation failed: 400",
+    );
+  
+    expect(result.current.orders).toEqual([mockOrder]);
   });
 });

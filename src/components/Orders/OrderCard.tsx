@@ -1,4 +1,7 @@
+import { useState } from "react";
+
 import type { OrderResponse } from "../../types/OrderResponse";
+import { useOrders } from "../../context/useOrders";
 import OrderSummary from "./OrderSummary";
 
 type OrderCardProps = {
@@ -6,6 +9,11 @@ type OrderCardProps = {
 };
 
 function OrderCard({ order }: OrderCardProps) {
+  const { cancelOrder } = useOrders();
+
+  const [isCancelling, setIsCancelling] = useState(false);
+  const [cancelError, setCancelError] = useState<string | null>(null);
+
   const itemCount = order.items.reduce(
     (total, item) => total + item.quantity,
     0,
@@ -16,6 +24,21 @@ function OrderCard({ order }: OrderCardProps) {
   const isPaid = ["PAID", "PACKING", "SHIPPED", "DELIVERED"].includes(
     order.status,
   );
+
+  const canCancel = ["PLACED", "PAID"].includes(order.status);
+
+  const handleCancel = async () => {
+    setIsCancelling(true);
+    setCancelError(null);
+
+    try {
+      await cancelOrder(order.id);
+    } catch {
+      setCancelError("Unable to cancel this order. Please try again.");
+    } finally {
+      setIsCancelling(false);
+    }
+  };
 
   return (
     <article>
@@ -31,6 +54,7 @@ function OrderCard({ order }: OrderCardProps) {
         <span className="rounded-full bg-sky-100 px-3 py-1 text-sm font-medium text-sky-700">
           {order.status}
         </span>
+
         {isPaid && (
           <span className="rounded-full bg-green-100 px-3 py-1 text-sm font-medium text-green-700">
             Payment: Paid
@@ -51,6 +75,25 @@ function OrderCard({ order }: OrderCardProps) {
       </ul>
 
       <OrderSummary order={order} />
+
+      {canCancel && (
+        <div className="mt-4">
+          <button
+            type="button"
+            onClick={handleCancel}
+            disabled={isCancelling}
+            className="rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {isCancelling ? "Cancelling…" : "Cancel order"}
+          </button>
+
+          {cancelError && (
+            <p role="alert" className="mt-2 text-sm text-red-600">
+              {cancelError}
+            </p>
+          )}
+        </div>
+      )}
     </article>
   );
 }

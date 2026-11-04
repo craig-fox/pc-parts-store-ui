@@ -38,4 +38,19 @@ export const orderService = {
 
     return response.json();
   },
+
+  async cancelOrder(orderId: string): Promise<OrderResponse> {
+    const response = await authenticatedFetch(
+      `${environment.apiBaseUrl}/api/orders/${orderId}/cancel`,
+      {
+        method: "POST",
+      },
+    );
+  
+    if (!response.ok) {
+      throw new Error(`Order cancellation failed: ${response.status}`);
+    }
+  
+    return response.json();
+  },
 };

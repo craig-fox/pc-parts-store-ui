@@ -1,8 +1,12 @@
-import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
-
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import OrderCard from "./OrderCard";
+import { useOrders } from "../../context/useOrders";
 import type { OrderResponse } from "../../types/OrderResponse";
+
+vi.mock("../../context/useOrders", () => ({
+  useOrders: vi.fn(),
+}));
 
 const order: OrderResponse = {
   id: "order-12345678",
@@ -24,6 +28,16 @@ const order: OrderResponse = {
 };
 
 describe("OrderCard", () => {
+  beforeEach(() => {
+    vi.mocked(useOrders).mockReturnValue({
+      orders: [],
+      loading: false,
+      error: null,
+      addOrder: vi.fn(),
+      cancelOrder: vi.fn().mockResolvedValue(order),
+    });
+  });
+
   it("renders the order details", () => {
     render(<OrderCard order={order} />);
 
@@ -92,5 +106,47 @@ describe("OrderCard", () => {
     render(<OrderCard order={order} />);
 
     expect(screen.queryByText("Payment: Paid")).not.toBeInTheDocument();
+  });
+
+  it("calls cancelOrder when the cancel button is clicked", async () => {
+    const cancelOrder = vi.fn().mockResolvedValue(order);
+  
+    vi.mocked(useOrders).mockReturnValue({
+      orders: [],
+      loading: false,
+      error: null,
+      addOrder: vi.fn(),
+      cancelOrder,
+    });
+  
+    render(<OrderCard order={order} />);
+  
+    fireEvent.click(screen.getByRole("button", { name: "Cancel order" }));
+  
+    await waitFor(() => {
+      expect(cancelOrder).toHaveBeenCalledWith(order.id);
+    });
+  });
+  
+  it("displays an error when cancellation fails", async () => {
+    const cancelOrder = vi
+      .fn()
+      .mockRejectedValue(new Error("Order cancellation failed: 400"));
+  
+    vi.mocked(useOrders).mockReturnValue({
+      orders: [],
+      loading: false,
+      error: null,
+      addOrder: vi.fn(),
+      cancelOrder,
+    });
+  
+    render(<OrderCard order={order} />);
+  
+    fireEvent.click(screen.getByRole("button", { name: "Cancel order" }));
+  
+    expect(
+      await screen.findByRole("alert"),
+    ).toHaveTextContent("Unable to cancel this order. Please try again.");
   });
 });

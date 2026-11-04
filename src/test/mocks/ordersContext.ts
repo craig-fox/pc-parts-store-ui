@@ -1,5 +1,6 @@
 import { vi } from "vitest";
 import type { OrdersContextType } from "../../context/OrdersContext";
+import type { OrderResponse } from "../../types/OrderResponse";
 
 export const createMockOrdersContext = (
   overrides: Partial<OrdersContextType> = {},
@@ -9,6 +10,7 @@ export const createMockOrdersContext = (
   error: null,
 
   addOrder: vi.fn(),
+  cancelOrder: vi.fn().mockResolvedValue({} as OrderResponse),
 
   ...overrides,
 });
